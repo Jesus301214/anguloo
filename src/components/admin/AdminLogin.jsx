@@ -9,15 +9,21 @@ const AdminLogin = () => {
 
   // Escuchar cambios de autenticación para redirigir si el usuario ya inició sesión
   useEffect(() => {
+    console.log("AdminLogin: Montado, esperando sesión...");
+    
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session) {
+      console.log("AdminLogin: Evento Auth recibido:", event, session?.user?.email);
+      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
+        console.log("AdminLogin: Sesión válida detectada, redirigiendo a /admin...");
         navigate('/admin');
       }
     });
 
-    // También verificar si ya hay una sesión activa al cargar el componente
+    // También verificar si ya hay una sesión activa al cargar el componente, pero con un pequeño delay
     const checkSession = async () => {
+      await new Promise(resolve => setTimeout(resolve, 1000));
       const { data: { session } } = await supabase.auth.getSession();
+      console.log("AdminLogin: Resultado de getSession inicial:", session?.user?.email);
       if (session) navigate('/admin');
     };
     checkSession();

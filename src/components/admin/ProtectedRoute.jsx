@@ -12,8 +12,16 @@ const ProtectedRoute = ({ children }) => {
     let mounted = true;
 
     const checkAuth = async () => {
-      // 1. Dar un pequeño margen para que Supabase procese el hash de la URL si existe
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // 1. Detectar si estamos volviendo de un redirect (hay hash en la URL)
+      const hasHash = window.location.hash.includes('access_token');
+      
+      // Si hay hash, esperamos un tiempo generoso para que Supabase lo procese
+      if (hasHash) {
+        console.log("Detectado callback de Google, procesando sesión...");
+        await new Promise(resolve => setTimeout(resolve, 1500));
+      } else {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
 
       try {
         const { data: { session: currentSession } } = await supabase.auth.getSession();
@@ -21,15 +29,20 @@ const ProtectedRoute = ({ children }) => {
         if (!mounted) return;
 
         if (currentSession) {
+          console.log("Sesión encontrada:", currentSession.user.email);
           setSession(currentSession);
           await verifyAdmin(currentSession.user.email);
         } else {
-          // Si no hay sesión, esperamos un poco más al listener por si acaso
+          // Si seguimos sin sesión después de esperar, damos un último margen antes de rendirnos
+          console.log("No se encontró sesión inicial, esperando al listener...");
           setTimeout(() => {
-            if (mounted && !session) setIsLoading(false);
-          }, 1000);
+            if (mounted && !currentSession) {
+              setIsLoading(false);
+            }
+          }, 2000);
         }
       } catch (error) {
+        console.error("Error en checkAuth:", error);
         if (mounted) setIsLoading(false);
       }
     };
@@ -40,6 +53,7 @@ const ProtectedRoute = ({ children }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
       if (!mounted) return;
       
+      console.log("Evento Auth:", event);
       if (currentSession) {
         setSession(currentSession);
         await verifyAdmin(currentSession.user.email);

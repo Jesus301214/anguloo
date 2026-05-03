@@ -16,7 +16,6 @@ import {
   CheckCircle2,
   Clock,
   Globe,
-  Instagram,
   Facebook,
   ExternalLink
 } from 'lucide-react';
@@ -236,9 +235,6 @@ const CRM = () => {
                     </td>
                     <td className="px-6 py-5">
                       <div className="flex items-center justify-end gap-2">
-                        {lead.instagram && (
-                          <a href={`https://instagram.com/${lead.instagram.replace('@', '')}`} target="_blank" rel="noreferrer" className="p-2 bg-pink-500/10 text-pink-500 rounded-xl hover:bg-pink-500 hover:text-white transition-all border border-pink-500/20" title="Instagram"><Instagram size={16} /></a>
-                        )}
                         {lead.facebook && (
                           <a href={lead.facebook.startsWith('http') ? lead.facebook : `https://facebook.com/${lead.facebook}`} target="_blank" rel="noreferrer" className="p-2 bg-blue-500/10 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition-all border border-blue-500/20" title="Facebook"><Facebook size={16} /></a>
                         )}
@@ -306,7 +302,7 @@ const CRM = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-1.5">
                       <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1 flex items-center gap-2">
-                        <Instagram size={12} className="text-pink-500" /> Instagram (@usuario)
+                        Instagram (@usuario)
                       </label>
                       <input type="text" value={newLead.instagram} onChange={(e) => setNewLead({...newLead, instagram: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all" placeholder="@usuario" />
                     </div>

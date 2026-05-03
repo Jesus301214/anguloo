@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
 import { 
   LayoutDashboard, 
   Calendar, 
@@ -11,11 +12,79 @@ import {
   Search,
   User,
   Menu,
-  ChevronRight
+  ChevronRight,
+  X,
+  MessageCircle,
+  Clock,
+  ArrowRight
 } from 'lucide-react';
 
 const AdminLayout = ({ children, activeTab, setActiveTab }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // Solicitar permiso para notificaciones de navegador
+  useEffect(() => {
+    if ("Notification" in window) {
+      if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+        Notification.requestPermission();
+      }
+    }
+  }, []);
+
+  // Suscripción Realtime a nuevos leads y reuniones
+  useEffect(() => {
+    const channel = supabase
+      .channel('admin-notifications')
+      .on('postgres_changes', { event: 'INSERT', table: 'leads' }, (payload) => {
+        addNotification({
+          id: Date.now(),
+          title: 'Nuevo Lead Registrado',
+          description: `${payload.new.nombre} de ${payload.new.compania || 'empresa desconocida'}`,
+          type: 'lead',
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          read: false
+        });
+        showBrowserNotification('Nuevo Lead', `Se ha registrado ${payload.new.nombre}`);
+      })
+      .on('postgres_changes', { event: 'INSERT', table: 'meetings' }, (payload) => {
+        addNotification({
+          id: Date.now(),
+          title: 'Nueva Reunión Agendada',
+          description: `Se agendó una cita para el ${payload.new.fecha}`,
+          type: 'meeting',
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          read: false
+        });
+        showBrowserNotification('Nueva Reunión', 'Se ha agendado una nueva demo en el sistema.');
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const addNotification = (notif) => {
+    setNotifications(prev => [notif, ...prev].slice(0, 10)); // Guardar últimas 10
+    setUnreadCount(prev => prev + 1);
+  };
+
+  const showBrowserNotification = (title, body) => {
+    if (Notification.permission === "granted") {
+      new Notification(title, { 
+        body, 
+        icon: '/logo192.png' // Asegúrate de tener un icono si quieres
+      });
+    }
+  };
+
+  const markAllAsRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    setUnreadCount(0);
+  };
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -79,7 +148,6 @@ const AdminLayout = ({ children, activeTab, setActiveTab }) => {
                   </div>
                 )}
 
-                {/* Active Indicator Line */}
                 {isActive && (
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-500 rounded-r-full" />
                 )}
@@ -121,10 +189,62 @@ const AdminLayout = ({ children, activeTab, setActiveTab }) => {
 
           <div className="flex items-center gap-4">
             {/* Notifications */}
-            <button className="p-2.5 text-slate-500 hover:bg-slate-100 rounded-xl transition-all relative">
-              <Bell size={20} />
-              <span className="absolute top-2 right-2 h-2 w-2 bg-rose-500 rounded-full border-2 border-white"></span>
-            </button>
+            <div className="relative">
+              <button 
+                onClick={() => { setIsNotificationsOpen(!isNotificationsOpen); if(!isNotificationsOpen) setUnreadCount(0); }}
+                className="p-2.5 text-slate-500 hover:bg-slate-100 rounded-xl transition-all relative"
+              >
+                <Bell size={20} />
+                {unreadCount > 0 && (
+                  <span className="absolute top-2 right-2 h-4 w-4 bg-rose-500 text-white text-[10px] flex items-center justify-center rounded-full border-2 border-white font-bold">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Panel de Notificaciones Dropdown */}
+              {isNotificationsOpen && (
+                <div className="absolute top-14 right-0 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <h4 className="font-black text-slate-900 text-sm">Notificaciones</h4>
+                    <button onClick={() => setIsNotificationsOpen(false)} className="text-slate-400 hover:text-slate-600"><X size={18} /></button>
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {notifications.length === 0 ? (
+                      <div className="p-8 text-center">
+                        <Bell size={32} className="mx-auto text-slate-200 mb-2" />
+                        <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Sin notificaciones</p>
+                      </div>
+                    ) : (
+                      <div className="divide-y divide-slate-100">
+                        {notifications.map(notif => (
+                          <div key={notif.id} className="p-4 hover:bg-slate-50 transition-colors cursor-pointer group">
+                            <div className="flex gap-3">
+                              <div className={`h-8 w-8 rounded-lg flex items-center justify-center shrink-0 ${notif.type === 'lead' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'}`}>
+                                {notif.type === 'lead' ? <Users size={16} /> : <Calendar size={16} />}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-xs font-black text-slate-900 truncate">{notif.title}</p>
+                                <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-2 leading-relaxed">{notif.description}</p>
+                                <div className="flex items-center gap-1.5 mt-2 text-[10px] text-slate-400 font-bold">
+                                  <Clock size={12} />
+                                  {notif.time}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  {notifications.length > 0 && (
+                    <button className="w-full py-3 bg-slate-50 border-t border-slate-200 text-[10px] font-black text-blue-600 uppercase tracking-widest hover:bg-white transition-colors">
+                      Ver todo el historial
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* User Profile */}
             <div className="flex items-center gap-3 pl-4 border-l border-slate-200">

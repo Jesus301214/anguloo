@@ -8,27 +8,28 @@ import {
   MessageCircle,
   Loader2,
   ChevronRight,
-  Filter
+  Filter,
+  X,
+  Globe,
+  Instagram,
+  Facebook,
+  Mail,
+  Phone
 } from 'lucide-react';
 
 const Calendar = () => {
   const [meetings, setMeetings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedMeeting, setSelectedMeeting] = useState(null);
 
   const fetchMeetings = async () => {
     setIsLoading(true);
     try {
-      // Consulta con JOIN a la tabla leads para traer información del cliente
       const { data, error } = await supabase
         .from('meetings')
         .select(`
           *,
-          leads (
-            nombre,
-            email,
-            whatsapp,
-            compania
-          )
+          leads (*)
         `)
         .order('fecha', { ascending: true })
         .order('hora', { ascending: true });
@@ -46,14 +47,13 @@ const Calendar = () => {
     fetchMeetings();
   }, []);
 
-  // Formatear fecha para el display
   const formatDate = (dateStr) => {
     const options = { weekday: 'long', day: 'numeric', month: 'long' };
     return new Date(dateStr + 'T00:00:00').toLocaleDateString('es-ES', options);
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-700 bg-slate-950 p-6 rounded-3xl border border-slate-800/50 min-h-screen">
+    <div className="space-y-8 animate-in fade-in duration-700 bg-[#0F172A] p-8 rounded-3xl border border-slate-800/40 min-h-screen">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
@@ -61,12 +61,8 @@ const Calendar = () => {
           <p className="text-slate-400 mt-1 font-medium">Visualiza tus próximas demos y reuniones de cierre.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-sm font-bold text-slate-300 hover:bg-slate-800 transition-all shadow-sm">
-            <Filter size={18} />
-            Filtrar
-          </button>
-          <div className="h-10 w-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-600/20">
-            <CalendarIcon size={20} />
+          <div className="h-12 w-12 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-600/20">
+            <CalendarIcon size={24} />
           </div>
         </div>
       </div>
@@ -113,22 +109,17 @@ const Calendar = () => {
 
                 <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
                   <div className="flex gap-2">
-                    <a 
-                      href={`mailto:${meeting.leads?.email}`}
-                      className="p-2 bg-slate-800 text-slate-400 rounded-lg hover:bg-blue-600 hover:text-white transition-all"
-                    >
+                    <button className="p-2 bg-slate-800 text-slate-400 rounded-lg hover:bg-slate-700 transition-all">
                       <User size={16} />
-                    </a>
-                    <a 
-                      href={`https://wa.me/${meeting.leads?.whatsapp?.replace(/\D/g, '')}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="p-2 bg-slate-800 text-emerald-500 rounded-lg hover:bg-emerald-600 hover:text-white transition-all"
-                    >
+                    </button>
+                    <a href={`https://wa.me/${meeting.leads?.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="p-2 bg-slate-800 text-emerald-500 rounded-lg hover:bg-emerald-600 hover:text-white transition-all">
                       <MessageCircle size={16} />
                     </a>
                   </div>
-                  <button className="flex items-center gap-1 text-[10px] font-black text-blue-500 hover:text-blue-400 uppercase tracking-widest group-hover:gap-2 transition-all">
+                  <button 
+                    onClick={() => setSelectedMeeting(meeting)}
+                    className="flex items-center gap-1 text-[10px] font-black text-blue-500 hover:text-blue-400 uppercase tracking-widest group-hover:gap-2 transition-all"
+                  >
                     Ver Detalles <ChevronRight size={14} />
                   </button>
                 </div>
@@ -137,6 +128,79 @@ const Calendar = () => {
           ))
         )}
       </div>
+
+      {/* Modal de Detalles de la Reunión */}
+      {selectedMeeting && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+          <div className="bg-slate-900 border border-slate-800 w-full max-w-xl rounded-3xl p-8 shadow-2xl relative animate-in zoom-in duration-300">
+            <button onClick={() => setSelectedMeeting(null)} className="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors">
+              <X size={24} />
+            </button>
+
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-16 w-16 bg-blue-600/20 rounded-2xl flex items-center justify-center text-blue-500">
+                <CalendarIcon size={32} />
+              </div>
+              <div>
+                <h2 className="text-2xl font-black text-white font-outfit">Detalles de la Demo</h2>
+                <p className="text-slate-400">Reunión estratégica programada</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6 mb-8">
+              <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Fecha</p>
+                <p className="text-white font-bold">{formatDate(selectedMeeting.fecha)}</p>
+              </div>
+              <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Hora</p>
+                <p className="text-white font-bold">{selectedMeeting.hora.substring(0, 5)} HS</p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="border-t border-slate-800 pt-6">
+                <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Información del Lead</h3>
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-14 w-14 bg-slate-800 rounded-2xl flex items-center justify-center text-2xl text-blue-400 font-black border border-slate-700">
+                    {selectedMeeting.leads?.nombre?.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="text-xl font-black text-white">{selectedMeeting.leads?.nombre}</p>
+                    <p className="text-slate-500 font-bold">{selectedMeeting.leads?.compania || 'Independiente'}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <a href={`mailto:${selectedMeeting.leads?.email}`} className="flex items-center gap-3 p-3 bg-slate-800/40 rounded-xl hover:bg-slate-800 transition-all border border-slate-800 text-slate-300">
+                    <Mail size={18} className="text-blue-500" />
+                    <span className="text-sm truncate">{selectedMeeting.leads?.email}</span>
+                  </a>
+                  <a href={`https://wa.me/${selectedMeeting.leads?.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="flex items-center gap-3 p-3 bg-slate-800/40 rounded-xl hover:bg-slate-800 transition-all border border-slate-800 text-slate-300">
+                    <Phone size={18} className="text-emerald-500" />
+                    <span className="text-sm truncate">{selectedMeeting.leads?.whatsapp}</span>
+                  </a>
+                </div>
+
+                <div className="flex gap-4 mt-4">
+                  {selectedMeeting.leads?.website && (
+                    <a href={selectedMeeting.leads.website.startsWith('http') ? selectedMeeting.leads.website : `https://${selectedMeeting.leads.website}`} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 p-3 bg-slate-800/40 rounded-xl hover:bg-slate-800 transition-all border border-slate-800 text-slate-300">
+                      <Globe size={18} className="text-blue-400" />
+                      <span className="text-xs font-bold uppercase tracking-widest">Web</span>
+                    </a>
+                  )}
+                  {selectedMeeting.leads?.instagram && (
+                    <a href={`https://instagram.com/${selectedMeeting.leads.instagram.replace('@', '')}`} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 p-3 bg-slate-800/40 rounded-xl hover:bg-slate-800 transition-all border border-slate-800 text-slate-300">
+                      <Instagram size={18} className="text-pink-500" />
+                      <span className="text-xs font-bold uppercase tracking-widest">Instagram</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

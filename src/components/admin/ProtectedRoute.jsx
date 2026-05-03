@@ -12,15 +12,15 @@ const ProtectedRoute = ({ children }) => {
     let mounted = true;
 
     const checkAuth = async () => {
-      // 1. Detectar si estamos volviendo de un redirect (hay hash en la URL)
-      const hasHash = window.location.hash.includes('access_token');
+      // 1. Detectar si hay un hash de sesión en la URL
+      const hasHash = window.location.hash.includes('access_token') || 
+                      window.location.hash.includes('id_token') ||
+                      window.location.hash.includes('type=recovery');
       
-      // Si hay hash, esperamos un tiempo generoso para que Supabase lo procese
       if (hasHash) {
-        console.log("Detectado callback de Google, procesando sesión...");
-        await new Promise(resolve => setTimeout(resolve, 1500));
-      } else {
-        await new Promise(resolve => setTimeout(resolve, 500));
+        console.log("🔐 Callback detectado. Bloqueando redirección para procesar sesión...");
+        // Si hay hash, NO permitimos que isLoading pase a false prematuramente
+        await new Promise(resolve => setTimeout(resolve, 2000));
       }
 
       try {
@@ -29,36 +29,35 @@ const ProtectedRoute = ({ children }) => {
         if (!mounted) return;
 
         if (currentSession) {
-          console.log("Sesión encontrada:", currentSession.user.email);
+          console.log("✅ Sesión encontrada:", currentSession.user.email);
           setSession(currentSession);
           await verifyAdmin(currentSession.user.email);
-        } else {
-          // Si seguimos sin sesión después de esperar, damos un último margen antes de rendirnos
-          console.log("No se encontró sesión inicial, esperando al listener...");
+        } else if (!hasHash) {
+          // Solo si NO hay hash en la URL nos permitimos dar por fallida la carga inicial rápida
+          console.log("ℹ️ No hay sesión inicial ni hash. Esperando listener...");
           setTimeout(() => {
-            if (mounted && !currentSession) {
-              setIsLoading(false);
-            }
-          }, 2000);
+            if (mounted && !session) setIsLoading(false);
+          }, 1500);
         }
       } catch (error) {
-        console.error("Error en checkAuth:", error);
+        console.error("❌ Error en checkAuth:", error);
         if (mounted) setIsLoading(false);
       }
     };
 
     checkAuth();
 
-    // 2. Suscribirse a cambios (Login/Logout)
+    // 2. Escuchar cambios (Login/Logout/Token Refreshed)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
       if (!mounted) return;
       
-      console.log("Evento Auth:", event);
+      console.log("🔔 Evento Auth:", event);
+
       if (currentSession) {
         setSession(currentSession);
         await verifyAdmin(currentSession.user.email);
-      } else if (event === 'SIGNED_OUT') {
-        setSession(null);
+      } else if (event === 'SIGNED_OUT' || (!currentSession && event === 'INITIAL_SESSION' && !hasHash)) {
+        // Solo marcar como no-admin si realmente no hay nada ocurriendo
         setIsAdmin(false);
         setIsLoading(false);
       }

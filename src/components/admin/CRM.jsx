@@ -16,7 +16,6 @@ import {
   CheckCircle2,
   Clock,
   Globe,
-  Facebook,
   ExternalLink
 } from 'lucide-react';
 
@@ -235,9 +234,6 @@ const CRM = () => {
                     </td>
                     <td className="px-6 py-5">
                       <div className="flex items-center justify-end gap-2">
-                        {lead.facebook && (
-                          <a href={lead.facebook.startsWith('http') ? lead.facebook : `https://facebook.com/${lead.facebook}`} target="_blank" rel="noreferrer" className="p-2 bg-blue-500/10 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition-all border border-blue-500/20" title="Facebook"><Facebook size={16} /></a>
-                        )}
                         <a href={`https://wa.me/${lead.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20" title="WhatsApp"><MessageCircle size={16} /></a>
                         <button 
                           onClick={() => { setSelectedLead(lead); setIsScheduleModalOpen(true); }}
@@ -308,7 +304,7 @@ const CRM = () => {
                     </div>
                     <div className="space-y-1.5">
                       <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1 flex items-center gap-2">
-                        <Facebook size={12} className="text-blue-600" /> Perfil / Fanpage Facebook
+                        Perfil / Fanpage Facebook
                       </label>
                       <input type="text" value={newLead.facebook} onChange={(e) => setNewLead({...newLead, facebook: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all" placeholder="facebook.com/pagina" />
                     </div>

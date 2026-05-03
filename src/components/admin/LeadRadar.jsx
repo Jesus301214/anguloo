@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Search, MapPin, Globe, Phone, Mail, Instagram, Plus, Loader2, CheckCircle2, AlertCircle, Radar } from 'lucide-react';
+import { Search, MapPin, Globe, Phone, Mail, ExternalLink, Plus, Loader2, CheckCircle2, AlertCircle, Radar } from 'lucide-react';
 
 const LeadRadar = () => {
   const [query, setQuery] = useState('');
@@ -181,7 +181,7 @@ const LeadRadar = () => {
                         rel="noreferrer"
                         className="p-2 bg-slate-800 text-pink-500 rounded-lg hover:bg-pink-600 hover:text-white transition-all"
                       >
-                        <Instagram size={16} />
+                        <ExternalLink size={16} />
                       </a>
                     )}
                   </div>

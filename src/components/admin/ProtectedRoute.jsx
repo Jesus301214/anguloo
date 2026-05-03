@@ -1,40 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { Loader2, Lock, ShieldAlert, KeyRound, CheckCircle2 } from 'lucide-react';
+import { Loader2, ShieldAlert, LogOut } from 'lucide-react';
 
 const ProtectedRoute = ({ children }) => {
   const [session, setSession] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [pin, setPin] = useState('');
-  const [showPinInput, setShowPinInput] = useState(false);
-  const [pinError, setPinError] = useState('');
-  const [isRegistering, setIsRegistering] = useState(false);
 
   useEffect(() => {
-    // 1. Verificar sesión inicial
+    // 1. Verificar sesión inicial e hidratar estado
     const initAuth = async () => {
       const { data: { session: initialSession } } = await supabase.auth.getSession();
       if (initialSession) {
         setSession(initialSession);
         await verifyAdmin(initialSession.user.email);
+      } else {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
     initAuth();
 
-    // 2. Escuchar cambios (Login/Logout)
+    // 2. Suscribirse a cambios de autenticación
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
       setSession(currentSession);
       if (currentSession) {
         await verifyAdmin(currentSession.user.email);
       } else {
         setIsAdmin(false);
-        setShowPinInput(false);
+        setIsLoading(false);
       }
-      setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
@@ -42,121 +38,77 @@ const ProtectedRoute = ({ children }) => {
 
   const verifyAdmin = async (email) => {
     try {
-      const { data: adminData } = await supabase
+      // Consulta estricta a la tabla de lista blanca
+      const { data: adminData, error } = await supabase
         .from('admin_users')
         .select('*')
         .eq('email', email)
         .single();
 
-      if (adminData) {
+      if (adminData && !error) {
         setIsAdmin(true);
-        setShowPinInput(false);
       } else {
         setIsAdmin(false);
-        setShowPinInput(true);
       }
-    } catch (error) {
+    } catch (err) {
+      console.error('Error verificando privilegios:', err);
       setIsAdmin(false);
-      setShowPinInput(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleVerifyPin = async (e) => {
-    e.preventDefault();
-    setPinError('');
-    setIsRegistering(true);
-
-    const secretPin = import.meta.env.VITE_ADMIN_PIN;
-
-    if (pin === secretPin) {
-      try {
-        const { error } = await supabase
-          .from('admin_users')
-          .insert([{ 
-            user_id: session.user.id,
-            email: session.user.email 
-          }]);
-
-        if (error) throw error;
-        
-        setIsAdmin(true);
-        setShowPinInput(false);
-      } catch (error) {
-        setPinError('Error al registrar administrador: ' + error.message);
-      }
-    } else {
-      setPinError('Código de autorización incorrecto. Acceso denegado.');
-    }
-    setIsRegistering(false);
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
   };
 
+  // Pantalla de Carga
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#0F172A] flex flex-col items-center justify-center">
         <Loader2 className="animate-spin text-blue-500 mb-4" size={48} />
-        <p className="text-slate-500 font-black uppercase tracking-widest text-xs">Verificando Credenciales...</p>
+        <p className="text-slate-500 font-black uppercase tracking-widest text-[10px]">Verificando Privilegios...</p>
       </div>
     );
   }
 
+  // Si no hay sesión, ir al login
   if (!session) {
     return <Navigate to="/login-admin" />;
   }
 
-  if (showPinInput) {
+  // Si tiene sesión pero NO está en la lista blanca (Allowlist)
+  if (!isAdmin) {
     return (
       <div className="min-h-screen bg-[#0F172A] flex items-center justify-center p-6">
-        <div className="w-full max-w-md bg-[#1E293B] border border-slate-800 rounded-3xl p-10 shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="text-center mb-8">
-            <div className="h-16 w-16 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-500 mx-auto mb-6 border border-amber-500/20">
-              <ShieldAlert size={32} />
-            </div>
-            <h2 className="text-2xl font-black text-white font-outfit">Usuario No Autorizado</h2>
-            <p className="text-slate-400 mt-2 text-sm">Tu cuenta ({session.user.email}) no tiene permisos de administrador.</p>
+        <div className="w-full max-w-md bg-[#1E293B] border border-slate-800 rounded-3xl p-10 shadow-2xl text-center">
+          <div className="h-20 w-20 bg-rose-500/10 rounded-3xl flex items-center justify-center text-rose-500 mx-auto mb-8 border border-rose-500/20">
+            <ShieldAlert size={40} />
           </div>
+          
+          <h2 className="text-2xl font-black text-white font-outfit mb-4">Acceso Denegado</h2>
+          <p className="text-slate-400 mb-8 leading-relaxed">
+            Tu cuenta <span className="text-slate-200 font-bold">({session.user.email})</span> no tiene privilegios de administrador en el sistema ANGULO.
+          </p>
 
-          <form onSubmit={handleVerifyPin} className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Código de Invitación</label>
-              <div className="relative">
-                <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
-                <input
-                  required
-                  type="password"
-                  value={pin}
-                  onChange={(e) => setPin(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-slate-950 border border-slate-800 rounded-2xl text-white font-black tracking-[1em] text-center outline-none focus:border-blue-500/50 transition-all"
-                  placeholder="******"
-                  maxLength={6}
-                />
-              </div>
-            </div>
+          <button
+            onClick={handleLogout}
+            className="w-full bg-slate-800 hover:bg-slate-700 text-white font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-3"
+          >
+            <LogOut size={20} />
+            Cerrar Sesión
+          </button>
 
-            {pinError && (
-              <p className="text-rose-500 text-xs font-bold text-center bg-rose-500/10 py-3 rounded-xl border border-rose-500/20">
-                {pinError}
-              </p>
-            )}
-
-            <button
-              disabled={isRegistering}
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl shadow-lg shadow-blue-600/20 transition-all flex items-center justify-center gap-2"
-            >
-              {isRegistering ? <Loader2 className="animate-spin" /> : <CheckCircle2 size={20} />}
-              Validar Acceso
-            </button>
-          </form>
-
-          <p className="text-center text-slate-500 text-[10px] mt-8 uppercase font-bold tracking-widest">
-            Contacta al soporte para obtener un código
+          <p className="mt-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+            Contacta al superadministrador para solicitar acceso
           </p>
         </div>
       </div>
     );
   }
 
-  return isAdmin ? children : null;
+  // Si todo es correcto, mostrar el panel
+  return children;
 };
 
 export default ProtectedRoute;

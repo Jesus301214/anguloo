@@ -66,6 +66,23 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchDashboardData();
+
+    // Suscribirse a cambios en tiempo real
+    const channel = supabase
+      .channel('leads-dashboard-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'leads' },
+        () => {
+          console.log('Cambio detectado en leads, actualizando dashboard...');
+          fetchDashboardData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   // Datos simulados para el gráfico (pueden ser reales luego filtrando por fecha)

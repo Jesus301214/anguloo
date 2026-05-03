@@ -1,22 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Kanban as KanbanIcon, MessageCircle, DollarSign, User, Loader2, RefreshCw, ChevronRight, Calendar } from 'lucide-react';
-
-const columns = [
-  { id: 'new', title: 'Nuevos Leads', color: 'bg-blue-500' },
-  { id: 'discovery', title: 'Descubrimiento (SPIN)', color: 'bg-amber-500' },
-  { id: 'demo', title: 'Demo Agendada', color: 'bg-rose-500' },
-  { id: 'negotiation', title: 'Negociación', color: 'bg-indigo-500' },
-  { id: 'won', title: 'Cerrado/Ganado', color: 'bg-emerald-500' },
-];
+import { 
+  Users, 
+  Search, 
+  Filter, 
+  MoreVertical, 
+  Mail, 
+  Phone, 
+  Plus, 
+  Loader2, 
+  ArrowUpDown,
+  Download,
+  Calendar,
+  Building2
+} from 'lucide-react';
 
 const CRM = () => {
   const [leads, setLeads] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchLeads = async () => {
-    setRefreshing(true);
+    setIsLoading(true);
     try {
       const { data, error } = await supabase
         .from('leads')
@@ -24,19 +29,11 @@ const CRM = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      
-      const processedData = data.map(lead => ({
-        ...lead,
-        status: lead.status || 'new',
-        value: lead.value || 0
-      }));
-      
-      setLeads(processedData);
+      setLeads(data || []);
     } catch (error) {
-      console.error('Error fetching leads:', error);
+      console.error('Error fetching leads from Supabase:', error.message);
     } finally {
-      setLoading(false);
-      setRefreshing(false);
+      setIsLoading(false);
     }
   };
 
@@ -44,116 +41,157 @@ const CRM = () => {
     fetchLeads();
   }, []);
 
-  const updateLeadStatus = async (leadId, newStatus) => {
-    let updateData = { status: newStatus };
+  const filteredLeads = leads.filter(lead => 
+    lead.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    lead.compania?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const getStatusBadge = (status) => {
+    const styles = {
+      new: 'bg-blue-50 text-blue-600 border-blue-100',
+      discovery: 'bg-amber-50 text-amber-600 border-amber-100',
+      demo: 'bg-purple-50 text-purple-600 border-purple-100',
+      negotiation: 'bg-indigo-50 text-indigo-600 border-indigo-100',
+      won: 'bg-emerald-50 text-emerald-600 border-emerald-100',
+      lost: 'bg-rose-50 text-rose-600 border-rose-100',
+    };
     
-    // Si se mueve a demo, pedir fecha
-    if (newStatus === 'demo') {
-      const dateInput = prompt("Introduce la fecha y hora de la Demo (Ej: 2026-05-10 10:00):");
-      if (!dateInput) return; // Cancelar movimiento
-      updateData.demo_date = new Date(dateInput).toISOString();
-    }
-
-    try {
-      const { error } = await supabase
-        .from('leads')
-        .update(updateData)
-        .eq('id', leadId);
-
-      if (error) throw error;
-      
-      setLeads(leads.map(l => l.id === leadId ? { ...l, ...updateData } : l));
-    } catch (error) {
-      console.error('Error updating status:', error);
-      alert('Error al mover el lead. Asegúrate de que el formato de fecha sea correcto.');
-    }
+    return (
+      <span className={`px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider border ${styles[status] || styles.new}`}>
+        {status || 'new'}
+      </span>
+    );
   };
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[60vh] text-slate-400">
-        <Loader2 className="animate-spin mb-4" size={40} />
-        <p className="font-bold">Cargando pipeline de ventas...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-in fade-in duration-700">
+      {/* Header Actions */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 font-outfit">Pipeline de Ventas</h1>
-          <p className="text-slate-500 mt-1">Gestiona el flujo de cierre de negocios.</p>
+          <h1 className="text-3xl font-black text-slate-900 font-outfit">Gestión de Leads</h1>
+          <p className="text-slate-500 mt-1 font-medium">Visualiza y gestiona tu pipeline comercial desde una tabla centralizada.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={fetchLeads} className="p-2 text-slate-400 hover:text-rose-500 rounded-xl border border-transparent hover:border-slate-200 transition-all">
-            <RefreshCw size={20} className={refreshing ? 'animate-spin' : ''} />
+          <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-sm">
+            <Download size={18} />
+            Exportar
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-rose-500 text-white rounded-xl text-sm font-bold hover:bg-rose-600 shadow-lg shadow-rose-500/20 transition-all">
-            <KanbanIcon size={18} />
-            Nuevo Negocio
+          <button className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all active:scale-95">
+            <Plus size={18} />
+            Nuevo Lead
           </button>
         </div>
       </div>
 
-      <div className="flex gap-6 overflow-x-auto pb-6 -mx-4 px-4 scrollbar-hide">
-        {columns.map((column) => (
-          <div key={column.id} className="flex-shrink-0 w-80">
-            <div className="flex items-center gap-2 mb-4 px-2">
-              <div className={`h-2 w-2 rounded-full ${column.color}`}></div>
-              <h3 className="font-bold text-slate-700 text-sm uppercase tracking-wider">{column.title}</h3>
-              <span className="ml-auto bg-slate-200 text-slate-600 text-[10px] font-black px-2 py-0.5 rounded-full">
-                {leads.filter(l => l.status === column.id).length}
-              </span>
-            </div>
-            
-            <div className="bg-slate-100/50 p-3 rounded-2xl border border-slate-200/60 min-h-[600px] space-y-3">
-              {leads.filter(l => l.status === column.id).map((lead) => (
-                <div key={lead.id} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-rose-200 transition-all group">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <p className="text-sm font-bold text-slate-900">{lead.nombre}</p>
-                      <p className="text-xs text-slate-500">{lead.compania || 'Independiente'}</p>
-                    </div>
-                    <a href={`https://wa.me/${lead.whatsapp?.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" className="text-emerald-500 hover:bg-emerald-50 p-1.5 rounded-lg transition-colors">
-                      <MessageCircle size={16} fill="currentColor" fillOpacity={0.1} />
-                    </a>
-                  </div>
+      {/* Table Filters & Search */}
+      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center gap-4">
+        <div className="relative flex-1 w-full">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <input 
+            type="text" 
+            placeholder="Buscar por nombre, email o empresa..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-100 focus:bg-white focus:border-blue-500/30 rounded-xl text-sm transition-all outline-none"
+          />
+        </div>
+        <div className="flex items-center gap-2 w-full md:w-auto">
+          <button className="flex items-center gap-2 px-4 py-2.5 bg-slate-50 text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-100 transition-all">
+            <Filter size={18} />
+            Filtros
+          </button>
+          <button className="flex items-center gap-2 px-4 py-2.5 bg-slate-50 text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-100 transition-all">
+            <ArrowUpDown size={18} />
+            Ordenar
+          </button>
+        </div>
+      </div>
 
-                  {lead.demo_date && (
-                    <div className="flex items-center gap-2 mb-3 py-1 px-2 bg-rose-50 rounded-lg text-[10px] text-rose-600 font-bold border border-rose-100">
-                      <Calendar size={12} />
-                      {new Date(lead.demo_date).toLocaleString('es-ES', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
-                    </div>
-                  )}
-                  
-                  <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                    <div className="flex items-center gap-1.5 text-slate-900">
-                      <DollarSign size={14} className="text-slate-400" />
-                      <span className="text-xs font-black">{lead.value?.toLocaleString() || '0'}</span>
-                    </div>
-                    
-                    {column.id !== 'won' && (
-                      <button 
-                        onClick={() => {
-                          const nextIdx = columns.findIndex(c => c.id === column.id) + 1;
-                          updateLeadStatus(lead.id, columns[nextIdx].id);
-                        }}
-                        className="flex items-center gap-1 text-[10px] font-black text-rose-500 hover:bg-rose-50 px-2 py-1 rounded-lg transition-all"
-                      >
-                        AVANZAR <ChevronRight size={12} />
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))}
-              
-              <button className="w-full py-2 border-2 border-dashed border-slate-300 rounded-xl text-slate-400 text-xs font-bold hover:border-rose-300 hover:text-rose-400 transition-all">
-                + Añadir Manualmente
-              </button>
-            </div>
+      {/* Leads Table */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-24 text-slate-400">
+            <Loader2 className="animate-spin mb-4" size={40} />
+            <p className="font-bold tracking-wide">Cargando datos de Supabase...</p>
           </div>
-        ))}
+        ) : filteredLeads.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24 text-slate-400 text-center">
+            <div className="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+              <Users size={30} />
+            </div>
+            <h3 className="text-lg font-bold text-slate-900">No se encontraron leads</h3>
+            <p className="text-sm mt-1">Intenta ajustar tu búsqueda o añade uno nuevo.</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50/50 border-b border-slate-100">
+                  <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">Contacto</th>
+                  <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">Empresa</th>
+                  <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">Estado</th>
+                  <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">WhatsApp</th>
+                  <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">Fecha Registro</th>
+                  <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {filteredLeads.map((lead) => (
+                  <tr key={lead.id} className="hover:bg-slate-50/50 transition-colors group">
+                    <td className="px-6 py-5">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 bg-gradient-to-tr from-blue-500 to-blue-400 rounded-xl flex items-center justify-center text-white font-bold shadow-sm">
+                          {lead.nombre?.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <p className="text-sm font-black text-slate-900 leading-none">{lead.nombre}</p>
+                          <div className="flex items-center gap-1.5 mt-1.5 text-slate-400">
+                            <Mail size={12} />
+                            <p className="text-xs font-medium">{lead.email}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5">
+                      <div className="flex items-center gap-2 text-slate-600">
+                        <Building2 size={16} className="text-slate-400" />
+                        <p className="text-sm font-bold">{lead.compania || 'Independiente'}</p>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5">
+                      {getStatusBadge(lead.status)}
+                    </td>
+                    <td className="px-6 py-5">
+                      <a 
+                        href={`https://wa.me/${lead.whatsapp?.replace(/\D/g, '')}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold hover:bg-emerald-100 transition-colors border border-emerald-100"
+                      >
+                        <Phone size={14} />
+                        Chat
+                      </a>
+                    </td>
+                    <td className="px-6 py-5">
+                      <div className="flex items-center gap-2 text-slate-500">
+                        <Calendar size={14} />
+                        <p className="text-xs font-medium">
+                          {new Date(lead.created_at).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 text-right">
+                      <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
+                        <MoreVertical size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

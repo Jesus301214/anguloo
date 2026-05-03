@@ -58,7 +58,8 @@ const App = () => {
             whatsapp: formData.whatsapp, 
             compania: formData.compania, 
             notas: formData.notas,
-            created_at: new Date()
+            status: 'new',
+            created_at: new Date().toISOString()
           }
         ]);
 
@@ -119,15 +120,22 @@ const App = () => {
     return (
       <AdminLayout activeTab={activeAdminTab} setActiveTab={setActiveAdminTab}>
         {activeAdminTab === 'dashboard' && <Dashboard />}
+        {activeAdminTab === 'agenda' && <Calendar />}
         {activeAdminTab === 'crm' && <CRM />}
-        {activeAdminTab === 'calendar' && <Calendar />}
-        {['analytics', 'settings'].includes(activeAdminTab) && (
-          <div className="flex flex-col items-center justify-center h-[60vh] text-slate-400">
-            <div className="h-20 w-20 bg-slate-100 rounded-full flex items-center justify-center mb-4">
-              <span className="text-4xl">🏗️</span>
+        
+        {['inventario', 'finanzas', 'ajustes'].includes(activeAdminTab) && (
+          <div className="flex flex-col items-center justify-center min-h-[60vh] bg-white rounded-3xl border border-dashed border-slate-300 p-12 text-center animate-in fade-in zoom-in duration-500">
+            <div className="h-24 w-24 bg-blue-50 rounded-full flex items-center justify-center mb-6 text-5xl">
+              🏗️
             </div>
-            <h2 className="text-xl font-bold text-slate-600 uppercase tracking-widest">En construcción</h2>
-            <p className="text-sm mt-2">Esta sección estará disponible pronto.</p>
+            <h2 className="text-2xl font-black text-slate-900 font-outfit uppercase tracking-tight">Sección en Construcción</h2>
+            <p className="text-slate-500 mt-2 max-w-sm font-medium">Estamos trabajando para habilitar el módulo de <span className="text-blue-600 font-bold">{activeAdminTab}</span> muy pronto.</p>
+            <button 
+              onClick={() => setActiveAdminTab('dashboard')}
+              className="mt-8 px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10"
+            >
+              Volver al Dashboard
+            </button>
           </div>
         )}
       </AdminLayout>

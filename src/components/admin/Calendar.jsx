@@ -11,8 +11,7 @@ import {
   Filter,
   X,
   Globe,
-  Instagram,
-  Facebook,
+  ExternalLink,
   Mail,
   Phone
 } from 'lucide-react';
@@ -191,7 +190,7 @@ const Calendar = () => {
                   )}
                   {selectedMeeting.leads?.instagram && (
                     <a href={`https://instagram.com/${selectedMeeting.leads.instagram.replace('@', '')}`} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 p-3 bg-slate-800/40 rounded-xl hover:bg-slate-800 transition-all border border-slate-800 text-slate-300">
-                      <Instagram size={18} className="text-pink-500" />
+                      <ExternalLink size={18} className="text-pink-500" />
                       <span className="text-xs font-bold uppercase tracking-widest">Instagram</span>
                     </a>
                   )}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { ShieldCheck, ArrowRight, X, Phone, Mail, Globe, Instagram, Facebook } from 'lucide-react';
+import { ShieldCheck, ArrowRight, X, Phone, Mail, Globe } from 'lucide-react';
 
 const LandingPage = ({ 
   setIsModalOpen, 

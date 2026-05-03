@@ -16,7 +16,9 @@ import {
   CheckCircle2,
   Clock,
   Globe,
-  ExternalLink
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 const CRM = () => {
@@ -24,6 +26,10 @@ const CRM = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  
+  // Paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
   
   // Modales
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -83,7 +89,8 @@ const CRM = () => {
         .insert([{ ...newLead, created_at: new Date().toISOString() }]);
 
       if (error) throw error;
-      alert('Lead creado con éxito');
+      
+      // Ya no hay alert() por petición del usuario
       setIsModalOpen(false);
       setNewLead({ 
         nombre: '', 
@@ -140,7 +147,7 @@ const CRM = () => {
 
       if (leadError) throw leadError;
 
-      alert(`Reunión agendada con éxito para ${selectedLead.nombre}`);
+      // Ya no hay alert() por petición del usuario
       setIsScheduleModalOpen(false);
       setMeetingData({ fecha: '', hora: '' });
       fetchLeads();
@@ -156,6 +163,18 @@ const CRM = () => {
     (lead.email?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
     (lead.compania?.toLowerCase() || '').includes(searchTerm.toLowerCase())
   );
+
+  // Lógica de Paginación
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentLeads = filteredLeads.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredLeads.length / itemsPerPage);
+
+  const paginate = (pageNumber) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-700 bg-[#0F172A] p-8 rounded-3xl border border-slate-800/40 min-h-screen shadow-xl shadow-black/20">
@@ -177,7 +196,7 @@ const CRM = () => {
           type="text" 
           placeholder="Buscar prospectos..." 
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
           className="w-full pl-12 pr-4 py-4 bg-slate-800/40 border border-slate-700/50 focus:bg-slate-800/60 focus:border-blue-500/30 rounded-2xl text-slate-200 outline-none transition-all placeholder:text-slate-500/50 font-medium"
         />
       </div>
@@ -198,7 +217,7 @@ const CRM = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/50">
-                {filteredLeads.map((lead) => (
+                {currentLeads.map((lead) => (
                   <tr key={lead.id} className="hover:bg-white/[0.02] transition-colors group">
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-4">
@@ -250,9 +269,45 @@ const CRM = () => {
             </table>
           </div>
         )}
+
+        {/* Paginador */}
+        {!isLoading && totalPages > 1 && (
+          <div className="px-6 py-4 bg-slate-900/20 border-t border-slate-800/50 flex items-center justify-between">
+            <p className="text-xs text-slate-500 font-medium">
+              Mostrando <span className="text-slate-300">{indexOfFirstItem + 1}</span> a <span className="text-slate-300">{Math.min(indexOfLastItem, filteredLeads.length)}</span> de <span className="text-slate-300">{filteredLeads.length}</span> leads
+            </p>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={() => paginate(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-700 transition-all"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <div className="flex items-center gap-1">
+                {[...Array(totalPages)].map((_, i) => (
+                  <button
+                    key={i + 1}
+                    onClick={() => paginate(i + 1)}
+                    className={`h-8 w-8 rounded-lg text-[10px] font-black transition-all ${currentPage === i + 1 ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+              <button 
+                onClick={() => paginate(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-700 transition-all"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Modal Nuevo Lead (Vitamined) */}
+      {/* Modal Nuevo Lead */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
           <div className="bg-slate-900 border border-slate-800 w-full max-w-2xl rounded-3xl p-8 shadow-2xl relative animate-in zoom-in duration-300 max-h-[90vh] overflow-y-auto scrollbar-hide">
@@ -261,7 +316,6 @@ const CRM = () => {
             <p className="text-slate-500 text-sm mb-8 font-medium">Completa la mayor cantidad de información para preparar la reunión.</p>
             
             <form onSubmit={handleCreateLead} className="space-y-6">
-              {/* Sección: Información Básica */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Nombre Completo</label>
@@ -284,7 +338,6 @@ const CRM = () => {
                 </div>
               </div>
 
-              {/* Sección: Inteligencia del Cliente */}
               <div className="pt-4 border-t border-slate-800">
                 <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Presencia Digital e Inteligencia</h3>
                 <div className="space-y-6">

@@ -158,7 +158,7 @@ const CRM = () => {
   );
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-700 bg-slate-950 p-6 rounded-3xl border border-slate-800/50 min-h-screen">
+    <div className="space-y-6 animate-in fade-in duration-700 bg-[#0F172A] p-8 rounded-3xl border border-slate-800/40 min-h-screen shadow-xl shadow-black/20">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
@@ -178,19 +178,19 @@ const CRM = () => {
           placeholder="Buscar prospectos..." 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-12 pr-4 py-4 bg-slate-900/50 border border-slate-800 focus:border-blue-500/50 rounded-2xl text-slate-200 outline-none transition-all placeholder:text-slate-600 font-medium"
+          className="w-full pl-12 pr-4 py-4 bg-slate-800/40 border border-slate-700/50 focus:bg-slate-800/60 focus:border-blue-500/30 rounded-2xl text-slate-200 outline-none transition-all placeholder:text-slate-500/50 font-medium"
         />
       </div>
 
       {/* Leads Table */}
-      <div className="bg-slate-900/40 rounded-2xl border border-slate-800 overflow-hidden">
+      <div className="bg-slate-800/20 rounded-2xl border border-slate-800/50 overflow-hidden shadow-sm">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-24 text-slate-500"><Loader2 className="animate-spin mb-4" size={40} /><p className="font-bold tracking-widest uppercase text-[10px]">Sincronizando con Supabase...</p></div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-900/80 border-b border-slate-800">
+                <tr className="bg-slate-800/40 border-b border-slate-700/50">
                   <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">Prospecto</th>
                   <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">Compañía / Web</th>
                   <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">Pipeline / Estado</th>
@@ -265,11 +265,11 @@ const CRM = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Nombre Completo</label>
-                  <input required type="text" value={newLead.nombre} onChange={(e) => setNewLead({...newLead, nombre: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all" placeholder="Ej: Jesus Moreno" />
+                  <input required type="text" value={newLead.nombre} onChange={(e) => setNewLead({...newLead, nombre: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all" placeholder="Ej: Juan Pérez" />
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Compañía / Marca</label>
-                  <input type="text" value={newLead.compania} onChange={(e) => setNewLead({...newLead, compania: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all" placeholder="Ej: Angulo Software" />
+                  <input type="text" value={newLead.compania} onChange={(e) => setNewLead({...newLead, compania: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all" placeholder="Ej: Servicios Integrales S.A." />
                 </div>
               </div>
 

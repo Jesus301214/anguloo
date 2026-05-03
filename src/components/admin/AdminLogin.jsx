@@ -1,9 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { LogIn, Loader2, ShieldCheck } from 'lucide-react';
 
 const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  // Escuchar cambios de autenticación para redirigir si el usuario ya inició sesión
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        navigate('/admin');
+      }
+    });
+
+    // También verificar si ya hay una sesión activa al cargar el componente
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) navigate('/admin');
+    };
+    checkSession();
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);

@@ -13,32 +13,51 @@ const ProtectedRoute = ({ children }) => {
   const [isRegistering, setIsRegistering] = useState(false);
 
   useEffect(() => {
-    checkUser();
+    // 1. Verificar sesión inicial
+    const initAuth = async () => {
+      const { data: { session: initialSession } } = await supabase.auth.getSession();
+      if (initialSession) {
+        setSession(initialSession);
+        await verifyAdmin(initialSession.user.email);
+      }
+      setIsLoading(false);
+    };
+
+    initAuth();
+
+    // 2. Escuchar cambios (Login/Logout)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
+      setSession(currentSession);
+      if (currentSession) {
+        await verifyAdmin(currentSession.user.email);
+      } else {
+        setIsAdmin(false);
+        setShowPinInput(false);
+      }
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const checkUser = async () => {
+  const verifyAdmin = async (email) => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
+      const { data: adminData } = await supabase
+        .from('admin_users')
+        .select('*')
+        .eq('email', email)
+        .single();
 
-      if (session) {
-        // Verificar si el usuario ya es admin
-        const { data: adminData, error } = await supabase
-          .from('admin_users')
-          .select('*')
-          .eq('email', session.user.email)
-          .single();
-
-        if (adminData) {
-          setIsAdmin(true);
-        } else {
-          setShowPinInput(true);
-        }
+      if (adminData) {
+        setIsAdmin(true);
+        setShowPinInput(false);
+      } else {
+        setIsAdmin(false);
+        setShowPinInput(true);
       }
     } catch (error) {
-      console.error('Error checking user:', error);
-    } finally {
-      setIsLoading(false);
+      setIsAdmin(false);
+      setShowPinInput(true);
     }
   };
 

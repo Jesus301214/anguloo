@@ -12,52 +12,34 @@ const ProtectedRoute = ({ children }) => {
     let mounted = true;
 
     const checkAuth = async () => {
-      // 1. Detectar si hay un hash de sesión en la URL
-      const hasHash = window.location.hash.includes('access_token') || 
-                      window.location.hash.includes('id_token') ||
-                      window.location.hash.includes('type=recovery');
-      
-      if (hasHash) {
-        console.log("🔐 Callback detectado. Bloqueando redirección para procesar sesión...");
-        // Si hay hash, NO permitimos que isLoading pase a false prematuramente
-        await new Promise(resolve => setTimeout(resolve, 2000));
-      }
-
       try {
         const { data: { session: currentSession } } = await supabase.auth.getSession();
         
         if (!mounted) return;
 
         if (currentSession) {
-          console.log("✅ Sesión encontrada:", currentSession.user.email);
           setSession(currentSession);
           await verifyAdmin(currentSession.user.email);
-        } else if (!hasHash) {
-          // Solo si NO hay hash en la URL nos permitimos dar por fallida la carga inicial rápida
-          console.log("ℹ️ No hay sesión inicial ni hash. Esperando listener...");
+        } else {
+          // Si no hay sesión inmediata, esperamos un poco al listener por si viene de un redirect
           setTimeout(() => {
             if (mounted && !session) setIsLoading(false);
           }, 1500);
         }
       } catch (error) {
-        console.error("❌ Error en checkAuth:", error);
         if (mounted) setIsLoading(false);
       }
     };
 
     checkAuth();
 
-    // 2. Escuchar cambios (Login/Logout/Token Refreshed)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
       if (!mounted) return;
       
-      console.log("🔔 Evento Auth:", event);
-
       if (currentSession) {
         setSession(currentSession);
         await verifyAdmin(currentSession.user.email);
-      } else if (event === 'SIGNED_OUT' || (!currentSession && event === 'INITIAL_SESSION' && !hasHash)) {
-        // Solo marcar como no-admin si realmente no hay nada ocurriendo
+      } else {
         setIsAdmin(false);
         setIsLoading(false);
       }

@@ -14,7 +14,11 @@ import {
   Calendar as CalendarIcon,
   X,
   CheckCircle2,
-  Clock
+  Clock,
+  Globe,
+  Instagram,
+  Facebook,
+  ExternalLink
 } from 'lucide-react';
 
 const CRM = () => {
@@ -28,7 +32,16 @@ const CRM = () => {
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
   
   // Estados de formularios
-  const [newLead, setNewLead] = useState({ nombre: '', email: '', whatsapp: '', compania: '', status: 'new' });
+  const [newLead, setNewLead] = useState({ 
+    nombre: '', 
+    email: '', 
+    whatsapp: '', 
+    compania: '', 
+    website: '',
+    instagram: '',
+    facebook: '',
+    status: 'new' 
+  });
   const [selectedLead, setSelectedLead] = useState(null);
   const [meetingData, setMeetingData] = useState({ fecha: '', hora: '' });
   
@@ -74,7 +87,16 @@ const CRM = () => {
       if (error) throw error;
       alert('Lead creado con éxito');
       setIsModalOpen(false);
-      setNewLead({ nombre: '', email: '', whatsapp: '', compania: '', status: 'new' });
+      setNewLead({ 
+        nombre: '', 
+        email: '', 
+        whatsapp: '', 
+        compania: '', 
+        website: '',
+        instagram: '',
+        facebook: '',
+        status: 'new' 
+      });
       fetchLeads();
     } catch (error) {
       alert('Error al crear lead: ' + error.message);
@@ -103,7 +125,6 @@ const CRM = () => {
     setIsProcessing(true);
     
     try {
-      // 1. Insertar reunión
       const { error: meetingError } = await supabase
         .from('meetings')
         .insert([{
@@ -114,7 +135,6 @@ const CRM = () => {
 
       if (meetingError) throw meetingError;
 
-      // 2. Actualizar estado del lead
       const { error: leadError } = await supabase
         .from('leads')
         .update({ status: 'demo' })
@@ -125,54 +145,12 @@ const CRM = () => {
       alert(`Reunión agendada con éxito para ${selectedLead.nombre}`);
       setIsScheduleModalOpen(false);
       setMeetingData({ fecha: '', hora: '' });
-      fetchLeads(); // Recargar para ver cambio de estado
+      fetchLeads();
     } catch (error) {
       alert('Error al agendar: ' + error.message);
     } finally {
       setIsProcessing(false);
     }
-  };
-
-  const handleExportCSV = () => {
-    if (leads.length === 0) return alert('No hay datos para exportar');
-    const headers = ['Nombre', 'Email', 'Telefono', 'Empresa', 'Estado', 'Fecha'];
-    const rows = leads.map(l => [l.nombre, l.email, l.whatsapp, l.compania, l.status, new Date(l.created_at).toLocaleDateString()]);
-    const csvContent = [headers, ...rows].map(e => e.join(',')).join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', `leads_angulo_${new Date().toISOString().split('T')[0]}.csv`);
-    link.click();
-  };
-
-  const handleImportCSV = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-    setIsProcessing(true);
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      try {
-        const text = e.target.result;
-        const lines = text.split('\n').filter(line => line.trim() !== '');
-        const dataRows = lines.slice(1);
-        const newLeads = dataRows.map(line => {
-          const [nombre, email, telefono, empresa] = line.split(',').map(item => item?.trim());
-          return { nombre, email, whatsapp: telefono, compania: empresa, status: 'new', created_at: new Date().toISOString() };
-        }).filter(l => l.nombre && l.email);
-        if (newLeads.length === 0) throw new Error('No se encontraron datos válidos');
-        const { error } = await supabase.from('leads').insert(newLeads);
-        if (error) throw error;
-        alert(`¡Éxito! Se importaron ${newLeads.length} leads.`);
-        fetchLeads();
-      } catch (error) {
-        alert('Error al importar CSV: ' + error.message);
-      } finally {
-        setIsProcessing(false);
-        if (fileInputRef.current) fileInputRef.current.value = '';
-      }
-    };
-    reader.readAsText(file);
   };
 
   const filteredLeads = leads.filter(lead => 
@@ -190,9 +168,6 @@ const CRM = () => {
           <p className="text-slate-400 mt-1 font-medium">Gestión avanzada de prospectos y agendamiento.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <input type="file" ref={fileInputRef} onChange={handleImportCSV} className="hidden" accept=".csv" />
-          <button onClick={() => fileInputRef.current.click()} className="flex items-center gap-2 px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-sm font-bold text-slate-300 hover:bg-slate-800 transition-all"><Upload size={18} /> Importar</button>
-          <button onClick={handleExportCSV} className="flex items-center gap-2 px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-sm font-bold text-slate-300 hover:bg-slate-800 transition-all"><Download size={18} /> Exportar</button>
           <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all"><Plus size={18} /> Nuevo Lead</button>
         </div>
       </div>
@@ -219,7 +194,7 @@ const CRM = () => {
               <thead>
                 <tr className="bg-slate-900/80 border-b border-slate-800">
                   <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">Prospecto</th>
-                  <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">Compañía</th>
+                  <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">Compañía / Web</th>
                   <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">Pipeline / Estado</th>
                   <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest text-right">Gestión Rápida</th>
                 </tr>
@@ -230,10 +205,26 @@ const CRM = () => {
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-4">
                         <div className="h-11 w-11 bg-slate-800 rounded-2xl flex items-center justify-center text-blue-400 font-bold border border-slate-700/50 shadow-inner">{lead.nombre?.charAt(0).toUpperCase()}</div>
-                        <div><p className="text-sm font-black text-slate-100">{lead.nombre}</p><p className="text-xs text-slate-500 mt-1">{lead.email}</p></div>
+                        <div>
+                          <p className="text-sm font-black text-slate-100">{lead.nombre}</p>
+                          <p className="text-xs text-slate-500 mt-1">{lead.email}</p>
+                        </div>
                       </div>
                     </td>
-                    <td className="px-6 py-5"><div className="flex items-center gap-2.5 text-slate-400"><Building2 size={16} className="text-slate-600" /><span className="text-sm font-bold">{lead.compania || 'Independiente'}</span></div></td>
+                    <td className="px-6 py-5">
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-2.5 text-slate-400">
+                          <Building2 size={14} className="text-slate-600" />
+                          <span className="text-sm font-bold">{lead.compania || 'Independiente'}</span>
+                        </div>
+                        {lead.website && (
+                          <a href={lead.website.startsWith('http') ? lead.website : `https://${lead.website}`} target="_blank" rel="noreferrer" className="flex items-center gap-2.5 text-blue-500 hover:text-blue-400 text-xs font-medium">
+                            <Globe size={12} />
+                            {lead.website.replace(/^https?:\/\//, '')}
+                          </a>
+                        )}
+                      </div>
+                    </td>
                     <td className="px-6 py-5">
                       <select 
                         value={lead.status || 'new'}
@@ -245,14 +236,19 @@ const CRM = () => {
                     </td>
                     <td className="px-6 py-5">
                       <div className="flex items-center justify-end gap-2">
-                        <a href={`https://wa.me/${lead.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="p-2.5 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20" title="WhatsApp"><MessageCircle size={18} /></a>
-                        <a href={`mailto:${lead.email}`} className="p-2.5 bg-blue-500/10 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition-all border border-blue-500/20" title="Email"><Mail size={18} /></a>
+                        {lead.instagram && (
+                          <a href={`https://instagram.com/${lead.instagram.replace('@', '')}`} target="_blank" rel="noreferrer" className="p-2 bg-pink-500/10 text-pink-500 rounded-xl hover:bg-pink-500 hover:text-white transition-all border border-pink-500/20" title="Instagram"><Instagram size={16} /></a>
+                        )}
+                        {lead.facebook && (
+                          <a href={lead.facebook.startsWith('http') ? lead.facebook : `https://facebook.com/${lead.facebook}`} target="_blank" rel="noreferrer" className="p-2 bg-blue-500/10 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition-all border border-blue-500/20" title="Facebook"><Facebook size={16} /></a>
+                        )}
+                        <a href={`https://wa.me/${lead.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20" title="WhatsApp"><MessageCircle size={16} /></a>
                         <button 
                           onClick={() => { setSelectedLead(lead); setIsScheduleModalOpen(true); }}
-                          className="p-2.5 bg-purple-500/10 text-purple-500 rounded-xl hover:bg-purple-500 hover:text-white transition-all border border-purple-500/20" 
-                          title="Agendar Reunión"
+                          className="p-2 bg-purple-500/10 text-purple-500 rounded-xl hover:bg-purple-500 hover:text-white transition-all border border-purple-500/20" 
+                          title="Agendar"
                         >
-                          <CalendarIcon size={18} />
+                          <CalendarIcon size={16} />
                         </button>
                       </div>
                     </td>
@@ -264,29 +260,68 @@ const CRM = () => {
         )}
       </div>
 
-      {/* Modal Nuevo Lead */}
+      {/* Modal Nuevo Lead (Vitamined) */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-          <div className="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-8 shadow-2xl relative animate-in zoom-in duration-300">
+          <div className="bg-slate-900 border border-slate-800 w-full max-w-2xl rounded-3xl p-8 shadow-2xl relative animate-in zoom-in duration-300 max-h-[90vh] overflow-y-auto scrollbar-hide">
             <button onClick={() => setIsModalOpen(false)} className="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors"><X size={24} /></button>
-            <h2 className="text-2xl font-black text-white mb-6 font-outfit">Crear Nuevo Lead</h2>
-            <form onSubmit={handleCreateLead} className="space-y-4">
-              <div><label className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5 block">Nombre</label>
-                <input required type="text" value={newLead.nombre} onChange={(e) => setNewLead({...newLead, nombre: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 transition-all" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div><label className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5 block">Email</label>
-                  <input required type="email" value={newLead.email} onChange={(e) => setNewLead({...newLead, email: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 transition-all" />
+            <h2 className="text-2xl font-black text-white mb-2 font-outfit">Nuevo Lead Estratégico</h2>
+            <p className="text-slate-500 text-sm mb-8 font-medium">Completa la mayor cantidad de información para preparar la reunión.</p>
+            
+            <form onSubmit={handleCreateLead} className="space-y-6">
+              {/* Sección: Información Básica */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Nombre Completo</label>
+                  <input required type="text" value={newLead.nombre} onChange={(e) => setNewLead({...newLead, nombre: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all" placeholder="Ej: Jesus Moreno" />
                 </div>
-                <div><label className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5 block">WhatsApp</label>
-                  <input required type="tel" value={newLead.whatsapp} onChange={(e) => setNewLead({...newLead, whatsapp: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 transition-all" />
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Compañía / Marca</label>
+                  <input type="text" value={newLead.compania} onChange={(e) => setNewLead({...newLead, compania: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all" placeholder="Ej: Angulo Software" />
                 </div>
               </div>
-              <div><label className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5 block">Compañía</label>
-                <input type="text" value={newLead.compania} onChange={(e) => setNewLead({...newLead, compania: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 transition-all" />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Email Corporativo</label>
+                  <input required type="email" value={newLead.email} onChange={(e) => setNewLead({...newLead, email: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all" placeholder="ejemplo@empresa.com" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">WhatsApp de Contacto</label>
+                  <input required type="tel" value={newLead.whatsapp} onChange={(e) => setNewLead({...newLead, whatsapp: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all" placeholder="+58..." />
+                </div>
               </div>
-              <button disabled={isProcessing} type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-600/20 transition-all flex items-center justify-center gap-2 mt-4">
-                {isProcessing ? <Loader2 className="animate-spin" /> : <CheckCircle2 size={20} />} Crear Lead
+
+              {/* Sección: Inteligencia del Cliente */}
+              <div className="pt-4 border-t border-slate-800">
+                <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Presencia Digital e Inteligencia</h3>
+                <div className="space-y-6">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1 flex items-center gap-2">
+                      <Globe size={12} className="text-blue-500" /> Sitio Web Oficial
+                    </label>
+                    <input type="text" value={newLead.website} onChange={(e) => setNewLead({...newLead, website: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all" placeholder="www.ejemplo.com" />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1 flex items-center gap-2">
+                        <Instagram size={12} className="text-pink-500" /> Instagram (@usuario)
+                      </label>
+                      <input type="text" value={newLead.instagram} onChange={(e) => setNewLead({...newLead, instagram: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all" placeholder="@usuario" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1 flex items-center gap-2">
+                        <Facebook size={12} className="text-blue-600" /> Perfil / Fanpage Facebook
+                      </label>
+                      <input type="text" value={newLead.facebook} onChange={(e) => setNewLead({...newLead, facebook: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all" placeholder="facebook.com/pagina" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button disabled={isProcessing} type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-lg shadow-blue-600/20 transition-all flex items-center justify-center gap-2 mt-4 uppercase tracking-widest text-xs">
+                {isProcessing ? <Loader2 className="animate-spin" /> : <CheckCircle2 size={18} />} Crear Lead e Iniciar Pipeline
               </button>
             </form>
           </div>
@@ -301,38 +336,22 @@ const CRM = () => {
             <div className="flex items-center gap-4 mb-6">
               <div className="h-12 w-12 bg-purple-500/20 rounded-2xl flex items-center justify-center text-purple-400"><CalendarIcon size={24} /></div>
               <div>
-                <h2 className="text-xl font-black text-white font-outfit">Agendar Reunión</h2>
-                <p className="text-xs text-slate-400">Prospecto: <span className="text-purple-400 font-bold">{selectedLead.nombre}</span></p>
+                <h2 className="text-xl font-black text-white font-outfit">Agendar Demo</h2>
+                <p className="text-xs text-slate-400">Preparando sesión para: <span className="text-purple-400 font-bold">{selectedLead.nombre}</span></p>
               </div>
             </div>
             
             <form onSubmit={handleScheduleMeeting} className="space-y-4">
               <div>
                 <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5 block">Fecha de la Reunión</label>
-                <input 
-                  required 
-                  type="date" 
-                  value={meetingData.fecha} 
-                  onChange={(e) => setMeetingData({...meetingData, fecha: e.target.value})} 
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-purple-500/50 transition-all" 
-                />
+                <input required type="date" value={meetingData.fecha} onChange={(e) => setMeetingData({...meetingData, fecha: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-purple-500/50 transition-all" />
               </div>
               <div>
                 <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5 block">Hora Sugerida</label>
-                <input 
-                  required 
-                  type="time" 
-                  value={meetingData.hora} 
-                  onChange={(e) => setMeetingData({...meetingData, hora: e.target.value})} 
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-purple-500/50 transition-all" 
-                />
+                <input required type="time" value={meetingData.hora} onChange={(e) => setMeetingData({...meetingData, hora: e.target.value})} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-purple-500/50 transition-all" />
               </div>
-              <button 
-                disabled={isProcessing} 
-                type="submit" 
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-purple-600/20 transition-all flex items-center justify-center gap-2 mt-4"
-              >
-                {isProcessing ? <Loader2 className="animate-spin" /> : <Clock size={20} />} Confirmar y Agendar
+              <button disabled={isProcessing} type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-black py-4 rounded-xl shadow-lg shadow-purple-600/20 transition-all flex items-center justify-center gap-2 mt-4 uppercase tracking-widest text-xs">
+                {isProcessing ? <Loader2 className="animate-spin" /> : <Clock size={18} />} Confirmar y Sincronizar Agenda
               </button>
             </form>
           </div>

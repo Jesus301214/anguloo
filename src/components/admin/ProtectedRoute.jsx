@@ -9,49 +9,65 @@ const ProtectedRoute = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // 1. Verificar sesión inicial e hidratar estado
-    const initAuth = async () => {
-      const { data: { session: initialSession } } = await supabase.auth.getSession();
-      if (initialSession) {
-        setSession(initialSession);
-        await verifyAdmin(initialSession.user.email);
-      } else {
-        setIsLoading(false);
+    let mounted = true;
+
+    const checkAuth = async () => {
+      // 1. Dar un pequeño margen para que Supabase procese el hash de la URL si existe
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      try {
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        
+        if (!mounted) return;
+
+        if (currentSession) {
+          setSession(currentSession);
+          await verifyAdmin(currentSession.user.email);
+        } else {
+          // Si no hay sesión, esperamos un poco más al listener por si acaso
+          setTimeout(() => {
+            if (mounted && !session) setIsLoading(false);
+          }, 1000);
+        }
+      } catch (error) {
+        if (mounted) setIsLoading(false);
       }
     };
 
-    initAuth();
+    checkAuth();
 
-    // 2. Suscribirse a cambios de autenticación
+    // 2. Suscribirse a cambios (Login/Logout)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
-      setSession(currentSession);
+      if (!mounted) return;
+      
       if (currentSession) {
+        setSession(currentSession);
         await verifyAdmin(currentSession.user.email);
-      } else {
+      } else if (event === 'SIGNED_OUT') {
+        setSession(null);
         setIsAdmin(false);
         setIsLoading(false);
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const verifyAdmin = async (email) => {
     try {
-      // Consulta estricta a la tabla de lista blanca
-      const { data: adminData, error } = await supabase
+      // Búsqueda insensible a mayúsculas/minúsculas para evitar errores de tipeo
+      const { data: adminData } = await supabase
         .from('admin_users')
         .select('*')
-        .eq('email', email)
+        .ilike('email', email.trim())
         .single();
 
-      if (adminData && !error) {
-        setIsAdmin(true);
-      } else {
-        setIsAdmin(false);
-      }
+      setIsAdmin(!!adminData);
     } catch (err) {
-      console.error('Error verificando privilegios:', err);
+      console.error('Error en verifyAdmin:', err);
       setIsAdmin(false);
     } finally {
       setIsLoading(false);

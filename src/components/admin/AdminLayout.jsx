@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { 
   LayoutDashboard, 
@@ -16,14 +17,24 @@ import {
   X,
   MessageCircle,
   Clock,
-  ArrowRight
+  ArrowRight,
+  Radar
 } from 'lucide-react';
 
-const AdminLayout = ({ children, activeTab, setActiveTab }) => {
+const AdminLayout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const activeTab = location.pathname.split('/').pop() === 'admin' ? 'dashboard' : location.pathname.split('/').pop();
+
+  const handleTabChange = (id) => {
+    if (id === 'dashboard') navigate('/admin');
+    else navigate(`/admin/${id}`);
+  };
 
   // Solicitar permiso para notificaciones de navegador
   useEffect(() => {
@@ -90,6 +101,7 @@ const AdminLayout = ({ children, activeTab, setActiveTab }) => {
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'agenda', label: 'Agenda', icon: Calendar },
     { id: 'crm', label: 'CRM / Leads', icon: Users },
+    { id: 'radar', label: 'LeadRadar', icon: Radar, badge: 'NUEVO' },
     { id: 'inventario', label: 'Inventario', icon: Package },
     { id: 'finanzas', label: 'Finanzas', icon: Wallet },
     { id: 'ajustes', label: 'Ajustes', icon: Settings },
@@ -124,7 +136,7 @@ const AdminLayout = ({ children, activeTab, setActiveTab }) => {
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => handleTabChange(item.id)}
                 className={`w-full group flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 relative ${
                   isActive 
                     ? 'bg-blue-600/10 text-blue-500 shadow-[inset_0_0_0_1px_rgba(59,130,246,0.2)]' 
@@ -137,9 +149,16 @@ const AdminLayout = ({ children, activeTab, setActiveTab }) => {
                 />
                 
                 {isSidebarOpen && (
-                  <span className="font-bold text-sm tracking-wide">
-                    {item.label}
-                  </span>
+                  <div className="flex items-center justify-between flex-1">
+                    <span className="font-bold text-sm tracking-wide">
+                      {item.label}
+                    </span>
+                    {item.badge && (
+                      <span className="bg-blue-600 text-[8px] text-white px-1.5 py-0.5 rounded-full font-black animate-pulse">
+                        {item.badge}
+                      </span>
+                    )}
+                  </div>
                 )}
 
                 {isActive && isSidebarOpen && (

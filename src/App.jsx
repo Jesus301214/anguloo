@@ -8,6 +8,7 @@ import CRM from './components/admin/CRM';
 import Calendar from './components/admin/Calendar';
 import AdminLogin from './components/admin/AdminLogin';
 import ProtectedRoute from './components/admin/ProtectedRoute';
+import LeadRadar from './components/admin/LeadRadar';
 
 // Assets
 const heroImage = '/Gemini_Generated_Image_cb7f6xcb7f6xcb7f.png';
@@ -52,6 +53,7 @@ const App = () => {
                   <Route path="/" element={<Dashboard />} />
                   <Route path="agenda" element={<Calendar />} />
                   <Route path="crm" element={<CRM />} />
+                  <Route path="radar" element={<LeadRadar />} />
                   <Route path="*" element={<Navigate to="/admin" replace />} />
                 </Routes>
               </AdminLayout>

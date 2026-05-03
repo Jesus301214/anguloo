@@ -148,18 +148,161 @@ const LandingPage = ({
         </div>
       </section>
 
-      {/* Resto de Secciones (Problemas, Soluciones, Metodología, Cultura, CTA) - Simplificado por espacio pero manteniendo la lógica */}
-      <section id="soluciones" className="py-24 bg-slate-950 border-t border-slate-900">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-            <h2 className="text-4xl font-black text-white mb-12">Nuestra Propuesta de Valor</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-                {modules.slice(0, 3).map((m, i) => (
-                    <div key={i} className="bg-slate-900/50 p-8 rounded-3xl border border-slate-800 hover:border-blue-500/50 transition-all">
-                        <h3 className="text-xl font-bold text-white mb-2">{m.title}</h3>
-                        <p className="text-slate-400">{m.sub}</p>
-                    </div>
-                ))}
+      {/* 2. Sección de Problemas (Diagnóstico) */}
+      <section className="py-24 bg-slate-950 px-6 relative overflow-hidden">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center mb-20">
+            <h2 className="text-3xl md:text-5xl font-black text-white font-outfit mb-6">¿Tu empresa se siente así?</h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">La falta de sistemas no solo quita tiempo, quita vida. Identifica tu estado actual.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Estado 1 */}
+            <div className="group relative overflow-hidden rounded-[2.5rem] bg-slate-900/50 border border-slate-800 p-8 transition-all hover:bg-slate-900">
+              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                <X size={120} className="text-rose-500" />
+              </div>
+              <div className="relative z-10">
+                <div className="mb-6 h-48 overflow-hidden rounded-2xl">
+                  <img src={sadImage} alt="Operación Caótica" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+                </div>
+                <h3 className="text-2xl font-black text-white mb-4">Operación Caótica</h3>
+                <ul className="space-y-3 text-slate-400 font-medium">
+                  <li className="flex items-start gap-3"><span className="text-rose-500">✕</span> Agendas en papel o Excel desactualizados.</li>
+                  <li className="flex items-start gap-3"><span className="text-rose-500">✕</span> No sabes cuánto dinero entró realmente hoy.</li>
+                  <li className="flex items-start gap-3"><span className="text-rose-500">✕</span> El equipo no sabe sus comisiones ni horarios.</li>
+                </ul>
+              </div>
             </div>
+
+            {/* Estado 2 */}
+            <div className="group relative overflow-hidden rounded-[2.5rem] bg-rose-500/5 border border-rose-500/20 p-8 transition-all hover:bg-rose-500/10">
+              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity text-rose-500">
+                <ShieldCheck size={120} />
+              </div>
+              <div className="relative z-10">
+                <div className="mb-6 h-48 overflow-hidden rounded-2xl">
+                  <img src={happyImage} alt="Operación bajo Control" className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" />
+                </div>
+                <h3 className="text-2xl font-black text-white mb-4">Control Total con ANGULO</h3>
+                <ul className="space-y-3 text-slate-300 font-medium">
+                  <li className="flex items-start gap-3"><span className="text-rose-500">✓</span> Reservas online sincronizadas 24/7.</li>
+                  <li className="flex items-start gap-3"><span className="text-rose-500">✓</span> Dashboard financiero en tiempo real.</li>
+                  <li className="flex items-start gap-3"><span className="text-rose-500">✓</span> Notificaciones automáticas a clientes y staff.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Soluciones (El Sistema) */}
+      <section id="soluciones" className="py-24 bg-slate-900/30 px-6">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-20">
+            <div className="max-w-2xl">
+              <h2 className="text-4xl md:text-6xl font-black text-white font-outfit mb-6">Un ecosistema diseñado para <span className="text-rose-500">vencer el caos.</span></h2>
+              <p className="text-slate-400 text-xl">Módulos integrados que hablan el mismo lenguaje: el de tu negocio.</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+            {modules.map((m, i) => (
+              <div key={i} className="group relative bg-slate-950 border border-slate-800 p-8 rounded-[2rem] hover:border-rose-500/50 transition-all duration-300 hover:-translate-y-2">
+                <div className="mb-6 text-rose-500 group-hover:scale-110 transition-transform">
+                  <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={m.icon} />
+                  </svg>
+                </div>
+                <p className="text-[10px] font-black tracking-[0.2em] text-slate-500 mb-1">{m.sub}</p>
+                <h3 className="text-xl font-bold text-white">{m.title}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Metodología */}
+      <section id="metodologia" className="py-24 bg-slate-950 px-6 relative overflow-hidden">
+        <div className="mx-auto max-w-7xl relative z-10">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-4xl md:text-6xl font-black text-white font-outfit mb-8">Nuestra Metodología: <br/><span className="text-blue-500 italic">Claridad Radical</span></h2>
+              <div className="space-y-12">
+                <div className="flex gap-6">
+                  <div className="h-12 w-12 rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-500 font-black shrink-0">1</div>
+                  <div>
+                    <h4 className="text-xl font-bold text-white mb-2">Inmersión Operativa</h4>
+                    <p className="text-slate-400">No instalamos un software y nos vamos. Entendemos cómo vendes, cómo cobras y cómo gastas.</p>
+                  </div>
+                </div>
+                <div className="flex gap-6">
+                  <div className="h-12 w-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-500 font-black shrink-0">2</div>
+                  <div>
+                    <h4 className="text-xl font-bold text-white mb-2">Simplicidad Crítica</h4>
+                    <p className="text-slate-400">Eliminamos pasos innecesarios. Automatizamos lo repetitivo para que tu equipo se enfoque en el cliente.</p>
+                  </div>
+                </div>
+                <div className="flex gap-6">
+                  <div className="h-12 w-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 font-black shrink-0">3</div>
+                  <div>
+                    <h4 className="text-xl font-bold text-white mb-2">Escalabilidad Sin Caos</h4>
+                    <p className="text-slate-400">Preparamos tus sistemas para que cuando crezcas, el soporte sea sólido y no una carga.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full"></div>
+              <img src={teamImage} alt="Team" className="relative rounded-[3rem] border border-slate-800 shadow-2xl" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Valores / Nosotros */}
+      <section id="nosotros" className="py-24 bg-slate-900/20 px-6 border-t border-slate-900">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center mb-20">
+            <h2 className="text-3xl md:text-5xl font-black text-white font-outfit mb-6">Lo que nos define</h2>
+            <p className="text-slate-400 text-lg">Nuestra brújula interna para construir soluciones de clase mundial.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {values.map((v, i) => (
+              <div key={i} className="p-8 bg-slate-950 border border-slate-800 rounded-3xl hover:border-slate-700 transition-all group">
+                <div className="mb-6 text-rose-500">
+                  <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={v.icon} />
+                  </svg>
+                </div>
+                <h4 className="text-white font-black mb-1">{v.title}</h4>
+                <p className="text-[10px] font-bold text-rose-500 uppercase tracking-widest mb-3">{v.sub}</p>
+                <p className="text-slate-400 text-sm leading-relaxed">{v.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. CTA Final */}
+      <section className="py-24 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent to-rose-500/10" />
+        <div className="mx-auto max-w-5xl bg-gradient-to-tr from-slate-900 to-slate-800 rounded-[3rem] p-12 md:p-24 text-center border border-slate-700 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-4">
+             <div className="bg-rose-500 text-white text-[10px] font-black px-3 py-1 rounded-full animate-pulse uppercase tracking-widest">Cupos Limitados</div>
+          </div>
+          <h2 className="text-4xl md:text-7xl font-black text-white font-outfit mb-8 leading-[1.1]">¿Listo para llevar tu empresa al <span className="text-rose-500 underline decoration-rose-500/30 underline-offset-8">siguiente nivel?</span></h2>
+          <p className="text-slate-300 text-xl mb-12 max-w-2xl mx-auto">Agenda hoy una consultoría de diagnóstico gratuita y descubre el potencial real de tu operación.</p>
+          <div className="flex flex-col md:flex-row justify-center gap-6">
+            <button onClick={() => setIsModalOpen(true)} className="bg-rose-500 hover:bg-rose-600 text-white font-black px-12 py-5 rounded-2xl text-lg shadow-xl shadow-rose-500/20 transition-all transform hover:-translate-y-1">
+              Agendar Consultoría Gratuita
+            </button>
+            <a href="https://wa.me/5511999999999" target="_blank" rel="noreferrer" className="bg-slate-950 hover:bg-slate-900 text-white border border-slate-700 font-black px-12 py-5 rounded-2xl text-lg transition-all flex items-center justify-center gap-3">
+              <Phone size={24} className="text-rose-500" />
+              Hablar por WhatsApp
+            </a>
+          </div>
         </div>
       </section>
 

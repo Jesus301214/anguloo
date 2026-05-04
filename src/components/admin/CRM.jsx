@@ -66,11 +66,8 @@ const CRM = () => {
   const fetchLeads = async () => {
     setIsLoading(true);
     try {
-      // Auto-purge: silently try to delete old trash (won't fail if deleted_at doesn't exist)
-      try {
-        const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-        await supabase.from('leads').delete().eq('status', 'trash').lt('deleted_at', thirtyDaysAgo);
-      } catch (_) { /* column may not exist yet */ }
+      // Auto-purge: try to delete old trash (silently ignore if deleted_at column missing)
+      await supabase.from('leads').delete().eq('status', 'trash').lt('deleted_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
 
       const { data, error } = await supabase
         .from('leads')
@@ -81,26 +78,27 @@ const CRM = () => {
       setLeads(data || []);
     } catch (error) {
       console.error('Error fetching leads:', error.message);
+      // Fallback: fetch without auto-purge if deleted_at doesn't exist
+      const { data } = await supabase.from('leads').select('*').order('created_at', { ascending: false });
+      setLeads(data || []);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleTrashLead = async (id) => {
-    try {
-      // Try soft delete with deleted_at
-      await supabase.from('leads').update({ status: 'trash', deleted_at: new Date().toISOString() }).eq('id', id);
-    } catch (_) {
-      // Fallback: just change status if deleted_at column doesn't exist
+    // Try with deleted_at first
+    const { error } = await supabase.from('leads').update({ status: 'trash', deleted_at: new Date().toISOString() }).eq('id', id);
+    if (error) {
+      // Fallback: update only status
       await supabase.from('leads').update({ status: 'trash' }).eq('id', id);
     }
     fetchLeads();
   };
 
   const handleRestoreLead = async (id) => {
-    try {
-      await supabase.from('leads').update({ status: 'new', deleted_at: null }).eq('id', id);
-    } catch (_) {
+    const { error } = await supabase.from('leads').update({ status: 'new', deleted_at: null }).eq('id', id);
+    if (error) {
       await supabase.from('leads').update({ status: 'new' }).eq('id', id);
     }
     fetchLeads();

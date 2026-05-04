@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { ShieldCheck, ArrowRight, X, Phone, Mail, Globe, MessageCircle, BarChart, Zap, Layers, Smartphone, LayoutGrid, Check, CheckCircle, Shield } from 'lucide-react';
+import { ShieldCheck, ArrowRight, X, Phone, Mail, Globe, MessageCircle, BarChart, Zap, Layers, Smartphone, LayoutGrid, Check, CheckCircle, Shield, ChevronDown, Rocket, Activity, Users, CreditCard, Settings } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
 const SpotlightCard = ({ children, className = "" }) => {
@@ -33,6 +33,42 @@ const SpotlightCard = ({ children, className = "" }) => {
   );
 };
 
+const NavItem = ({ label, items }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="relative" onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
+      <button className="flex items-center gap-1.5 text-sm font-semibold text-slate-400 hover:text-white transition-all py-2 group">
+        {label}
+        <ChevronDown size={14} className={`transition-transform duration-300 group-hover:text-rose-500 ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            className="absolute top-full -left-4 mt-2 w-72 bg-slate-900/90 border border-slate-800 rounded-3xl p-4 shadow-2xl backdrop-blur-2xl z-[100]"
+          >
+            <div className="grid gap-2">
+              {items.map((item, idx) => (
+                <a key={idx} href={item.href} className="flex items-center gap-4 p-3 rounded-2xl hover:bg-white/5 transition-all group/item">
+                  <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 group-hover/item:text-rose-500 group-hover/item:bg-rose-500/10 transition-all">
+                    {item.icon}
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold text-white group-hover/item:text-rose-500 transition-colors">{item.title}</div>
+                    <div className="text-[11px] text-slate-500 leading-tight mt-0.5">{item.desc}</div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const LandingPage = ({ 
   setIsModalOpen, 
   isModalOpen,
@@ -55,6 +91,24 @@ const LandingPage = ({
   });
 
   const whatsappLink = "https://wa.me/584249313359";
+
+  const menuData = {
+    ecosistema: [
+      { title: "Agenda Pro", desc: "Gestión inteligente de citas y personal.", icon: <LayoutGrid size={18} />, href: "#soluciones" },
+      { title: "CRM & Leads", desc: "Control total de tus clientes y prospectos.", icon: <Users size={18} />, href: "#soluciones" },
+      { title: "BI Analytics", desc: "Dashboards en tiempo real de tu rentabilidad.", icon: <BarChart size={18} />, href: "#soluciones" },
+      { title: "Finanzas", desc: "Control de cajas, pagos y comisiones.", icon: <CreditCard size={18} />, href: "#soluciones" },
+    ],
+    soluciones: [
+      { title: "Para Spas & Centros", desc: "Optimización operativa para el sector belleza.", icon: <Zap size={18} />, href: "#soluciones" },
+      { title: "Para Consultorios", desc: "Orden y claridad para servicios profesionales.", icon: <Activity size={18} />, href: "#soluciones" },
+      { title: "Multi-Sede", desc: "Escala tu negocio a múltiples ubicaciones.", icon: <Layers size={18} />, href: "#soluciones" },
+    ],
+    compania: [
+      { title: "Nuestra Misión", desc: "Por qué hacemos lo que hacemos.", icon: <Rocket size={18} />, href: "#nosotros" },
+      { title: "Metodología", desc: "El sistema de claridad radical.", icon: <Settings size={18} />, href: "#metodologia" },
+    ]
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -143,14 +197,15 @@ const LandingPage = ({
             </div>
           </div>
           
-          <div className="hidden items-center gap-8 md:flex">
-            <a href="#comparativa" className="text-sm font-medium text-slate-400 hover:text-rose-500 transition-colors">Diagnóstico</a>
-            <a href="#soluciones" className="text-sm font-medium text-slate-400 hover:text-rose-500 transition-colors">Ecosistema</a>
-            <a href={whatsappLink} target="_blank" className="text-sm font-medium text-slate-400 hover:text-rose-500 transition-colors">WhatsApp</a>
+          <div className="hidden items-center gap-10 md:flex">
+            <NavItem label="Ecosistema" items={menuData.ecosistema} />
+            <NavItem label="Soluciones" items={menuData.soluciones} />
+            <NavItem label="Compañía" items={menuData.compania} />
             
-            <a href="/login-admin" className="p-2 text-slate-500 hover:text-rose-500 hover:bg-rose-500/10 rounded-full transition-all flex items-center gap-2 border border-slate-800">
-              <ShieldCheck size={20} />
-              <span className="text-xs font-bold">Admin</span>
+            <div className="h-6 w-px bg-slate-800 mx-2" />
+            
+            <a href="/login-admin" className="text-sm font-semibold text-slate-500 hover:text-rose-500 transition-colors">
+              Admin
             </a>
 
             <button onClick={() => setIsModalOpen(true)} className="rounded-full bg-rose-500 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-rose-500/20 hover:bg-rose-600 transition-all active:scale-95">
@@ -162,6 +217,37 @@ const LandingPage = ({
             {isMenuOpen ? <X size={24} /> : <div className="space-y-1"><div className="w-6 h-0.5 bg-white"></div><div className="w-6 h-0.5 bg-white"></div><div className="w-6 h-0.5 bg-white"></div></div>}
           </button>
         </div>
+
+        {/* Menú Móvil */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-slate-950 border-t border-slate-900 px-6 py-8 space-y-8 overflow-y-auto max-h-[80vh]"
+            >
+              <div className="space-y-4">
+                <p className="text-[10px] font-black text-rose-500 uppercase tracking-widest">Ecosistema</p>
+                {menuData.ecosistema.map((m, idx) => (
+                  <a key={idx} href={m.href} onClick={() => setIsMenuOpen(false)} className="block text-xl font-bold text-white">{m.title}</a>
+                ))}
+              </div>
+              <div className="space-y-4">
+                <p className="text-[10px] font-black text-rose-500 uppercase tracking-widest">Soluciones</p>
+                {menuData.soluciones.map((m, idx) => (
+                  <a key={idx} href={m.href} onClick={() => setIsMenuOpen(false)} className="block text-xl font-bold text-white">{m.title}</a>
+                ))}
+              </div>
+              <div className="pt-4 border-t border-slate-900 space-y-6">
+                <a href="/login-admin" className="block text-lg font-bold text-slate-400">Panel Admin</a>
+                <button onClick={() => { setIsModalOpen(true); setIsMenuOpen(false); }} className="w-full bg-rose-500 py-4 rounded-2xl font-black text-white shadow-xl shadow-rose-500/20">
+                  Agenda una Demo
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* Hero Section */}
@@ -324,6 +410,75 @@ const LandingPage = ({
               </motion.div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* 4. Metodología */}
+      <section id="metodologia" className="py-24 bg-slate-950 px-6 relative overflow-hidden">
+        <div className="mx-auto max-w-7xl relative z-10">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-4xl md:text-6xl font-black text-white font-outfit mb-8">Nuestra Metodología: <br/><span className="text-rose-500 italic">Claridad Radical</span></h2>
+              <div className="space-y-12">
+                {[
+                  { id: 1, title: "Inmersión Operativa", color: "rose", desc: "No instalamos un software y nos vamos. Entendemos cómo vendes, cómo cobras y cómo gastas." },
+                  { id: 2, title: "Simplicidad Crítica", color: "blue", desc: "Eliminamos pasos innecesarios. Automatizamos lo repetitivo para que tu equipo se enfoque en el cliente." },
+                  { id: 3, title: "Escalabilidad Sin Caos", color: "emerald", desc: "Preparamos tus sistemas para que cuando crezcas, el soporte sea sólido y no una carga." }
+                ].map((step) => (
+                  <div key={step.id} className="flex gap-6 group">
+                    <div className={`h-12 w-12 rounded-full bg-${step.color}-500/10 border border-${step.color}-500/30 flex items-center justify-center text-${step.color}-500 font-black shrink-0 group-hover:scale-110 transition-transform`}>
+                      {step.id}
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold text-white mb-2">{step.title}</h4>
+                      <p className="text-slate-400">{step.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="absolute inset-0 bg-rose-500/10 blur-3xl rounded-full animate-pulse"></div>
+              <img src={teamImage} alt="Team" className="relative rounded-[3rem] border border-slate-800 shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000" />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Valores / Nosotros */}
+      <section id="nosotros" className="py-24 bg-slate-900/20 px-6 border-t border-slate-900">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center mb-20">
+            <h2 className="text-3xl md:text-5xl font-black text-white font-outfit mb-6">Lo que nos define</h2>
+            <p className="text-slate-400 text-lg">Nuestra brújula interna para construir soluciones de clase mundial.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { title: "Foco en el objetivo", sub: "¿Para qué hacemos esto?", desc: "Todo parte por entender qué se quiere lograr. El objetivo ordena la conversación.", icon: <Zap size={24} /> },
+              { title: "Claridad para decidir", sub: "Menos complejidad, mejores decisiones", desc: "La gestión debe entregar claridad, no complejidad. Ordenamos lo relevante.", icon: <Layers size={24} /> },
+              { title: "Excelencia real", sub: "Soluciones de tu operación, no genéricas", desc: "No somos genéricos. Soluciones construidas desde la operación real.", icon: <Shield size={24} /> },
+              { title: "Impacto positivo", sub: "Crecer debe mejorar tu vida, no complicarla", desc: "El crecimiento debe mejorar la vida: menos estrés, más orden.", icon: <Rocket size={24} /> }
+            ].map((v, i) => (
+              <div key={i} className="p-8 bg-slate-950 border border-slate-800 rounded-3xl hover:border-slate-700 transition-all group">
+                <div className="mb-6 text-rose-500 group-hover:scale-110 transition-transform">
+                  {v.icon}
+                </div>
+                <h4 className="text-white font-black mb-1">{v.title}</h4>
+                <p className="text-[10px] font-bold text-rose-500 uppercase tracking-widest mb-3">{v.sub}</p>
+                <p className="text-slate-400 text-sm leading-relaxed">{v.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

@@ -21,10 +21,8 @@ const ProtectedRoute = ({ children }) => {
           setSession(currentSession);
           await verifyAdmin(currentSession.user.email);
         } else {
-          // Si no hay sesión inmediata, esperamos un poco al listener por si viene de un redirect
-          setTimeout(() => {
-            if (mounted && !session) setIsLoading(false);
-          }, 1500);
+          // Sin sesión: redirigir inmediatamente al login
+          if (mounted) setIsLoading(false);
         }
       } catch (error) {
         if (mounted) setIsLoading(false);

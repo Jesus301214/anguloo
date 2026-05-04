@@ -127,7 +127,7 @@ const Terminos = () => {
 
         <div className="mt-20 pt-10 border-t border-slate-800 text-center">
           <p className="text-slate-500 text-sm">
-            Si tiene dudas sobre estos términos, contáctenos en <span className="text-rose-500">hola@angulosoftwares.com</span>
+            Si tiene dudas sobre estos términos, contáctenos en <span className="text-rose-500">hola@angulosofware.com</span>
           </p>
         </div>
       </div>

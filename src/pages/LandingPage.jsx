@@ -707,7 +707,7 @@ const LandingPage = ({
              <div className="flex gap-8 text-slate-500 font-bold text-sm">
                 <Link to="/privacidad" className="hover:text-rose-500 transition-colors">Privacidad</Link>
                 <Link to="/terminos" className="hover:text-rose-500 transition-colors">Términos</Link>
-                <a href="mailto:hola@angulosoftwares.com" className="hover:text-rose-500 transition-colors">Soporte</a>
+                <a href="mailto:hola@angulosofware.com" className="hover:text-rose-500 transition-colors">Soporte</a>
              </div>
           </div>
           <p className="text-sm font-medium text-slate-700">© 2026 ANGULO. Diseñado para empresas de alto crecimiento.</p>

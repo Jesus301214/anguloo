@@ -34,6 +34,7 @@ const CRM = () => {
   // Modales
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   
   // Estados de formularios
   const [newLead, setNewLead] = useState({ 
@@ -218,7 +219,7 @@ const CRM = () => {
               </thead>
               <tbody className="divide-y divide-slate-800/50">
                 {currentLeads.map((lead) => (
-                  <tr key={lead.id} className="hover:bg-white/[0.02] transition-colors group">
+                  <tr key={lead.id} onClick={() => { setSelectedLead(lead); setIsDetailOpen(true); }} className="hover:bg-white/[0.02] transition-colors group cursor-pointer">
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-4">
                         <div className="h-11 w-11 bg-slate-800 rounded-2xl flex items-center justify-center text-blue-400 font-bold border border-slate-700/50 shadow-inner">{lead.nombre?.charAt(0).toUpperCase()}</div>
@@ -399,6 +400,79 @@ const CRM = () => {
                 {isProcessing ? <Loader2 className="animate-spin" /> : <Clock size={18} />} Confirmar y Sincronizar Agenda
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Detalle de Lead */}
+      {isDetailOpen && selectedLead && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+          <div className="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-8 shadow-2xl relative animate-in zoom-in duration-300 max-h-[90vh] overflow-y-auto">
+            <button onClick={() => setIsDetailOpen(false)} className="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors"><X size={24} /></button>
+            
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-14 w-14 bg-blue-600/20 rounded-2xl flex items-center justify-center text-blue-400 font-black text-xl border border-blue-500/20">
+                {selectedLead.nombre?.charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <h2 className="text-xl font-black text-white font-outfit">{selectedLead.nombre}</h2>
+                <p className="text-slate-500 text-sm">{selectedLead.compania || 'Independiente'}</p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {selectedLead.email && (
+                <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl">
+                  <Mail size={18} className="text-slate-500 shrink-0" />
+                  <div><p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Email</p><a href={`mailto:${selectedLead.email}`} className="text-sm text-blue-400 hover:underline">{selectedLead.email}</a></div>
+                </div>
+              )}
+              {selectedLead.whatsapp && (
+                <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl">
+                  <Phone size={18} className="text-emerald-500 shrink-0" />
+                  <div><p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">WhatsApp</p><a href={`https://wa.me/${selectedLead.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="text-sm text-emerald-400 hover:underline">{selectedLead.whatsapp}</a></div>
+                </div>
+              )}
+              {selectedLead.website && (
+                <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl">
+                  <Globe size={18} className="text-slate-500 shrink-0" />
+                  <div><p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Sitio Web</p><a href={selectedLead.website.startsWith('http') ? selectedLead.website : `https://${selectedLead.website}`} target="_blank" rel="noreferrer" className="text-sm text-blue-400 hover:underline">{selectedLead.website}</a></div>
+                </div>
+              )}
+              {selectedLead.instagram && (
+                <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl">
+                  <ExternalLink size={18} className="text-pink-500 shrink-0" />
+                  <div><p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Instagram</p><p className="text-sm text-pink-400">{selectedLead.instagram}</p></div>
+                </div>
+              )}
+              {selectedLead.facebook && (
+                <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl">
+                  <ExternalLink size={18} className="text-blue-500 shrink-0" />
+                  <div><p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Facebook</p><p className="text-sm text-blue-400">{selectedLead.facebook}</p></div>
+                </div>
+              )}
+              {selectedLead.notas && (
+                <div className="p-3 bg-slate-800/50 rounded-xl">
+                  <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-2">Notas</p>
+                  <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">{selectedLead.notas}</p>
+                </div>
+              )}
+              <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl">
+                <div><p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Estado</p><p className={`text-sm font-bold ${statusOptions.find(o => o.value === (selectedLead.status || 'new'))?.color}`}>{statusOptions.find(o => o.value === (selectedLead.status || 'new'))?.label}</p></div>
+                <div className="text-right"><p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Creado</p><p className="text-sm text-slate-400">{new Date(selectedLead.created_at).toLocaleDateString()}</p></div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-8">
+              {selectedLead.whatsapp && (
+                <a href={`https://wa.me/${selectedLead.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3 rounded-xl transition-all text-xs uppercase tracking-widest">
+                  <MessageCircle size={16} /> WhatsApp
+                </a>
+              )}
+              <button onClick={() => { setIsDetailOpen(false); setIsScheduleModalOpen(true); }} className="flex-1 flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-500 text-white font-black py-3 rounded-xl transition-all text-xs uppercase tracking-widest">
+                <CalendarIcon size={16} /> Agendar Demo
+              </button>
+            </div>
           </div>
         </div>
       )}

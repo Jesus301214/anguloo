@@ -104,17 +104,29 @@ const LeadRadar = () => {
   const handleAddToCRM = async (biz) => {
     setSavingId(biz.id);
     try {
-      const { error: err } = await supabase.from('leads').insert([{
-        nombre: biz.name, email: biz.email, whatsapp: biz.phone,
-        compania: biz.name, website: biz.website,
-        notas: `Prospectado vía LeadRadar (OSM). Categoría: ${biz.type}. Dirección: ${biz.full_address}`,
-        status: 'new', created_at: new Date().toISOString()
-      }]);
+      const leadData = {
+        nombre: biz.name || 'Sin nombre',
+        email: biz.email || '',
+        whatsapp: biz.phone || '',
+        compania: biz.name || '',
+        website: biz.website || '',
+        notas: [
+          `Prospectado vía LeadRadar (OpenStreetMap).`,
+          biz.type ? `Categoría: ${biz.type}` : '',
+          biz.full_address ? `Dirección: ${biz.full_address}` : '',
+          biz.opening_hours ? `Horario: ${biz.opening_hours}` : '',
+          biz.lat && biz.lon ? `Maps: https://www.google.com/maps?q=${biz.lat},${biz.lon}` : ''
+        ].filter(Boolean).join('\n'),
+        status: 'new',
+        created_at: new Date().toISOString()
+      };
+
+      const { error: err } = await supabase.from('leads').insert([leadData]);
       if (err) throw err;
       setSavedIds(prev => new Set([...prev, biz.id]));
     } catch (err) {
       console.error('Error guardando lead:', err);
-      alert('Error al guardar en el CRM');
+      setError('SAVE');
     } finally { setSavingId(null); }
   };
 
@@ -166,6 +178,11 @@ const LeadRadar = () => {
       {error === 'EMPTY' && (
         <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-4 flex items-center gap-3 text-blue-400 font-bold text-sm">
           <Search size={20} /> No se encontraron negocios. Intenta con otro término o amplía la zona de búsqueda.
+        </div>
+      )}
+      {error === 'SAVE' && (
+        <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 flex items-center gap-3 text-rose-500 font-bold text-sm">
+          <AlertCircle size={20} /> Error al guardar en el CRM. Verifica la conexión con Supabase.
         </div>
       )}
 

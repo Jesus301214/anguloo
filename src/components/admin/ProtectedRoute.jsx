@@ -11,17 +11,20 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     let mounted = true;
 
+    // Hard timeout: never hang more than 5 seconds
+    const timeout = setTimeout(() => {
+      if (mounted && isLoading) setIsLoading(false);
+    }, 5000);
+
     const checkAuth = async () => {
       try {
         const { data: { session: currentSession } } = await supabase.auth.getSession();
-        
         if (!mounted) return;
 
         if (currentSession) {
           setSession(currentSession);
           await verifyAdmin(currentSession.user.email);
         } else {
-          // Sin sesión: redirigir inmediatamente al login
           if (mounted) setIsLoading(false);
         }
       } catch (error) {
@@ -45,6 +48,7 @@ const ProtectedRoute = ({ children }) => {
 
     return () => {
       mounted = false;
+      clearTimeout(timeout);
       subscription.unsubscribe();
     };
   }, []);

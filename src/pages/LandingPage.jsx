@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { ShieldCheck, ArrowRight, X, Phone, Mail, Globe, MessageCircle, BarChart, Zap, Layers, Smartphone, LayoutGrid, Check, CheckCircle, Shield, ChevronDown, Rocket, Activity, Users, CreditCard, Settings, AlertCircle, UserX, TrendingDown } from 'lucide-react';
+import { ShieldCheck, ArrowRight, X, Phone, Mail, Globe, MessageCircle, BarChart, Zap, Layers, Smartphone, LayoutGrid, Check, CheckCircle, Shield, ChevronDown, Rocket, Activity, Users, CreditCard, Settings, AlertCircle, UserX, TrendingDown, Target, Handshake, BookOpen, Star, LineChart, Eye, Heart } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
 const SpotlightCard = ({ children, className = "" }) => {
@@ -338,7 +338,7 @@ const LandingPage = ({
               { 
                 icon: <TrendingDown className="w-6 h-6" />, 
                 title: "Pérdida invisible de recursos", 
-                desc: "Combustible sin registrar, repuestos que \"desaparecen\", horas hombre que no se cobran. Cada proyecto termina y no sabes si ganaste o perdiste." 
+                desc: "Inventario sin registrar, insumos o materiales que \"desaparecen\", horas hombre que no se cobran. Cada proyecto termina y no sabes si ganaste o perdiste." 
               }
             ].map((card, i) => (
               <motion.div key={i} variants={itemVariants}>
@@ -513,7 +513,10 @@ const LandingPage = ({
               viewport={{ once: true }}
             >
               <h2 className="text-4xl md:text-6xl font-black text-white font-outfit mb-8">Nuestra Metodología: <br/><span className="text-rose-500 italic">Claridad Radical</span></h2>
-              <div className="space-y-12">
+              <div className="relative space-y-12">
+                {/* Línea conectora */}
+                <div className="absolute left-6 top-6 bottom-6 w-px bg-gradient-to-b from-rose-500 via-blue-500 to-emerald-500 opacity-20 hidden sm:block" />
+                
                 {[
                   { id: 1, title: "Inmersión Operativa", color: "rose", desc: "No instalamos un software y nos vamos. Entendemos cómo vendes, cómo cobras y cómo gastas." },
                   { id: 2, title: "Simplicidad Crítica", color: "blue", desc: "Eliminamos pasos innecesarios. Automatizamos lo repetitivo para que tu equipo se enfoque en el cliente." },
@@ -544,29 +547,124 @@ const LandingPage = ({
         </div>
       </section>
 
-      {/* 5. Valores / Nosotros */}
-      <section id="nosotros" className="py-24 bg-slate-900/20 px-6 border-t border-slate-900">
+      {/* 5. Cultura: Lo que nos mueve */}
+      <section id="cultura" className="py-24 bg-slate-950 px-6 relative overflow-hidden">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-5xl font-black text-white font-outfit mb-6">Lo que nos define</h2>
-            <p className="text-slate-400 text-lg">Nuestra brújula interna para construir soluciones de clase mundial.</p>
+            <div className="inline-flex items-center rounded-full border border-rose-500/30 bg-rose-500/10 px-4 py-1.5 text-[10px] font-black text-rose-500 uppercase tracking-widest mb-6">
+              NUESTRA CULTURA
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
+              Lo que nos <span className="text-rose-500">mueve</span>
+            </h2>
+            <p className="text-lg md:text-xl text-gray-300 font-medium leading-relaxed max-w-3xl mx-auto">
+              Guiamos a las empresas de servicios para que dejen de improvisar y empiecen a construir negocios rentables y escalables.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { title: "Foco en el objetivo", sub: "¿Para qué hacemos esto?", desc: "Todo parte por entender qué se quiere lograr. El objetivo ordena la conversación.", icon: <Zap size={24} /> },
-              { title: "Claridad para decidir", sub: "Menos complejidad, mejores decisiones", desc: "La gestión debe entregar claridad, no complejidad. Ordenamos lo relevante.", icon: <Layers size={24} /> },
-              { title: "Excelencia real", sub: "Soluciones de tu operación, no genéricas", desc: "No somos genéricos. Soluciones construidas desde la operación real.", icon: <Shield size={24} /> },
-              { title: "Impacto positivo", sub: "Crecer debe mejorar tu vida, no complicarla", desc: "El crecimiento debe mejorar la vida: menos estrés, más orden.", icon: <Rocket size={24} /> }
-            ].map((v, i) => (
-              <div key={i} className="p-8 bg-slate-950 border border-slate-800 rounded-3xl hover:border-slate-700 transition-all group">
-                <div className="mb-6 text-rose-500 group-hover:scale-110 transition-transform">
-                  {v.icon}
-                </div>
-                <h4 className="text-white font-black mb-1">{v.title}</h4>
-                <p className="text-[10px] font-bold text-rose-500 uppercase tracking-widest mb-3">{v.sub}</p>
-                <p className="text-slate-400 text-sm leading-relaxed">{v.desc}</p>
+          <div className="grid lg:grid-cols-3 gap-16 items-start">
+            <div className="lg:col-span-1">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-8 h-px bg-rose-500" />
+                <span className="text-xs font-black tracking-[0.3em] text-slate-500 uppercase">— NUESTRA VISIÓN</span>
               </div>
+              <p className="text-lg text-gray-300 leading-relaxed font-medium">
+                Diseñar software que no solo organice datos, sino que devuelva el tiempo y la tranquilidad a los dueños de negocios, permitiéndoles crecer con orden, claridad e impacto positivo.
+              </p>
+            </div>
+
+            <div className="lg:col-span-2 grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  icon: <Target className="w-6 h-6" />,
+                  title: "Claridad Operacional",
+                  phrase: "Saber qué hacer y cuándo hacerlo.",
+                  bad: "Operas a ciegas apagando incendios.",
+                  good: "ANGULO te da un mapa claro cada mañana."
+                },
+                {
+                  icon: <TrendingDown className="w-6 h-6" />,
+                  title: "Rentabilidad Real",
+                  phrase: "Ganar más eliminando fugas invisibles.",
+                  bad: "El desorden te cuesta dinero todos los días.",
+                  good: "Cada proceso controlado es ganancia recuperada."
+                },
+                {
+                  icon: <Handshake className="w-6 h-6" />,
+                  title: "Sin Juicio",
+                  phrase: "El error es parte del camino.",
+                  bad: "Sabemos que tu operación actual tiene fallas.",
+                  good: "No te juzgamos, construimos el sistema para resolverlas."
+                },
+                {
+                  icon: <Zap className="w-6 h-6" />,
+                  title: "Transformación",
+                  phrase: "Del caos al control total.",
+                  bad: "Antes: improvisación constante y estrés.",
+                  good: "Después: una empresa que opera sola mientras creces."
+                }
+              ].map((card, idx) => (
+                <SpotlightCard key={idx} className="bg-gray-900/40 p-10 border-slate-800/50">
+                  <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-rose-500 mb-6">
+                    {card.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-2">{card.title}</h3>
+                  <p className="text-sm font-medium text-rose-500 mb-4">{card.phrase}</p>
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-3 text-sm text-gray-500">
+                      <span className="text-rose-500 mt-0.5 shrink-0">✕</span>
+                      <span>{card.bad}</span>
+                    </div>
+                    <div className="flex items-start gap-3 text-sm text-gray-300 font-bold">
+                      <span className="text-emerald-500 mt-0.5 shrink-0">✓</span>
+                      <span>{card.good}</span>
+                    </div>
+                  </div>
+                </SpotlightCard>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Valores: 8 Fundamentos */}
+      <section id="valores" className="py-24 bg-slate-900/10 px-6 border-t border-slate-900">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
+              Nuestros <span className="text-rose-500">8 Valores</span> Fundamentales
+            </h2>
+            <p className="text-lg md:text-xl text-gray-300 font-medium leading-relaxed max-w-3xl mx-auto">
+              Lo que guía cada decisión, cada línea de código y cada conversación con nuestros clientes.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: <Target />, title: "Foco en el objetivo", phrase: "¿Para qué hacemos esto?", desc: "Todo parte por entender qué se quiere lograr. El objetivo ordena la conversación." },
+              { icon: <BookOpen />, title: "Claridad para decidir", phrase: "Menos complejidad, mejores decisiones", desc: "La gestión debe entregar claridad, no enredos. Ordenamos lo relevante." },
+              { icon: <Star />, title: "Excelencia real", phrase: "Soluciones de tu operación, no genéricas", desc: "Software construido desde la trinchera de tu propia operación." },
+              { icon: <LineChart />, title: "Aprendizaje continuo", phrase: "El error es maestro, no enemigo", desc: "Se observa, se entiende y se transforma. Evolucionamos con cada dato." },
+              { icon: <Eye />, title: "Transparencia", phrase: "Sin letra chica, sin sorpresas", desc: "Somos claros con los alcances y los tiempos. La confianza es nuestro activo." },
+              { icon: <Heart />, title: "Impacto positivo", phrase: "Crecer debe mejorar tu vida", desc: "El crecimiento real significa menos estrés, más orden y más vida propia." },
+              { icon: <Users />, title: "Responsabilidad", phrase: "Hacemos lo que dijimos que íbamos a hacer", desc: "Sin excusas. Decimos la verdad, asumimos el compromiso y avanzamos." },
+              { icon: <Zap />, title: "Proactividad", phrase: "No esperamos a que explote para actuar", desc: "Anticipamos necesidades y entregamos soluciones antes de que sean urgencias." }
+            ].map((v, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                viewport={{ once: true }}
+                className="p-8 bg-slate-900/50 border border-slate-800 rounded-[2rem] hover:border-rose-500/30 transition-all group"
+              >
+                <div className="mb-6 text-rose-500 w-10 h-10 flex items-center justify-center">
+                  {React.cloneElement(v.icon, { size: 24 })}
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">{v.title}</h3>
+                <p className="text-sm font-medium text-rose-500 mb-3">{v.phrase}</p>
+                <p className="text-sm text-gray-400 leading-relaxed">{v.desc}</p>
+              </motion.div>
             ))}
           </div>
         </div>

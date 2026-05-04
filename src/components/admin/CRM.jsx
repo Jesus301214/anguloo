@@ -190,36 +190,36 @@ const CRM = () => {
   const currentLeads = filteredLeads.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredLeads.length / itemsPerPage);
 
-  const paginate = (pageNumber) => {
-    if (pageNumber > 0 && pageNumber <= totalPages) {
-      setCurrentPage(pageNumber);
-    }
-  };
-
-  return (
-    <div className="space-y-6 animate-in fade-in duration-700 bg-[#0F172A] p-8 rounded-3xl border border-slate-800/40 min-h-screen shadow-xl shadow-black/20">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <h1 className="text-3xl font-black text-white font-outfit">Pipeline Comercial</h1>
-          <p className="text-slate-400 mt-1 font-medium">Gestión avanzada de prospectos y agendamiento.</p>
+      {/* Search & Filters */}
+      <div className="flex flex-col md:flex-row gap-4 items-center">
+        <div className="relative flex-1 w-full">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
+          <input 
+            type="text" 
+            placeholder={showTrash ? "Buscar en papelera..." : "Buscar prospectos..."}
+            value={searchTerm}
+            onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+            className="w-full pl-12 pr-4 py-4 bg-slate-800/40 border border-slate-700/50 focus:bg-slate-800/60 focus:border-blue-500/30 rounded-2xl text-slate-200 outline-none transition-all placeholder:text-slate-500/50 font-medium"
+          />
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <button onClick={() => { setShowTrash(!showTrash); setCurrentPage(1); }} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${showTrash ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-slate-800 text-slate-400 border border-slate-700 hover:text-white'}`}><Trash2 size={16} /> Papelera ({leads.filter(l => l.status === 'trash').length})</button>
-          {!showTrash && <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all"><Plus size={18} /> Nuevo Lead</button>}
+        <div className="flex gap-2 w-full md:w-auto">
+          <button 
+            onClick={() => { setShowTrash(!showTrash); setCurrentPage(1); }} 
+            className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-4 rounded-2xl text-sm font-black transition-all ${
+              showTrash 
+                ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/20' 
+                : 'bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700 hover:text-white'
+            }`}
+          >
+            <Trash2 size={18} /> 
+            {showTrash ? 'Ver Pipeline' : `Papelera (${leads.filter(l => l.status === 'trash').length})`}
+          </button>
+          {!showTrash && (
+            <button onClick={() => setIsModalOpen(true)} className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-4 bg-blue-600 text-white rounded-2xl text-sm font-black hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all">
+              <Plus size={20} /> Nuevo
+            </button>
+          )}
         </div>
-      </div>
-
-      {/* Search Bar */}
-      <div className="relative w-full">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
-        <input 
-          type="text" 
-          placeholder="Buscar prospectos..." 
-          value={searchTerm}
-          onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-          className="w-full pl-12 pr-4 py-4 bg-slate-800/40 border border-slate-700/50 focus:bg-slate-800/60 focus:border-blue-500/30 rounded-2xl text-slate-200 outline-none transition-all placeholder:text-slate-500/50 font-medium"
-        />
       </div>
 
       {/* Leads Table */}

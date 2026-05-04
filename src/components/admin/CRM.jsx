@@ -190,6 +190,20 @@ const CRM = () => {
   const currentLeads = filteredLeads.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredLeads.length / itemsPerPage);
 
+  const paginate = (pageNumber) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
+  return (
+    <div className="space-y-6 animate-in fade-in duration-700 bg-[#0F172A] p-8 rounded-3xl border border-slate-800/40 min-h-screen shadow-xl shadow-black/20">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-black text-white font-outfit">Pipeline Comercial</h1>
+        <p className="text-slate-400 mt-1 font-medium">Gestión avanzada de prospectos y agendamiento.</p>
+      </div>
+
       {/* Search & Filters */}
       <div className="flex flex-col md:flex-row gap-4 items-center">
         <div className="relative flex-1 w-full">
@@ -277,11 +291,11 @@ const CRM = () => {
                         {showTrash ? (
                           <button onClick={(e) => { e.stopPropagation(); handleRestoreLead(lead.id); }} className="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20" title="Restaurar"><RotateCcw size={16} /></button>
                         ) : (
-                          <>
+                          <React.Fragment>
                             <a href={`https://wa.me/${lead.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20" title="WhatsApp"><MessageCircle size={16} /></a>
                             <button onClick={(e) => { e.stopPropagation(); setSelectedLead(lead); setIsScheduleModalOpen(true); }} className="p-2 bg-purple-500/10 text-purple-500 rounded-xl hover:bg-purple-500 hover:text-white transition-all border border-purple-500/20" title="Agendar"><CalendarIcon size={16} /></button>
                             <button onClick={(e) => { e.stopPropagation(); handleTrashLead(lead.id); }} className="p-2 bg-rose-500/10 text-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all border border-rose-500/20" title="Eliminar"><Trash2 size={16} /></button>
-                          </>
+                          </React.Fragment>
                         )}
                       </div>
                     </td>

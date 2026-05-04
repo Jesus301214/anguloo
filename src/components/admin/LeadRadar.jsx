@@ -20,24 +20,29 @@ const LeadRadar = () => {
 
     const apiKey = import.meta.env.VITE_OUTSCRAPER_KEY;
 
+    if (!apiKey || apiKey === 'TU_API_KEY_AQUI') {
+      setError('CONFIG');
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      // Usando el endpoint de búsqueda v2 con enriquecimiento de contactos
       const response = await fetch(`https://api.app.outscraper.com/maps/search-v2?query=${encodeURIComponent(query)}&limit=10&async=false`, {
-        headers: {
-          'X-API-KEY': apiKey
-        }
+        headers: { 'X-API-KEY': apiKey }
       });
 
-      if (!response.ok) throw new Error('Error al conectar con la API de Outscraper');
+      if (response.status === 401 || response.status === 403) {
+        setError('AUTH');
+        return;
+      }
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const data = await response.json();
-      
-      // La API devuelve un array de arrays en la v2 asíncrona/síncrona a veces, 
-      // normalizamos el resultado.
       const rawResults = data.data?.[0] || [];
       setResults(rawResults);
+      if (rawResults.length === 0) setError('EMPTY');
     } catch (err) {
-      setError('Hubo un problema al buscar prospectos. Verifica tu API Key.');
+      setError('NETWORK');
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -114,11 +119,28 @@ const LeadRadar = () => {
         </form>
       </div>
 
-      {/* Mensajes de Error */}
-      {error && (
+      {/* Mensajes de Error Inteligentes */}
+      {error === 'CONFIG' && (
+        <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-6 space-y-3">
+          <div className="flex items-center gap-3 text-amber-500 font-bold"><AlertCircle size={20} /> API Key no configurada</div>
+          <p className="text-slate-400 text-sm leading-relaxed">Para activar LeadRadar, agrega tu API Key de <a href="https://outscraper.com" target="_blank" rel="noreferrer" className="text-blue-400 underline">Outscraper</a> en el archivo <code className="bg-slate-800 px-2 py-0.5 rounded text-amber-300 text-xs">.env</code>:</p>
+          <pre className="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-emerald-400 font-mono overflow-x-auto">VITE_OUTSCRAPER_KEY=tu_api_key_real</pre>
+          <p className="text-slate-500 text-xs">Reinicia el servidor de desarrollo después de agregar la variable.</p>
+        </div>
+      )}
+      {error === 'AUTH' && (
         <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 flex items-center gap-3 text-rose-500 font-bold text-sm">
-          <AlertCircle size={20} />
-          {error}
+          <AlertCircle size={20} /> API Key inválida o sin créditos. Verifica tu cuenta en Outscraper.
+        </div>
+      )}
+      {error === 'NETWORK' && (
+        <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 flex items-center gap-3 text-rose-500 font-bold text-sm">
+          <AlertCircle size={20} /> Error de red al conectar con Outscraper. Revisa tu conexión e intenta de nuevo.
+        </div>
+      )}
+      {error === 'EMPTY' && (
+        <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-4 flex items-center gap-3 text-blue-400 font-bold text-sm">
+          <Search size={20} /> No se encontraron resultados. Intenta con otro término o ubicación.
         </div>
       )}
 

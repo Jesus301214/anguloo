@@ -177,7 +177,10 @@ const AdminLayout = ({ children }) => {
 
         {/* Logout Section */}
         <div className="absolute bottom-8 left-0 w-full px-4">
-          <button className="w-full flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:text-rose-400 hover:bg-rose-400/5 rounded-xl transition-all duration-300">
+          <button 
+            onClick={async () => { await supabase.auth.signOut(); navigate('/login-admin'); }}
+            className="w-full flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:text-rose-400 hover:bg-rose-400/5 rounded-xl transition-all duration-300"
+          >
             <LogOut size={22} />
             {isSidebarOpen && <span className="font-bold text-sm">Cerrar Sesión</span>}
           </button>

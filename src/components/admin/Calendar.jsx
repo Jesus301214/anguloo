@@ -36,7 +36,7 @@ const Calendar = () => {
       if (error) throw error;
       setMeetings(data || []);
     } catch (error) {
-      console.error('Error fetching meetings:', error.message);
+      // Error silenciado en producción
     } finally {
       setIsLoading(false);
     }

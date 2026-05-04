@@ -128,10 +128,10 @@ const LandingPage = ({
 
       if (error) throw error;
 
-      fetch('https://hooks.zapier.com/hooks/catch/27454979/uve695f/', {
-        method: 'POST',
-        body: JSON.stringify(formData)
-      }).catch(err => console.log('Zapier Error:', err));
+      const zapierUrl = import.meta.env.VITE_ZAPIER_WEBHOOK_URL;
+      if (zapierUrl) {
+        fetch(zapierUrl, { method: 'POST', body: JSON.stringify(formData) }).catch(() => {});
+      }
 
       setFormStatus('success');
       setFormData({ nombre: '', email: '', whatsapp: '', compania: '', notas: '' });

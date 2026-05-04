@@ -58,7 +58,7 @@ const Dashboard = () => {
       setStats({ totalLeads, demos, conversion, mrr });
       setRecentLeads(allLeads.slice(0, 5));
     } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+      // Error silenciado en producción
     } finally {
       setLoading(false);
     }
@@ -74,7 +74,7 @@ const Dashboard = () => {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'leads' },
         () => {
-          console.log('Cambio detectado en leads, actualizando dashboard...');
+
           fetchDashboardData();
         }
       )
@@ -85,16 +85,14 @@ const Dashboard = () => {
     };
   }, []);
 
-  // Datos simulados para el gráfico (pueden ser reales luego filtrando por fecha)
-  const chartData = [
-    { name: 'Lun', leads: 4 },
-    { name: 'Mar', leads: 7 },
-    { name: 'Mie', leads: 5 },
-    { name: 'Jue', leads: 12 },
-    { name: 'Vie', leads: 8 },
-    { name: 'Sab', leads: 15 },
-    { name: 'Dom', leads: stats.totalLeads % 20 },
-  ];
+  // Datos reales: leads creados por día de la semana
+  const dayNames = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
+  const chartData = dayNames.map((name, i) => ({
+    name,
+    leads: recentLeads.length > 0
+      ? recentLeads.filter(l => new Date(l.created_at).getDay() === i).length
+      : 0
+  }));
 
   if (loading) {
     return (

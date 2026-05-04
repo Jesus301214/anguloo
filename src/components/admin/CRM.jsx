@@ -77,7 +77,7 @@ const CRM = () => {
       if (error) throw error;
       setLeads(data || []);
     } catch (error) {
-      console.error('Error fetching leads:', error.message);
+      // Error silenciado en producción
       // Fallback: fetch without auto-purge if deleted_at doesn't exist
       const { data } = await supabase.from('leads').select('*').order('created_at', { ascending: false });
       setLeads(data || []);

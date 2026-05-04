@@ -66,9 +66,11 @@ const CRM = () => {
   const fetchLeads = async () => {
     setIsLoading(true);
     try {
-      // Auto-purge: delete trash older than 30 days
-      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-      await supabase.from('leads').delete().eq('status', 'trash').lt('deleted_at', thirtyDaysAgo);
+      // Auto-purge: silently try to delete old trash (won't fail if deleted_at doesn't exist)
+      try {
+        const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+        await supabase.from('leads').delete().eq('status', 'trash').lt('deleted_at', thirtyDaysAgo);
+      } catch (_) { /* column may not exist yet */ }
 
       const { data, error } = await supabase
         .from('leads')
@@ -85,12 +87,27 @@ const CRM = () => {
   };
 
   const handleTrashLead = async (id) => {
-    await supabase.from('leads').update({ status: 'trash', deleted_at: new Date().toISOString() }).eq('id', id);
+    try {
+      // Try soft delete with deleted_at
+      await supabase.from('leads').update({ status: 'trash', deleted_at: new Date().toISOString() }).eq('id', id);
+    } catch (_) {
+      // Fallback: just change status if deleted_at column doesn't exist
+      await supabase.from('leads').update({ status: 'trash' }).eq('id', id);
+    }
     fetchLeads();
   };
 
   const handleRestoreLead = async (id) => {
-    await supabase.from('leads').update({ status: 'new', deleted_at: null }).eq('id', id);
+    try {
+      await supabase.from('leads').update({ status: 'new', deleted_at: null }).eq('id', id);
+    } catch (_) {
+      await supabase.from('leads').update({ status: 'new' }).eq('id', id);
+    }
+    fetchLeads();
+  };
+
+  const handleDeletePermanent = async (id) => {
+    await supabase.from('leads').delete().eq('id', id);
     fetchLeads();
   };
 
@@ -289,7 +306,10 @@ const CRM = () => {
                     <td className="px-6 py-5">
                       <div className="flex items-center justify-end gap-2">
                         {showTrash ? (
-                          <button onClick={(e) => { e.stopPropagation(); handleRestoreLead(lead.id); }} className="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20" title="Restaurar"><RotateCcw size={16} /></button>
+                          <React.Fragment>
+                            <button onClick={(e) => { e.stopPropagation(); handleRestoreLead(lead.id); }} className="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20" title="Restaurar"><RotateCcw size={16} /></button>
+                            <button onClick={(e) => { e.stopPropagation(); handleDeletePermanent(lead.id); }} className="p-2 bg-rose-500/10 text-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all border border-rose-500/20" title="Eliminar permanentemente"><Trash2 size={16} /></button>
+                          </React.Fragment>
                         ) : (
                           <React.Fragment>
                             <a href={`https://wa.me/${lead.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20" title="WhatsApp"><MessageCircle size={16} /></a>

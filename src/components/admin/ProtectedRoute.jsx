@@ -4,33 +4,39 @@ import { supabase } from '../../lib/supabase';
 import { Loader2, ShieldAlert, LogOut } from 'lucide-react';
 
 const ProtectedRoute = ({ children }) => {
-  const [state, setState] = useState('loading'); // loading | authorized | denied | unauthenticated
+  const [state, setState] = useState('loading');
   const [userEmail, setUserEmail] = useState('');
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (!session) {
-        setState('unauthenticated');
-        return;
-      }
+    let handled = false;
 
-      setUserEmail(session.user.email);
-
-      // Verificar si el email está en admin_users
-      const { data, error } = await supabase
+    const checkAdmin = async (email) => {
+      if (handled) return;
+      handled = true;
+      setUserEmail(email);
+      const { data } = await supabase
         .from('admin_users')
         .select('email')
-        .eq('email', session.user.email)
+        .eq('email', email)
         .maybeSingle();
+      setState(data ? 'authorized' : 'denied');
+    };
 
-      if (error || !data) {
-        setState('denied');
-      } else {
-        setState('authorized');
-      }
+    // Primary: listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) { setState('unauthenticated'); return; }
+      checkAdmin(session.user.email);
     });
 
-    return () => subscription.unsubscribe();
+    // Fallback: if onAuthStateChange doesn't fire within 2s, check manually
+    const timeout = setTimeout(async () => {
+      if (handled) return;
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) { setState('unauthenticated'); return; }
+      checkAdmin(session.user.email);
+    }, 2000);
+
+    return () => { subscription.unsubscribe(); clearTimeout(timeout); };
   }, []);
 
   if (state === 'loading') {
@@ -42,9 +48,7 @@ const ProtectedRoute = ({ children }) => {
     );
   }
 
-  if (state === 'unauthenticated') {
-    return <Navigate to="/login-admin" replace />;
-  }
+  if (state === 'unauthenticated') return <Navigate to="/login-admin" replace />;
 
   if (state === 'denied') {
     return (
@@ -55,13 +59,11 @@ const ProtectedRoute = ({ children }) => {
           </div>
           <h1 className="text-2xl font-black text-white mb-3">Acceso Denegado</h1>
           <p className="text-slate-400 text-sm mb-2">
-            Tu cuenta (<span className="text-rose-400 font-bold">{userEmail}</span>) no tiene privilegios de administrador.
+            Tu cuenta (<span className="text-rose-400 font-bold">{userEmail}</span>) no tiene privilegios.
           </p>
-          <p className="text-slate-600 text-xs mb-8">Contacta al superadministrador para solicitar acceso.</p>
-          <button
-            onClick={async () => { await supabase.auth.signOut(); setState('unauthenticated'); }}
-            className="flex items-center justify-center gap-2 mx-auto text-slate-400 hover:text-white transition-colors font-bold text-sm"
-          >
+          <p className="text-slate-600 text-xs mb-8">Contacta al superadministrador.</p>
+          <button onClick={async () => { await supabase.auth.signOut(); setState('unauthenticated'); }}
+            className="flex items-center justify-center gap-2 mx-auto text-slate-400 hover:text-white transition-colors font-bold text-sm">
             <LogOut size={16} /> Cerrar Sesión
           </button>
         </div>

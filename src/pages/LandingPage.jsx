@@ -271,17 +271,17 @@ const LandingPage = ({
               className="mb-8 inline-flex items-center rounded-full border border-rose-500/30 bg-rose-500/10 px-4 py-1.5 text-xs sm:text-sm font-medium text-rose-400 backdrop-blur-sm"
             >
               <span className="mr-2 flex h-2 w-2 rounded-full bg-rose-500"></span>
-              SaaS de Alto Rendimiento
+              Auditorías Operativas + Automatización
             </motion.div>
             <h1 className="mb-6 text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-8xl font-outfit leading-[1.1]">
-              Eleva tu gestión al <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-blue-500">Siguiente Nivel.</span>
+              Encontramos lo que <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-blue-500">tu empresa pierde</span> y lo automatizamos.
             </h1>
             <p className="mb-10 max-w-xl text-base leading-relaxed text-slate-300 sm:text-xl">
-              Software premium para empresas que buscan orden, claridad y escalabilidad en un ecosistema neón de alto impacto.
+              Hacemos una auditoría gratuita de tu operación, detectamos los procesos que te cuestan tiempo y dinero, y los convertimos en sistemas automáticos que trabajan por ti.
             </p>
             <div className="flex flex-col w-full sm:w-auto gap-4 sm:flex-row">
               <button onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-2 rounded-xl bg-rose-500 px-8 py-4 text-base font-bold text-white transition-all duration-300 transform hover:-translate-y-1 hover:bg-rose-600 hover:shadow-xl hover:shadow-rose-500/30 w-full sm:w-auto">
-                Agenda tu Consultoría <ArrowRight size={20} />
+                Solicita tu Auditoría Gratis <ArrowRight size={20} />
               </button>
             </div>
           </div>
@@ -305,12 +305,12 @@ const LandingPage = ({
             <div className="max-w-3xl">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-8 h-px bg-rose-500" />
-                <span className="text-xs font-black tracking-[0.3em] text-slate-500 uppercase">— EL DIAGNÓSTICO</span>
+                <span className="text-xs font-black tracking-[0.3em] text-slate-500 uppercase">— TU DIAGNÓSTICO GRATUITO</span>
               </div>
               <h2 className="text-4xl md:text-6xl font-black text-white font-outfit mb-6 leading-[1.1]">
                 ¿Qué hace que tu empresa tenga que <span className="text-rose-500">vivir en urgencias y todo para ayer?</span>
               </h2>
-              <p className="text-slate-400 text-xl">Los síntomas de una gestión manual que frenan tu crecimiento.</p>
+              <p className="text-slate-400 text-xl">Evaluamos tu operación gratis. Estos son los dolores que encontramos en el 90% de los negocios que auditamos.</p>
             </div>
             <button onClick={() => setIsModalOpen(true)} className="group flex items-center gap-2 px-6 py-3 rounded-xl border border-slate-800 bg-slate-900/50 text-slate-300 hover:text-white hover:border-rose-500/50 transition-all font-bold">
               Solicitar auditoría gratuita 
@@ -329,17 +329,17 @@ const LandingPage = ({
               { 
                 icon: <AlertCircle className="w-8 h-8" />, 
                 title: "Crecer duele cuando no hay procesos", 
-                desc: "Cada nueva venta trae más presión y más errores. Sientes que mientras más creces, más caos hay. El problema no es el crecimiento — es que tu operación no está diseñada para sostenerlo." 
+                desc: "Cada nueva venta trae más presión y más errores. En la auditoría detectamos exactamente dónde se rompe tu operación y diseñamos la automatización precisa para resolverlo." 
               },
               { 
                 icon: <UserX className="w-8 h-8" />, 
                 title: "El dueño atrapado en la operación", 
-                desc: "Vives apagando incendios, persiguiendo datos por WhatsApp y resolviendo urgencias. Tu empresa depende de ti para todo, y cada vez que te desconectas, algo falla." 
+                desc: "Vives apagando incendios y resolviendo urgencias. Nuestro trabajo es identificar esas tareas repetitivas, eliminarlas con automatización y devolverte las horas que pierdes cada semana." 
               },
               { 
                 icon: <TrendingDown className="w-6 h-6" />, 
                 title: "Pérdida invisible de recursos", 
-                desc: "Inventario sin registrar, insumos o materiales que \"desaparecen\", horas hombre que no se cobran. Cada proyecto termina y no sabes si ganaste o perdiste." 
+                desc: "Inventario sin registrar, horas que no se cobran, dinero que se evapora. En la auditoría te mostramos con números exactos cuánto estás perdiendo — y cómo recuperarlo." 
               }
             ].map((card, i) => (
               <motion.div key={i} variants={itemVariants}>
@@ -475,8 +475,8 @@ const LandingPage = ({
       <section id="soluciones" className="py-24 bg-slate-900/20 overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 mb-16">
           <div className="text-center">
-            <h2 className="text-4xl md:text-6xl font-black text-white font-outfit mb-6">Ecosistema de <span className="text-rose-500">Alto Rendimiento.</span></h2>
-            <p className="text-slate-400 text-xl max-w-3xl mx-auto">Módulos integrados con tecnología de punta para escalar tu empresa sin límites.</p>
+            <h2 className="text-4xl md:text-6xl font-black text-white font-outfit mb-6">Lo que <span className="text-rose-500">automatizamos</span> para ti.</h2>
+            <p className="text-slate-400 text-xl max-w-3xl mx-auto">Después de la auditoría, implementamos los módulos exactos que tu negocio necesita. Sin paquetes genéricos.</p>
           </div>
         </div>
 
@@ -519,9 +519,9 @@ const LandingPage = ({
                 <div className="absolute left-6 top-6 bottom-6 w-px bg-gradient-to-b from-rose-500 via-blue-500 to-emerald-500 opacity-20 hidden sm:block" />
                 
                 {[
-                  { id: 1, title: "Inmersión Operativa", color: "rose", desc: "No instalamos un software y nos vamos. Entendemos cómo vendes, cómo cobras y cómo gastas." },
-                  { id: 2, title: "Simplicidad Crítica", color: "blue", desc: "Eliminamos pasos innecesarios. Automatizamos lo repetitivo para que tu equipo se enfoque en el cliente." },
-                  { id: 3, title: "Escalabilidad Sin Caos", color: "emerald", desc: "Preparamos tus sistemas para que cuando crezcas, el soporte sea sólido y no una carga." }
+                  { id: 1, title: "Auditoría Operativa", color: "rose", desc: "Analizamos cada rincón de tu negocio: cómo vendes, cómo cobras, cómo gastas y dónde pierdes dinero sin saberlo." },
+                  { id: 2, title: "Diseño de Automatización", color: "blue", desc: "Creamos un plan personalizado: eliminamos tareas repetitivas, conectamos tus herramientas y dejamos que el sistema trabaje solo." },
+                  { id: 3, title: "Implementación y Soporte", color: "emerald", desc: "Instalamos, entrenamos a tu equipo y te acompañamos. Tu operación crece y nosotros estamos ahí para escalarla contigo." }
                 ].map((step) => (
                   <div key={step.id} className="flex gap-6 group">
                     <div className={`h-12 w-12 rounded-full bg-${step.color}-500/10 border border-${step.color}-500/30 flex items-center justify-center text-${step.color}-500 font-black shrink-0 group-hover:scale-110 transition-transform`}>
@@ -559,7 +559,7 @@ const LandingPage = ({
               Lo que nos <span className="text-rose-500">mueve</span>
             </h2>
             <p className="text-lg md:text-xl text-gray-300 font-medium leading-relaxed max-w-3xl mx-auto">
-              Guiamos a las empresas de servicios para que dejen de improvisar y empiecen a construir negocios rentables y escalables.
+              Guiamos a empresas a descubrir sus pérdidas ocultas, eliminar procesos manuales y construir una operación que funcione sola.
             </p>
           </div>
 
@@ -570,7 +570,7 @@ const LandingPage = ({
                 <span className="text-xs font-black tracking-[0.3em] text-slate-500 uppercase">— NUESTRA VISIÓN</span>
               </div>
               <p className="text-lg text-gray-300 leading-relaxed font-medium">
-                Diseñar software que no solo organice datos, sino que devuelva el tiempo y la tranquilidad a los dueños de negocios, permitiéndoles crecer con orden, claridad e impacto positivo.
+                No vendemos software genérico. Primero auditamos tu operación, detectamos los procesos que te cuestan tiempo y dinero, y luego diseñamos la automatización exacta que necesitas. Cada solución es única porque cada empresa es diferente.
               </p>
             </div>
 
@@ -682,11 +682,11 @@ const LandingPage = ({
           <div className="absolute top-0 right-0 p-8">
              <div className="bg-rose-500 text-white text-[10px] font-black px-4 py-2 rounded-full animate-pulse uppercase tracking-widest shadow-lg shadow-rose-500/50">Cupos Limitados</div>
           </div>
-          <h2 className="text-4xl md:text-7xl font-black text-white font-outfit mb-8 leading-[1.1]">Transforma tu operación <span className="text-rose-500">Hoy Mismo.</span></h2>
-          <p className="text-slate-400 text-xl mb-12 max-w-2xl mx-auto">No dejes para mañana la eficiencia que puedes tener hoy. Agenda tu demo y entra al futuro.</p>
+          <h2 className="text-4xl md:text-7xl font-black text-white font-outfit mb-8 leading-[1.1]">¿Cuánto dinero está perdiendo <span className="text-rose-500">tu empresa hoy?</span></h2>
+          <p className="text-slate-400 text-xl mb-12 max-w-2xl mx-auto">Solicita tu auditoría gratuita. Te mostramos exactamente dónde pierdes tiempo y dinero — y cómo automatizarlo.</p>
           <div className="flex flex-col md:flex-row justify-center gap-6">
             <button onClick={() => setIsModalOpen(true)} className="bg-rose-500 hover:bg-rose-600 text-white font-black px-12 py-5 rounded-2xl text-lg shadow-2xl shadow-rose-500/30 transition-all transform hover:-translate-y-1 active:scale-95">
-              Solicitar Demo Gratuita
+              Solicitar Auditoría Gratis
             </button>
             <a href={whatsappLink} target="_blank" rel="noreferrer" className="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-black px-12 py-5 rounded-2xl text-lg transition-all flex items-center justify-center gap-3 active:scale-95">
               <MessageCircle size={24} className="text-rose-500" />
@@ -710,7 +710,7 @@ const LandingPage = ({
                 <a href="mailto:hola@angulosoftwares.com" className="hover:text-rose-500 transition-colors">Soporte</a>
              </div>
           </div>
-          <p className="text-sm font-medium text-slate-700">© 2026 ANGULO. Diseñado para empresas de alto crecimiento.</p>
+          <p className="text-sm font-medium text-slate-700">© 2026 ANGULO. Auditorías operativas y automatización para empresas en crecimiento.</p>
         </div>
       </footer>
 

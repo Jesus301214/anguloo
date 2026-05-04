@@ -9,6 +9,9 @@ import Calendar from './components/admin/Calendar';
 import AdminLogin from './components/admin/AdminLogin';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import LeadRadar from './components/admin/LeadRadar';
+import Inventario from './components/admin/Inventario';
+import Finanzas from './components/admin/Finanzas';
+import Ajustes from './components/admin/Ajustes';
 import Privacidad from './pages/Privacidad';
 import Terminos from './pages/Terminos';
 
@@ -59,6 +62,9 @@ const App = () => {
                   <Route path="agenda" element={<Calendar />} />
                   <Route path="crm" element={<CRM />} />
                   <Route path="radar" element={<LeadRadar />} />
+                  <Route path="inventario" element={<Inventario />} />
+                  <Route path="finanzas" element={<Finanzas />} />
+                  <Route path="ajustes" element={<Ajustes />} />
                   <Route path="*" element={<Navigate to="/admin" replace />} />
                 </Routes>
               </AdminLayout>

@@ -18,7 +18,9 @@ import {
   Globe,
   ExternalLink,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Trash2,
+  RotateCcw
 } from 'lucide-react';
 
 const CRM = () => {
@@ -26,6 +28,7 @@ const CRM = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showTrash, setShowTrash] = useState(false);
   
   // Paginación
   const [currentPage, setCurrentPage] = useState(1);
@@ -63,6 +66,10 @@ const CRM = () => {
   const fetchLeads = async () => {
     setIsLoading(true);
     try {
+      // Auto-purge: delete trash older than 30 days
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+      await supabase.from('leads').delete().eq('status', 'trash').lt('deleted_at', thirtyDaysAgo);
+
       const { data, error } = await supabase
         .from('leads')
         .select('*')
@@ -75,6 +82,16 @@ const CRM = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleTrashLead = async (id) => {
+    await supabase.from('leads').update({ status: 'trash', deleted_at: new Date().toISOString() }).eq('id', id);
+    fetchLeads();
+  };
+
+  const handleRestoreLead = async (id) => {
+    await supabase.from('leads').update({ status: 'new', deleted_at: null }).eq('id', id);
+    fetchLeads();
   };
 
   useEffect(() => {
@@ -159,11 +176,13 @@ const CRM = () => {
     }
   };
 
-  const filteredLeads = leads.filter(lead => 
-    (lead.nombre?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-    (lead.email?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-    (lead.compania?.toLowerCase() || '').includes(searchTerm.toLowerCase())
-  );
+  const filteredLeads = leads.filter(lead => {
+    const isTrash = lead.status === 'trash';
+    if (showTrash !== isTrash) return false;
+    return (lead.nombre?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (lead.email?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (lead.compania?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+  });
 
   // Lógica de Paginación
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -186,7 +205,8 @@ const CRM = () => {
           <p className="text-slate-400 mt-1 font-medium">Gestión avanzada de prospectos y agendamiento.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all"><Plus size={18} /> Nuevo Lead</button>
+          <button onClick={() => { setShowTrash(!showTrash); setCurrentPage(1); }} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${showTrash ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-slate-800 text-slate-400 border border-slate-700 hover:text-white'}`}><Trash2 size={16} /> Papelera ({leads.filter(l => l.status === 'trash').length})</button>
+          {!showTrash && <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all"><Plus size={18} /> Nuevo Lead</button>}
         </div>
       </div>
 
@@ -254,14 +274,15 @@ const CRM = () => {
                     </td>
                     <td className="px-6 py-5">
                       <div className="flex items-center justify-end gap-2">
-                        <a href={`https://wa.me/${lead.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20" title="WhatsApp"><MessageCircle size={16} /></a>
-                        <button 
-                          onClick={() => { setSelectedLead(lead); setIsScheduleModalOpen(true); }}
-                          className="p-2 bg-purple-500/10 text-purple-500 rounded-xl hover:bg-purple-500 hover:text-white transition-all border border-purple-500/20" 
-                          title="Agendar"
-                        >
-                          <CalendarIcon size={16} />
-                        </button>
+                        {showTrash ? (
+                          <button onClick={(e) => { e.stopPropagation(); handleRestoreLead(lead.id); }} className="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20" title="Restaurar"><RotateCcw size={16} /></button>
+                        ) : (
+                          <>
+                            <a href={`https://wa.me/${lead.whatsapp?.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20" title="WhatsApp"><MessageCircle size={16} /></a>
+                            <button onClick={(e) => { e.stopPropagation(); setSelectedLead(lead); setIsScheduleModalOpen(true); }} className="p-2 bg-purple-500/10 text-purple-500 rounded-xl hover:bg-purple-500 hover:text-white transition-all border border-purple-500/20" title="Agendar"><CalendarIcon size={16} /></button>
+                            <button onClick={(e) => { e.stopPropagation(); handleTrashLead(lead.id); }} className="p-2 bg-rose-500/10 text-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all border border-rose-500/20" title="Eliminar"><Trash2 size={16} /></button>
+                          </>
+                        )}
                       </div>
                     </td>
                   </tr>

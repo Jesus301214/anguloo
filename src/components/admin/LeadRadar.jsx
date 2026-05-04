@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { Search, MapPin, Globe, Phone, Mail, Plus, Loader2, CheckCircle2, AlertCircle, Radar, Clock, ExternalLink } from 'lucide-react';
 
 const OSM_TAGS = {
-  'salon': ['shop=beauty', 'shop=hairdresser'], 'belleza': ['shop=beauty', 'shop=hairdresser'],
+  'salon': ['shop=beauty','shop=hairdresser'], 'belleza': ['shop=beauty','shop=hairdresser'],
   'peluqueria': ['shop=hairdresser'], 'barberia': ['shop=hairdresser'],
   'spa': ['leisure=spa'], 'restaurante': ['amenity=restaurant'],
   'hotel': ['tourism=hotel'], 'farmacia': ['amenity=pharmacy'],
@@ -16,129 +16,104 @@ const OSM_TAGS = {
 };
 
 const parseQuery = (q) => {
-  for (const sep of [' en ', ' in ', ' cerca de ']) {
+  for (const sep of [' en ',' in ',' cerca de ']) {
     const i = q.toLowerCase().indexOf(sep);
-    if (i !== -1) return { biz: q.substring(0, i).trim(), loc: q.substring(i + sep.length).trim() };
+    if (i !== -1) return { biz: q.substring(0,i).trim(), loc: q.substring(i+sep.length).trim() };
   }
   return { biz: q, loc: q };
 };
 
 const getFilters = (biz) => {
-  const t = biz.toLowerCase();
-  const f = [];
-  for (const [k, tags] of Object.entries(OSM_TAGS)) {
-    if (t.includes(k)) tags.forEach(tag => { if (!f.includes(tag)) f.push(tag); });
-  }
+  const t = biz.toLowerCase(); const f = [];
+  for (const [k, tags] of Object.entries(OSM_TAGS)) { if (t.includes(k)) tags.forEach(tag => { if (!f.includes(tag)) f.push(tag); }); }
   return f;
 };
 
 const buildQuery = (lat, lon, filters) => {
   const r = 5000;
-  if (!filters.length) {
-    return `[out:json][timeout:25];(node(around:${r},${lat},${lon})["name"]["shop"];node(around:${r},${lat},${lon})["name"]["amenity"];way(around:${r},${lat},${lon})["name"]["shop"];);out center body 20;`;
-  }
-  const parts = filters.flatMap(f => {
-    const [k, v] = f.split('=');
-    return [`node(around:${r},${lat},${lon})["${k}"="${v}"];`, `way(around:${r},${lat},${lon})["${k}"="${v}"];`];
-  });
+  if (!filters.length) return `[out:json][timeout:25];(node(around:${r},${lat},${lon})["name"]["shop"];node(around:${r},${lat},${lon})["name"]["amenity"];way(around:${r},${lat},${lon})["name"]["shop"];);out center body 20;`;
+  const parts = filters.flatMap(f => { const [k,v] = f.split('='); return [`node(around:${r},${lat},${lon})["${k}"="${v}"];`,`way(around:${r},${lat},${lon})["${k}"="${v}"];`]; });
   return `[out:json][timeout:25];(${parts.join('')});out center body 20;`;
 };
 
+const SK = 'angulo_lr_cache';
+
 const LeadRadar = () => {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
+  const c = (() => { try { return JSON.parse(sessionStorage.getItem(SK)) || {}; } catch { return {}; } })();
+  const [query, setQuery] = useState(c.query || '');
+  const [results, setResults] = useState(c.results || []);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [savingId, setSavingId] = useState(null);
-  const [savedIds, setSavedIds] = useState(new Set());
+  const [savedIds, setSavedIds] = useState(new Set(c.savedIds || []));
+  const [engine, setEngine] = useState(c.engine || 'osm');
+  const [webResults, setWebResults] = useState(c.webResults || []);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!query.trim()) return;
+  useEffect(() => {
+    sessionStorage.setItem(SK, JSON.stringify({ query, results, savedIds: [...savedIds], engine, webResults }));
+  }, [query, results, savedIds, engine, webResults]);
+
+  const searchOSM = async () => {
     setIsLoading(true); setError(null); setResults([]);
-
     try {
       const { biz, loc } = parseQuery(query);
-
-      // Step 1: Geocode location with Nominatim (free)
-      const geoRes = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(loc)}&format=json&limit=1`,
-        { headers: { 'User-Agent': 'ANGULO-LeadRadar/1.0' } }
-      );
-      const geoData = await geoRes.json();
-      if (!geoData.length) { setError('LOCATION'); setIsLoading(false); return; }
-
-      const { lat, lon } = geoData[0];
-      const filters = getFilters(biz);
-
-      // Step 2: Search businesses with Overpass API (free)
-      const overpassRes = await fetch('https://overpass-api.de/api/interpreter', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `data=${encodeURIComponent(buildQuery(lat, lon, filters))}`
-      });
-      if (!overpassRes.ok) throw new Error('Overpass error');
-      const overpassData = await overpassRes.json();
-
-      // Step 3: Transform results
-      const businesses = overpassData.elements.filter(el => el.tags?.name).map(el => ({
-        id: el.id,
-        name: el.tags.name,
-        phone: el.tags.phone || el.tags['contact:phone'] || '',
-        website: el.tags.website || el.tags['contact:website'] || '',
-        email: el.tags.email || el.tags['contact:email'] || '',
-        full_address: [el.tags['addr:street'], el.tags['addr:housenumber'], el.tags['addr:city']].filter(Boolean).join(', ') || '',
-        type: el.tags.shop || el.tags.amenity || el.tags.leisure || '',
-        opening_hours: el.tags.opening_hours || '',
-        lat: el.lat || el.center?.lat,
-        lon: el.lon || el.center?.lon
+      const gR = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(loc)}&format=json&limit=1`, { headers: { 'User-Agent': 'ANGULO/1.0' } });
+      const gD = await gR.json();
+      if (!gD.length) { setError('LOCATION'); return; }
+      const { lat, lon } = gD[0];
+      const oR = await fetch('https://overpass-api.de/api/interpreter', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: `data=${encodeURIComponent(buildQuery(lat, lon, getFilters(biz)))}` });
+      if (!oR.ok) throw new Error();
+      const oD = await oR.json();
+      const bz = oD.elements.filter(e => e.tags?.name).map(e => ({
+        id: e.id, name: e.tags.name, phone: e.tags.phone||e.tags['contact:phone']||'',
+        website: e.tags.website||e.tags['contact:website']||'', email: e.tags.email||e.tags['contact:email']||'',
+        full_address: [e.tags['addr:street'],e.tags['addr:housenumber'],e.tags['addr:city']].filter(Boolean).join(', ')||'',
+        type: e.tags.shop||e.tags.amenity||e.tags.leisure||'', opening_hours: e.tags.opening_hours||'',
+        lat: e.lat||e.center?.lat, lon: e.lon||e.center?.lon
       }));
-
-      setResults(businesses);
-      if (!businesses.length) setError('EMPTY');
-    } catch (err) {
-      setError('NETWORK'); console.error(err);
-    } finally { setIsLoading(false); }
+      setResults(bz);
+      if (!bz.length) setError('EMPTY');
+    } catch { setError('NETWORK'); } finally { setIsLoading(false); }
   };
 
-  const handleAddToCRM = async (biz) => {
+  const searchWeb = async () => {
+    setIsLoading(true); setError(null); setWebResults([]);
+    try {
+      const r = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`);
+      const d = await r.json();
+      const items = [];
+      if (d.AbstractText) items.push({ id: 'abs', name: d.Heading||query, description: d.AbstractText, url: d.AbstractURL, source: d.AbstractSource });
+      (d.RelatedTopics||[]).forEach((t,i) => {
+        if (t.Text && t.FirstURL) items.push({ id: `r${i}`, name: t.Text.split(' - ')[0]?.substring(0,80), description: t.Text, url: t.FirstURL, source: 'DuckDuckGo' });
+        (t.Topics||[]).forEach((s,j) => { if (s.Text && s.FirstURL) items.push({ id: `s${i}${j}`, name: s.Text.split(' - ')[0]?.substring(0,80), description: s.Text, url: s.FirstURL, source: 'DuckDuckGo' }); });
+      });
+      setWebResults(items);
+      if (!items.length) setError('EMPTY');
+    } catch { setError('NETWORK'); } finally { setIsLoading(false); }
+  };
+
+  const handleSearch = (e) => { e.preventDefault(); if (!query.trim()) return; engine === 'osm' ? searchOSM() : searchWeb(); };
+
+  const addToCRM = async (biz) => {
     setSavingId(biz.id);
     try {
-      const leadData = {
-        nombre: biz.name || 'Sin nombre',
-        email: biz.email || '',
-        whatsapp: biz.phone || '',
-        compania: biz.name || '',
-        website: biz.website || '',
-        notas: [
-          `Prospectado vía LeadRadar (OpenStreetMap).`,
-          biz.type ? `Categoría: ${biz.type}` : '',
-          biz.full_address ? `Dirección: ${biz.full_address}` : '',
-          biz.opening_hours ? `Horario: ${biz.opening_hours}` : '',
-          biz.lat && biz.lon ? `Maps: https://www.google.com/maps?q=${biz.lat},${biz.lon}` : ''
-        ].filter(Boolean).join('\n'),
-        status: 'new',
-        created_at: new Date().toISOString()
-      };
-
-      const { error: err } = await supabase.from('leads').insert([leadData]);
-      if (err) throw err;
+      const ld = { nombre: biz.name||'', email: biz.email||'', whatsapp: biz.phone||'', compania: biz.name||'', website: biz.website||biz.url||'',
+        notas: [`Via LeadRadar (${engine==='osm'?'OSM':'Web'})`, biz.type?`Cat: ${biz.type}`:'', biz.full_address?`Dir: ${biz.full_address}`:'', biz.description?`Info: ${biz.description.substring(0,200)}`:'', biz.opening_hours?`Horario: ${biz.opening_hours}`:'', biz.lat&&biz.lon?`Maps: https://www.google.com/maps?q=${biz.lat},${biz.lon}`:''
+        ].filter(Boolean).join('\n'), status: 'new', created_at: new Date().toISOString() };
+      const { error: e } = await supabase.from('leads').insert([ld]);
+      if (e) throw e;
       setSavedIds(prev => new Set([...prev, biz.id]));
-    } catch (err) {
-      console.error('Error guardando lead:', err);
-      setError('SAVE');
-    } finally { setSavingId(null); }
+    } catch { setError('SAVE'); } finally { setSavingId(null); }
   };
 
+  const list = engine === 'osm' ? results : webResults;
+
   return (
-    <div className="space-y-8 animate-in fade-in duration-700 bg-[#0F172A] p-8 rounded-3xl border border-slate-800/40 min-h-screen">
-      {/* Header */}
+    <div className="space-y-8 bg-[#0F172A] p-8 rounded-3xl border border-slate-800/40 min-h-screen">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-black text-white font-outfit flex items-center gap-3">
-            <Radar className="text-blue-500 animate-pulse" /> LeadRadar B2B
-          </h1>
-          <p className="text-slate-400 mt-1 font-medium">Encuentra prospectos calificados con OpenStreetMap — 100% gratuito.</p>
+          <h1 className="text-3xl font-black text-white font-outfit flex items-center gap-3"><Radar className="text-blue-500 animate-pulse" /> LeadRadar B2B</h1>
+          <p className="text-slate-400 mt-1 font-medium">Doble motor de prospección — 100% gratuito.</p>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
           <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -146,130 +121,68 @@ const LeadRadar = () => {
         </div>
       </div>
 
-      {/* Search */}
-      <div className="bg-slate-900/50 p-6 rounded-3xl border border-slate-800 shadow-xl">
+      <div className="flex gap-2 bg-slate-900/50 p-1.5 rounded-2xl border border-slate-800 w-fit">
+        <button onClick={() => setEngine('osm')} className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${engine==='osm'?'bg-blue-600 text-white shadow-lg':'text-slate-500 hover:text-white'}`}><MapPin size={14} /> Geolocalización</button>
+        <button onClick={() => setEngine('web')} className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${engine==='web'?'bg-purple-600 text-white shadow-lg':'text-slate-500 hover:text-white'}`}><Globe size={14} /> Web Search</button>
+      </div>
+
+      <div className="bg-slate-900/50 p-6 rounded-3xl border border-slate-800">
         <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
-            <input type="text" value={query} onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ej: Salones de belleza en Caracas, Venezuela"
-              className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-4 py-4 text-white outline-none focus:border-blue-500/50 transition-all placeholder:text-slate-600 font-medium"
-            />
+            <input type="text" value={query} onChange={e => setQuery(e.target.value)} placeholder={engine==='osm'?'Ej: Salones de belleza en Caracas':'Ej: Spas premium Caracas contacto'} className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-4 py-4 text-white outline-none focus:border-blue-500/50 transition-all placeholder:text-slate-600 font-medium" />
           </div>
-          <button type="submit" disabled={isLoading || !query.trim()}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-black px-8 py-4 rounded-2xl shadow-lg shadow-blue-600/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50">
-            {isLoading ? <Loader2 className="animate-spin" /> : <Radar size={20} />} Buscar Prospectos
+          <button type="submit" disabled={isLoading||!query.trim()} className={`${engine==='osm'?'bg-blue-600 hover:bg-blue-700':'bg-purple-600 hover:bg-purple-700'} text-white font-black px-8 py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50`}>
+            {isLoading ? <Loader2 className="animate-spin" /> : <Radar size={20} />} Buscar
           </button>
         </form>
-        <p className="text-slate-600 text-xs mt-3">💡 Tip: Usa el formato "<span className="text-slate-400">tipo de negocio</span> en <span className="text-slate-400">ciudad</span>" para mejores resultados.</p>
       </div>
 
-      {/* Errors */}
-      {error === 'LOCATION' && (
-        <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 flex items-center gap-3 text-amber-500 font-bold text-sm">
-          <AlertCircle size={20} /> No pudimos encontrar esa ubicación. Intenta con una ciudad o país más específico.
-        </div>
-      )}
-      {error === 'NETWORK' && (
-        <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 flex items-center gap-3 text-rose-500 font-bold text-sm">
-          <AlertCircle size={20} /> Error de conexión. Los servidores de OpenStreetMap podrían estar ocupados, intenta de nuevo.
-        </div>
-      )}
-      {error === 'EMPTY' && (
-        <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-4 flex items-center gap-3 text-blue-400 font-bold text-sm">
-          <Search size={20} /> No se encontraron negocios. Intenta con otro término o amplía la zona de búsqueda.
-        </div>
-      )}
-      {error === 'SAVE' && (
-        <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 flex items-center gap-3 text-rose-500 font-bold text-sm">
-          <AlertCircle size={20} /> Error al guardar en el CRM. Verifica la conexión con Supabase.
-        </div>
-      )}
+      {error==='LOCATION' && <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 flex items-center gap-3 text-amber-500 font-bold text-sm"><AlertCircle size={20} /> Ubicación no encontrada.</div>}
+      {error==='NETWORK' && <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 flex items-center gap-3 text-rose-500 font-bold text-sm"><AlertCircle size={20} /> Error de conexión.</div>}
+      {error==='EMPTY' && <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-4 flex items-center gap-3 text-blue-400 font-bold text-sm"><Search size={20} /> Sin resultados.</div>}
 
-      {/* Results */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {isLoading ? (
-          Array(6).fill(0).map((_, i) => (
-            <div key={i} className="bg-slate-900/30 border border-slate-800/50 h-64 rounded-2xl animate-pulse" />
-          ))
-        ) : (
-          results.map((biz) => {
-            const isSaved = savedIds.has(biz.id);
-            const isSaving = savingId === biz.id;
-            const mapsUrl = `https://www.google.com/maps?q=${biz.lat},${biz.lon}`;
-
-            return (
-              <div key={biz.id} className="group bg-slate-900/50 border border-slate-800 hover:border-blue-500/50 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between">
-                <div>
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="h-10 w-10 bg-blue-600/10 rounded-xl flex items-center justify-center text-blue-500">
-                      <MapPin size={20} />
-                    </div>
-                    {biz.type && (
-                      <span className="bg-slate-800 text-slate-400 px-2 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider border border-slate-700">
-                        {biz.type}
-                      </span>
-                    )}
-                  </div>
-
-                  <h3 className="text-lg font-black text-white leading-tight mb-2 group-hover:text-blue-400 transition-colors">{biz.name}</h3>
-                  {biz.full_address && <p className="text-slate-500 text-xs font-bold mb-4 line-clamp-1">{biz.full_address}</p>}
-
-                  <div className="space-y-2 mb-6">
-                    {biz.phone && (
-                      <div className="flex items-center gap-2 text-slate-300 text-sm">
-                        <Phone size={14} className="text-slate-500" /> <span>{biz.phone}</span>
-                      </div>
-                    )}
-                    {biz.website && (
-                      <div className="flex items-center gap-2 text-slate-300 text-sm">
-                        <Globe size={14} className="text-slate-500" />
-                        <a href={biz.website.startsWith('http') ? biz.website : `https://${biz.website}`} target="_blank" rel="noreferrer" className="truncate hover:text-blue-400 transition-colors">{biz.website.replace(/^https?:\/\//, '')}</a>
-                      </div>
-                    )}
-                    {biz.email && (
-                      <div className="flex items-center gap-2 text-slate-300 text-sm">
-                        <Mail size={14} className="text-slate-500" /> <span className="truncate">{biz.email}</span>
-                      </div>
-                    )}
-                    {biz.opening_hours && (
-                      <div className="flex items-center gap-2 text-slate-300 text-sm">
-                        <Clock size={14} className="text-slate-500" /> <span className="truncate text-xs">{biz.opening_hours}</span>
-                      </div>
-                    )}
-                  </div>
+        {isLoading ? Array(6).fill(0).map((_,i) => <div key={i} className="bg-slate-900/30 border border-slate-800/50 h-64 rounded-2xl animate-pulse" />) :
+        list.map(biz => {
+          const saved = savedIds.has(biz.id), saving = savingId===biz.id;
+          return (
+            <div key={biz.id} className="group bg-slate-900/50 border border-slate-800 hover:border-blue-500/50 rounded-2xl p-6 transition-all flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-start mb-4">
+                  <div className={`h-10 w-10 ${engine==='osm'?'bg-blue-600/10 text-blue-500':'bg-purple-600/10 text-purple-500'} rounded-xl flex items-center justify-center`}>{engine==='osm'?<MapPin size={20}/>:<Globe size={20}/>}</div>
+                  {biz.type && <span className="bg-slate-800 text-slate-400 px-2 py-1 rounded-lg text-[10px] font-black uppercase border border-slate-700">{biz.type}</span>}
                 </div>
-
-                <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
-                  <a href={mapsUrl} target="_blank" rel="noreferrer" className="p-2 bg-slate-800 text-slate-400 rounded-lg hover:bg-blue-600 hover:text-white transition-all" title="Ver en Google Maps">
-                    <ExternalLink size={16} />
-                  </a>
-                  <button onClick={() => handleAddToCRM(biz)} disabled={isSaved || isSaving}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${
-                      isSaved ? 'bg-emerald-500/20 text-emerald-500 border border-emerald-500/30' : 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/20'
-                    }`}>
-                    {isSaving ? <Loader2 className="animate-spin" size={14} /> : isSaved ? <CheckCircle2 size={14} /> : <Plus size={14} />}
-                    {isSaved ? 'Guardado ✓' : 'Agregar al CRM'}
-                  </button>
+                <h3 className="text-lg font-black text-white leading-tight mb-2 group-hover:text-blue-400 transition-colors line-clamp-2">{biz.name}</h3>
+                {biz.full_address && <p className="text-slate-500 text-xs font-bold mb-3 line-clamp-1">{biz.full_address}</p>}
+                {biz.description && <p className="text-slate-400 text-xs mb-3 line-clamp-3 leading-relaxed">{biz.description}</p>}
+                <div className="space-y-2 mb-4">
+                  {biz.phone && <div className="flex items-center gap-2 text-slate-300 text-sm"><Phone size={14} className="text-slate-500" />{biz.phone}</div>}
+                  {(biz.website||biz.url) && <div className="flex items-center gap-2 text-sm"><Globe size={14} className="text-slate-500" /><a href={(biz.website||biz.url).startsWith('http')?(biz.website||biz.url):`https://${biz.website||biz.url}`} target="_blank" rel="noreferrer" className="truncate text-blue-400 hover:underline text-xs">{(biz.website||biz.url).replace(/^https?:\/\//,'')}</a></div>}
+                  {biz.email && <div className="flex items-center gap-2 text-slate-300 text-sm"><Mail size={14} className="text-slate-500" />{biz.email}</div>}
+                  {biz.opening_hours && <div className="flex items-center gap-2 text-slate-300 text-xs"><Clock size={14} className="text-slate-500" />{biz.opening_hours}</div>}
                 </div>
               </div>
-            );
-          })
-        )}
+              <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
+                {biz.lat && <a href={`https://www.google.com/maps?q=${biz.lat},${biz.lon}`} target="_blank" rel="noreferrer" className="p-2 bg-slate-800 text-slate-400 rounded-lg hover:bg-blue-600 hover:text-white transition-all"><ExternalLink size={16}/></a>}
+                {biz.url && !biz.lat && <a href={biz.url} target="_blank" rel="noreferrer" className="p-2 bg-slate-800 text-slate-400 rounded-lg hover:bg-purple-600 hover:text-white transition-all"><ExternalLink size={16}/></a>}
+                <button onClick={() => addToCRM(biz)} disabled={saved||saving} className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${saved?'bg-emerald-500/20 text-emerald-500 border border-emerald-500/30':`${engine==='osm'?'bg-blue-600':'bg-purple-600'} text-white shadow-lg`}`}>
+                  {saving?<Loader2 className="animate-spin" size={14}/>:saved?<CheckCircle2 size={14}/>:<Plus size={14}/>} {saved?'Guardado ✓':'Al CRM'}
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      {!isLoading && results.length === 0 && !error && (
+      {!isLoading && !list.length && !error && (
         <div className="py-24 text-center bg-slate-900/40 rounded-[2.5rem] border border-dashed border-slate-800">
           <Radar size={64} className="mx-auto text-slate-800 mb-6" />
           <h3 className="text-2xl font-black text-slate-300">Radar en espera</h3>
-          <p className="text-slate-500 mt-2 font-medium">Ingresa una ubicación y rubro para detectar nuevos negocios.</p>
-          <p className="text-slate-600 mt-4 text-xs">Powered by OpenStreetMap • 100% Gratuito</p>
+          <p className="text-slate-500 mt-2">📍 OSM + 🌐 DuckDuckGo — Selecciona un motor y busca.</p>
         </div>
       )}
-
-      {results.length > 0 && (
-        <p className="text-center text-slate-600 text-xs">Datos de OpenStreetMap © colaboradores • {results.length} resultados encontrados</p>
-      )}
+      {list.length > 0 && <p className="text-center text-slate-600 text-xs">{engine==='osm'?'OpenStreetMap ©':'DuckDuckGo'} • {list.length} resultados</p>}
     </div>
   );
 };

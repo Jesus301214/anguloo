@@ -1,9 +1,90 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ShieldCheck } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { supabase } from '../../lib/supabase';
+import { Loader2, ShieldCheck, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 
 const AdminLogin = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [mode, setMode] = useState('login');
+  const [message, setMessage] = useState(null);
+  const [initialCheck, setInitialCheck] = useState(true);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Show error from OAuth redirect if present
+  useEffect(() => {
+    const errorDesc = searchParams.get('error_description');
+    if (errorDesc) {
+      setMessage({ type: 'error', text: decodeURIComponent(errorDesc) });
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    let active = true;
+
+    // Listen for auth state changes FIRST (catches OAuth callback)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!active) return;
+      if (event === 'SIGNED_IN' && session) {
+        navigate('/admin', { replace: true });
+      }
+      if (event === 'INITIAL_SESSION') {
+        if (session) {
+          navigate('/admin', { replace: true });
+        } else {
+          setInitialCheck(false);
+        }
+      }
+    });
+
+    return () => { active = false; subscription.unsubscribe(); };
+  }, [navigate]);
+
+  // Google OAuth
+  const handleGoogle = async () => {
+    setIsLoading(true);
+    setMessage(null);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin + '/login-admin' }
+    });
+    if (error) {
+      setMessage({ type: 'error', text: error.message });
+      setIsLoading(false);
+    }
+  };
+
+  // Email + Password
+  const handleEmail = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setMessage(null);
+    try {
+      if (mode === 'register') {
+        const { error } = await supabase.auth.signUp({ email, password });
+        if (error) throw error;
+        setMessage({ type: 'success', text: 'Cuenta creada. Revisa tu correo para confirmar.' });
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+      }
+    } catch (err) {
+      setMessage({ type: 'error', text: err.message === 'Invalid login credentials' ? 'Credenciales incorrectas.' : err.message });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (initialCheck) {
+    return (
+      <div className="min-h-screen bg-[#0F172A] flex flex-col items-center justify-center">
+        <Loader2 className="animate-spin text-blue-500" size={40} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0F172A] flex items-center justify-center p-6">
@@ -14,15 +95,58 @@ const AdminLogin = () => {
           <p className="text-slate-400 mt-2 font-medium">Panel de Gestión ANGULO</p>
         </div>
 
-        <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-6 text-center">
-          <p className="text-amber-400 font-bold text-sm">🔧 Sistema de autenticación en configuración.</p>
-          <p className="text-slate-500 text-xs mt-2">Se están configurando nuevas credenciales.</p>
-        </div>
+        <div className="space-y-6">
+          {message && (
+            <div className={`rounded-2xl p-4 text-sm font-bold text-center ${message.type === 'error' ? 'bg-rose-500/10 border border-rose-500/20 text-rose-400' : 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400'}`}>
+              {message.text}
+            </div>
+          )}
 
-        <div className="pt-6 mt-6 border-t border-slate-800">
-          <div className="flex items-center gap-3 text-slate-500 justify-center">
-            <ShieldCheck size={18} />
-            <p className="text-xs font-bold uppercase tracking-widest">Conexión Segura vía Supabase</p>
+          <button onClick={handleGoogle} disabled={isLoading}
+            className="w-full flex items-center justify-center gap-4 bg-white hover:bg-slate-50 text-slate-900 font-black py-4 px-6 rounded-2xl transition-all shadow-xl disabled:opacity-50">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G" className="w-6 h-6" />
+            Continuar con Google
+          </button>
+
+          <div className="flex items-center gap-4 py-2">
+            <div className="h-px bg-slate-800 flex-1" />
+            <span className="text-slate-500 text-[10px] font-black uppercase tracking-widest">O con correo</span>
+            <div className="h-px bg-slate-800 flex-1" />
+          </div>
+
+          <form onSubmit={handleEmail} className="space-y-4">
+            <div className="relative">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600" size={18} />
+              <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="tu@correo.com"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-12 pr-4 py-4 text-white text-sm outline-none focus:border-blue-500/50 transition-all" />
+            </div>
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600" size={18} />
+              <input type={showPassword ? 'text' : 'password'} required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Contraseña" minLength={6}
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-12 pr-12 py-4 text-white text-sm outline-none focus:border-blue-500/50 transition-all" />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600 hover:text-slate-400">
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+            <button type="submit" disabled={isLoading || !email || !password}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20 disabled:opacity-50">
+              {isLoading && <Loader2 className="animate-spin" size={18} />}
+              {mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
+            </button>
+          </form>
+
+          <p className="text-center text-slate-500 text-sm">
+            {mode === 'login' ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}{' '}
+            <button onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setMessage(null); }} className="text-blue-400 font-bold hover:underline">
+              {mode === 'login' ? 'Regístrate' : 'Inicia Sesión'}
+            </button>
+          </p>
+
+          <div className="pt-6 border-t border-slate-800">
+            <div className="flex items-center gap-3 text-slate-500 justify-center">
+              <ShieldCheck size={18} />
+              <p className="text-xs font-bold uppercase tracking-widest">Conexión Segura vía Supabase</p>
+            </div>
           </div>
         </div>
       </div>

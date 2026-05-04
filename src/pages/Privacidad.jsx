@@ -113,7 +113,7 @@ const Privacidad = () => {
               <h2 className="text-2xl font-bold text-white">7. Sus Derechos (ARCO)</h2>
             </div>
             <p className="text-gray-400">
-              Usted tiene derecho a Acceder, Rectificar, Cancelar u Oponerse al tratamiento de sus datos en cualquier momento. Para ejercer estos derechos, puede enviar una solicitud formal a nuestro oficial de privacidad a través de <span className="text-rose-500">hola@angulosofware.com</span> adjuntando una prueba de identidad válida.
+              Usted tiene derecho a Acceder, Rectificar, Cancelar u Oponerse al tratamiento de sus datos en cualquier momento. Para ejercer estos derechos, puede enviar una solicitud formal a nuestro oficial de privacidad a través de <span className="text-rose-500">hola@angulosoftwares.com</span> adjuntando una prueba de identidad válida.
             </p>
           </section>
 
@@ -133,7 +133,7 @@ const Privacidad = () => {
 
         <div className="mt-20 pt-10 border-t border-slate-800 text-center">
           <p className="text-slate-500 text-sm">
-            Si tiene dudas sobre el tratamiento de sus datos, contáctenos en <span className="text-rose-500">hola@angulosofware.com</span>
+            Si tiene dudas sobre el tratamiento de sus datos, contáctenos en <span className="text-rose-500">hola@angulosoftwares.com</span>
           </p>
         </div>
       </div>

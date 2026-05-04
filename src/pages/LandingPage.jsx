@@ -470,23 +470,23 @@ const LandingPage = ({
         </div>
       </section>
 
-      {/* Soluciones (Ecosistema Silicon Valley) */}
-      <section id="soluciones" className="py-24 bg-slate-900/20 px-6">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center mb-20">
+      {/* Soluciones (Ecosistema Silicon Valley) - Marquee Horizontal */}
+      <section id="soluciones" className="py-24 bg-slate-900/20 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-6 mb-16">
+          <div className="text-center">
             <h2 className="text-4xl md:text-6xl font-black text-white font-outfit mb-6">Ecosistema de <span className="text-rose-500">Alto Rendimiento.</span></h2>
             <p className="text-slate-400 text-xl max-w-3xl mx-auto">Módulos integrados con tecnología de punta para escalar tu empresa sin límites.</p>
           </div>
+        </div>
 
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6"
-          >
-            {modules.map((m, i) => (
-              <motion.div key={i} variants={itemVariants}>
+        <div className="relative flex overflow-hidden">
+          {/* Degradados laterales para suavizar el borde */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-slate-950 to-transparent z-10" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-slate-950 to-transparent z-10" />
+
+          <div className="flex animate-marquee hover:[animation-play-state:paused] whitespace-nowrap gap-6 py-4">
+            {[...modules, ...modules].map((m, i) => (
+              <div key={i} className="w-[350px] shrink-0">
                 <SpotlightCard className="h-full">
                   <div className="mb-6 text-rose-500 w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center ring-1 ring-rose-500/20 group-hover:ring-rose-500/50 transition-all">
                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -494,12 +494,12 @@ const LandingPage = ({
                     </svg>
                   </div>
                   <p className="text-[10px] font-black tracking-[0.2em] text-slate-500 mb-2">{m.sub}</p>
-                  <h3 className="text-xl font-bold text-white mb-3">{m.title}</h3>
+                  <h3 className="text-xl font-bold text-white mb-3 whitespace-normal">{m.title}</h3>
                   <div className="h-1 w-8 bg-slate-800 group-hover:w-16 group-hover:bg-rose-500 transition-all duration-500" />
                 </SpotlightCard>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 

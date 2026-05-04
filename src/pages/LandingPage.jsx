@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { ShieldCheck, ArrowRight, X, Phone, Mail, Globe, MessageCircle, BarChart, Zap, Layers, Smartphone, LayoutGrid, Check, CheckCircle, Shield, ChevronDown, Rocket, Activity, Users, CreditCard, Settings } from 'lucide-react';
+import { ShieldCheck, ArrowRight, X, Phone, Mail, Globe, MessageCircle, BarChart, Zap, Layers, Smartphone, LayoutGrid, Check, CheckCircle, Shield, ChevronDown, Rocket, Activity, Users, CreditCard, Settings, AlertCircle, UserX, TrendingDown } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
 const SpotlightCard = ({ children, className = "" }) => {
@@ -94,10 +94,10 @@ const LandingPage = ({
 
   const menuData = {
     ecosistema: [
+      { title: "Diagnóstico", desc: "Identifica los síntomas de una gestión manual.", icon: <AlertCircle size={18} />, href: "#problemas" },
       { title: "Agenda Pro", desc: "Gestión inteligente de citas y personal.", icon: <LayoutGrid size={18} />, href: "#soluciones" },
       { title: "CRM & Leads", desc: "Control total de tus clientes y prospectos.", icon: <Users size={18} />, href: "#soluciones" },
       { title: "BI Analytics", desc: "Dashboards en tiempo real de tu rentabilidad.", icon: <BarChart size={18} />, href: "#soluciones" },
-      { title: "Finanzas", desc: "Control de cajas, pagos y comisiones.", icon: <CreditCard size={18} />, href: "#soluciones" },
     ],
     soluciones: [
       { title: "Para Spas & Centros", desc: "Optimización operativa para el sector belleza.", icon: <Zap size={18} />, href: "#soluciones" },
@@ -198,6 +198,7 @@ const LandingPage = ({
           </div>
           
           <div className="hidden items-center gap-10 md:flex">
+            <a href="#problemas" className="text-sm font-semibold text-slate-400 hover:text-white transition-colors">Problemas</a>
             <NavItem label="Ecosistema" items={menuData.ecosistema} />
             <NavItem label="Soluciones" items={menuData.soluciones} />
             <NavItem label="Compañía" items={menuData.compania} />
@@ -296,6 +297,64 @@ const LandingPage = ({
         </motion.div>
       </section>
 
+      {/* Tarea 2: Nuevo componente Diagnóstico / Problemas */}
+      <section id="problemas" className="py-32 bg-slate-950 px-6 relative overflow-hidden">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-20">
+            <div className="max-w-3xl">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-8 h-px bg-rose-500" />
+                <span className="text-xs font-black tracking-[0.3em] text-slate-500 uppercase">— EL DIAGNÓSTICO</span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-black text-white font-outfit mb-6 leading-[1.1]">
+                ¿Qué hace que tu empresa tenga que <span className="text-rose-500">vivir en urgencias y todo para ayer?</span>
+              </h2>
+              <p className="text-slate-400 text-xl">Los síntomas de una gestión manual que frenan tu crecimiento.</p>
+            </div>
+            <button onClick={() => setIsModalOpen(true)} className="group flex items-center gap-2 px-6 py-3 rounded-xl border border-slate-800 bg-slate-900/50 text-slate-300 hover:text-white hover:border-rose-500/50 transition-all font-bold">
+              Solicitar auditoría gratuita 
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
+
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
+            {[
+              { 
+                icon: <AlertCircle className="w-8 h-8" />, 
+                title: "Crecer duele cuando no hay procesos", 
+                desc: "Cada nueva venta trae más presión y más errores. Sientes que mientras más creces, más caos hay. El problema no es el crecimiento — es que tu operación no está diseñada para sostenerlo." 
+              },
+              { 
+                icon: <UserX className="w-8 h-8" />, 
+                title: "El dueño atrapado en la operación", 
+                desc: "Vives apagando incendios, persiguiendo datos por WhatsApp y resolviendo urgencias. Tu empresa depende de ti para todo, y cada vez que te desconectas, algo falla." 
+              },
+              { 
+                icon: <TrendingDown className="w-6 h-6" />, 
+                title: "Pérdida invisible de recursos", 
+                desc: "Combustible sin registrar, repuestos que \"desaparecen\", horas hombre que no se cobran. Cada proyecto termina y no sabes si ganaste o perdiste." 
+              }
+            ].map((card, i) => (
+              <motion.div key={i} variants={itemVariants}>
+                <SpotlightCard className="h-full bg-gray-900/40">
+                  <div className="w-16 h-16 rounded-2xl bg-slate-800 flex items-center justify-center text-rose-500 mb-8 group-hover:bg-rose-500 group-hover:text-white transition-all duration-500">
+                    {card.icon}
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-4 leading-tight">{card.title}</h3>
+                  <p className="text-slate-400 leading-relaxed">{card.desc}</p>
+                </SpotlightCard>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       {/* Marquee de Integraciones */}
       <div className="bg-slate-900/30 py-12 border-y border-slate-800/50 overflow-hidden relative">
         <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-slate-950 to-transparent z-10" />
@@ -315,6 +374,37 @@ const LandingPage = ({
       {/* Comparativa: El Antes y el Después */}
       <section id="comparativa" className="py-24 bg-slate-950 px-6 relative">
         <div className="mx-auto max-w-7xl">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-black text-white font-outfit mb-4">¿Tu empresa se siente así?</h2>
+            <p className="text-slate-400 text-lg">La falta de sistemas no solo quita tiempo, quita vida. Identifica tu estado actual.</p>
+          </div>
+
+          {/* Pain Points Grid */}
+          <div className="grid md:grid-cols-3 gap-6 mb-20">
+            {[
+              { icon: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z", title: "Fuga de Clientes", desc: "No sabes quién dejó de ir ni por qué." },
+              { icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z", title: "Pérdida de Tiempo", desc: "Agendas manuales y reportes lentos." },
+              { icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z", title: "Cero Claridad", desc: "No conoces tu rentabilidad real." }
+            ].map((p, i) => (
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className="p-8 rounded-[2.5rem] bg-slate-900/40 border border-slate-800/50 hover:border-rose-500/30 transition-all group"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-500 mb-6 group-hover:scale-110 transition-transform">
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={p.icon} />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">{p.title}</h3>
+                <p className="text-slate-500 text-sm">{p.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-black text-white font-outfit mb-4">Diagnóstico de Realidad</h2>
             <p className="text-slate-400 text-lg">¿Sigues operando en el pasado o estás listo para el futuro?</p>

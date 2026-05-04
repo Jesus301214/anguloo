@@ -9,6 +9,8 @@ import Calendar from './components/admin/Calendar';
 import AdminLogin from './components/admin/AdminLogin';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import LeadRadar from './components/admin/LeadRadar';
+import Privacidad from './pages/Privacidad';
+import Terminos from './pages/Terminos';
 
 // Assets
 const heroImage = '/Gemini_Generated_Image_cb7f6xcb7f6xcb7f.png';
@@ -39,6 +41,9 @@ const App = () => {
             teamImage={teamImage}
           />
         } />
+
+        <Route path="/privacidad" element={<Privacidad />} />
+        <Route path="/terminos" element={<Terminos />} />
 
         {/* Login Administrativo */}
         <Route path="/login-admin" element={<AdminLogin />} />

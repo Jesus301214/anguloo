@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ShieldCheck, ArrowRight, X, Phone, Mail, Globe, MessageCircle, BarChart, Zap, Layers, Smartphone, LayoutGrid, Check, CheckCircle, Shield, ChevronDown, Rocket, Activity, Users, CreditCard, Settings, AlertCircle, UserX, TrendingDown, Target, Handshake, BookOpen, Star, LineChart, Eye, Heart } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
@@ -698,15 +699,15 @@ const LandingPage = ({
       {/* Footer */}
       <footer className="bg-slate-950 py-20 text-center border-t border-slate-900">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
+           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
              <div className="flex items-center gap-3">
                 <img src={logo} alt="Logo" className="h-8 w-8 grayscale opacity-50" />
                 <span className="text-xl font-black text-slate-500 tracking-tighter">ANGULO</span>
              </div>
              <div className="flex gap-8 text-slate-500 font-bold text-sm">
-                <a href="#" className="hover:text-rose-500 transition-colors">Privacidad</a>
-                <a href="#" className="hover:text-rose-500 transition-colors">Términos</a>
-                <a href={whatsappLink} target="_blank" className="hover:text-rose-500 transition-colors">Soporte</a>
+                <Link to="/privacidad" className="hover:text-rose-500 transition-colors">Privacidad</Link>
+                <Link to="/terminos" className="hover:text-rose-500 transition-colors">Términos</Link>
+                <a href="mailto:hola@angulosoftwares.com" className="hover:text-rose-500 transition-colors">Soporte</a>
              </div>
           </div>
           <p className="text-sm font-medium text-slate-700">© 2026 ANGULO. Diseñado para empresas de alto crecimiento.</p>

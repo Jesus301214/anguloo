@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { ShieldCheck, ArrowRight, X, Phone, Mail, Globe } from 'lucide-react';
+import { ShieldCheck, ArrowRight, X, Phone, Mail, Globe, MessageCircle } from 'lucide-react';
 
 const LandingPage = ({ 
   setIsModalOpen, 
@@ -113,7 +113,7 @@ const LandingPage = ({
       </nav>
 
       {/* Hero Section */}
-      <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-32 pb-24">
+      <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-32 pb-24 animate-in fade-in duration-1000">
         <div className="absolute top-1/4 left-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-rose-500/20 blur-[120px]" />
         <div className="absolute bottom-1/4 right-1/4 -z-10 h-[400px] w-[400px] rounded-full bg-blue-500/20 blur-[120px]" />
         
@@ -148,12 +148,44 @@ const LandingPage = ({
         </div>
       </section>
 
+      {/* 1.5 Marquee de Confianza */}
+      <div className="bg-slate-900/50 py-10 border-y border-slate-800/50 overflow-hidden relative">
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-slate-950 to-transparent z-10" />
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-slate-950 to-transparent z-10" />
+        <div className="flex animate-marquee whitespace-nowrap gap-12 items-center">
+          {[1,2,3,4,5,6,1,2,3,4,5,6].map((i, idx) => (
+            <span key={idx} className="text-xl md:text-2xl font-black text-slate-700 uppercase tracking-[0.4em] opacity-30">
+              Transformación Digital • Eficiencia Operativa • Escalabilidad • ANGULO System •
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* 2. Sección de Problemas (Diagnóstico) */}
-      <section className="py-24 bg-slate-950 px-6 relative overflow-hidden">
+      <section className="py-24 bg-slate-950 px-6 relative overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-1000">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-20">
             <h2 className="text-3xl md:text-5xl font-black text-white font-outfit mb-6">¿Tu empresa se siente así?</h2>
             <p className="text-slate-400 text-lg max-w-2xl mx-auto">La falta de sistemas no solo quita tiempo, quita vida. Identifica tu estado actual.</p>
+          </div>
+
+          {/* Pain Points Grid */}
+          <div className="grid md:grid-cols-3 gap-6 mb-16">
+            {[
+              { icon: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z", title: "Fuga de Clientes", desc: "No sabes quién dejó de ir ni por qué." },
+              { icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z", title: "Pérdida de Tiempo", desc: "Agendas manuales y reportes lentos." },
+              { icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z", title: "Cero Claridad", desc: "No conoces tu rentabilidad real." }
+            ].map((p, i) => (
+              <div key={i} className="p-8 rounded-3xl bg-slate-900/40 border border-slate-800/50 hover:border-rose-500/30 transition-all group animate-in zoom-in duration-700" style={{ animationDelay: `${i * 100}ms` }}>
+                <div className="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-500 mb-6 group-hover:scale-110 transition-transform">
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={p.icon} />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">{p.title}</h3>
+                <p className="text-slate-500 text-sm">{p.desc}</p>
+              </div>
+            ))}
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
@@ -197,7 +229,7 @@ const LandingPage = ({
       </section>
 
       {/* 3. Soluciones (El Sistema) */}
-      <section id="soluciones" className="py-24 bg-slate-900/30 px-6">
+      <section id="soluciones" className="py-24 bg-slate-900/30 px-6 animate-in fade-in slide-in-from-bottom-8 duration-1000">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-20">
             <div className="max-w-2xl">
@@ -223,7 +255,7 @@ const LandingPage = ({
       </section>
 
       {/* 4. Metodología */}
-      <section id="metodologia" className="py-24 bg-slate-950 px-6 relative overflow-hidden">
+      <section id="metodologia" className="py-24 bg-slate-950 px-6 relative overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-1000">
         <div className="mx-auto max-w-7xl relative z-10">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
@@ -261,7 +293,7 @@ const LandingPage = ({
       </section>
 
       {/* 5. Valores / Nosotros */}
-      <section id="nosotros" className="py-24 bg-slate-900/20 px-6 border-t border-slate-900">
+      <section id="nosotros" className="py-24 bg-slate-900/20 px-6 border-t border-slate-900 animate-in fade-in slide-in-from-bottom-8 duration-1000">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-20">
             <h2 className="text-3xl md:text-5xl font-black text-white font-outfit mb-6">Lo que nos define</h2>
@@ -286,7 +318,7 @@ const LandingPage = ({
       </section>
 
       {/* 6. CTA Final */}
-      <section className="py-24 px-6 relative overflow-hidden">
+      <section className="py-24 px-6 relative overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-1000">
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent to-rose-500/10" />
         <div className="mx-auto max-w-5xl bg-gradient-to-tr from-slate-900 to-slate-800 rounded-[3rem] p-12 md:p-24 text-center border border-slate-700 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4">
@@ -316,7 +348,7 @@ const LandingPage = ({
       {/* Modal Demo */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm">
-          <div className="relative w-full max-w-md rounded-3xl bg-slate-900 border border-slate-800 p-8 shadow-2xl">
+          <div className="relative w-full max-w-md rounded-3xl bg-slate-900 border border-slate-800 p-8 shadow-2xl animate-in zoom-in duration-300">
             <button onClick={() => setIsModalOpen(false)} className="absolute right-6 top-6 text-slate-500 hover:text-white"><X size={24} /></button>
             <h2 className="text-2xl font-black text-white mb-6">Agendar Demo</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -328,6 +360,19 @@ const LandingPage = ({
           </div>
         </div>
       )}
+
+      {/* Botón Flotante WhatsApp */}
+      <a 
+        href="https://wa.me/5511999999999" 
+        target="_blank" 
+        rel="noreferrer" 
+        className="fixed bottom-8 right-8 z-[70] bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all active:scale-95 group"
+      >
+        <MessageCircle size={32} />
+        <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-white text-slate-900 px-4 py-2 rounded-xl text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-xl border border-slate-100 pointer-events-none">
+          ¿Necesitas ayuda? ¡Hablemos!
+        </span>
+      </a>
     </div>
   );
 };

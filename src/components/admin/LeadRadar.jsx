@@ -109,7 +109,6 @@ const LeadRadar = () => {
   const list = engine === 'osm' ? results : webResults;
 
   return (
-  return (
     <div className="space-y-8 bg-[#F8FAFC] p-8 rounded-3xl min-h-screen">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>

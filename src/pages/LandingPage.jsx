@@ -801,23 +801,50 @@ const LandingPage = ({
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          className="mx-auto max-w-5xl bg-slate-900 rounded-[4rem] p-12 md:p-24 text-center border border-slate-800 shadow-2xl relative overflow-hidden group"
+          className="mx-auto max-w-5xl bg-slate-50 rounded-[4rem] p-12 md:p-24 text-center border border-slate-100 shadow-xl relative overflow-hidden group"
         >
           <div className="absolute top-0 right-0 p-8">
-             <div className="bg-rose-500 text-white text-[10px] font-black px-4 py-2 rounded-full animate-pulse uppercase tracking-widest shadow-lg shadow-rose-500/50">Cupos Limitados</div>
+             <div className="bg-rose-500 text-white text-[10px] font-black px-4 py-2 rounded-full animate-pulse uppercase tracking-widest shadow-lg shadow-rose-500/20">Cupos Limitados</div>
           </div>
-          <h2 className="text-4xl md:text-7xl font-black text-white font-outfit mb-8 leading-[1.1]">¿Estás listo para que tu empresa pase al <span className="text-rose-500">siguiente nivel?</span></h2>
-          <p className="text-slate-400 text-xl mb-12 max-w-2xl mx-auto">Solicita tu auditoría gratuita. Te mostramos exactamente dónde pierdes tiempo y dinero — y cómo automatizarlo.</p>
+          <h2 className="text-4xl md:text-7xl font-black text-slate-900 font-outfit mb-8 leading-[1.1]">¿Estás listo para que tu empresa pase al <span className="text-rose-500">siguiente nivel?</span></h2>
+          <p className="text-slate-600 text-xl mb-12 max-w-2xl mx-auto">Solicita tu auditoría gratuita. Te mostramos exactamente dónde pierdes tiempo y dinero — y cómo automatizarlo.</p>
           <div className="flex flex-col md:flex-row justify-center gap-6">
-            <button onClick={() => setIsModalOpen(true)} className="bg-rose-500 hover:bg-rose-600 text-white font-black px-12 py-5 rounded-2xl text-lg shadow-2xl shadow-rose-500/30 transition-all transform hover:-translate-y-1 active:scale-95">
+            <button onClick={() => setIsModalOpen(true)} className="bg-rose-500 hover:bg-rose-600 text-white font-black px-12 py-5 rounded-2xl text-lg shadow-2xl shadow-rose-500/20 transition-all transform hover:-translate-y-1 active:scale-95">
               Solicitar Auditoría Gratis
             </button>
-            <a href={whatsappLink} target="_blank" rel="noreferrer" className="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-black px-12 py-5 rounded-2xl text-lg transition-all flex items-center justify-center gap-3 active:scale-95">
+            <a href={whatsappLink} target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 font-black px-12 py-5 rounded-2xl text-lg transition-all flex items-center justify-center gap-3 shadow-sm active:scale-95">
               <MessageCircle size={24} className="text-rose-500" />
               Hablar con un Experto
             </a>
           </div>
         </motion.div>
+      </section>
+
+      {/* Sección Dudas */}
+      <section id="contacto" className="py-24 bg-white px-6">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 font-outfit">¿Tienes alguna duda?</h2>
+          <p className="text-slate-600 mb-10 text-lg">Envíanos un mensaje y nuestro equipo se pondrá en contacto contigo.</p>
+          <form onSubmit={(e) => { e.preventDefault(); alert('Mensaje enviado correctamente a hola@angulosoftware.com'); }} className="space-y-4 text-left bg-slate-50 p-8 md:p-12 rounded-[2.5rem] border border-slate-100 shadow-sm">
+             <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nombre</label>
+                   <input required placeholder="Tu nombre" className="w-full bg-white border border-slate-200 rounded-2xl px-5 py-4 text-slate-900 focus:border-rose-500/50 outline-none transition-all" />
+                </div>
+                <div className="space-y-1.5">
+                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Corporativo</label>
+                   <input required type="email" placeholder="tu@empresa.com" className="w-full bg-white border border-slate-200 rounded-2xl px-5 py-4 text-slate-900 focus:border-rose-500/50 outline-none transition-all" />
+                </div>
+             </div>
+             <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Mensaje o Consulta</label>
+                <textarea required rows="4" placeholder="¿En qué podemos ayudarte?" className="w-full bg-white border border-slate-200 rounded-2xl px-5 py-4 text-slate-900 focus:border-rose-500/50 outline-none transition-all resize-none" />
+             </div>
+             <button type="submit" className="w-full bg-slate-900 text-white font-black py-5 rounded-2xl shadow-xl shadow-slate-900/10 hover:bg-slate-800 transition-all transform hover:-translate-y-1 active:scale-95">
+                Enviar Mensaje
+             </button>
+          </form>
+        </div>
       </section>
 
       {/* Footer */}
@@ -833,7 +860,7 @@ const LandingPage = ({
              <div className="flex gap-8 text-slate-600 font-bold text-sm">
                 <Link to="/privacidad" className="hover:text-rose-500 transition-colors">Privacidad</Link>
                 <Link to="/terminos" className="hover:text-rose-500 transition-colors">Términos</Link>
-                <a href="mailto:hola@angulosoftwares.com" className="hover:text-rose-500 transition-colors">Soporte</a>
+                <a href="mailto:hola@angulosoftware.com" className="hover:text-rose-500 transition-colors">Soporte</a>
              </div>
           </div>
           <p className="text-sm font-medium text-slate-400">© 2026 ANGULO. Auditorías operativas y automatización para empresas en crecimiento.</p>

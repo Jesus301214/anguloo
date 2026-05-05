@@ -558,7 +558,6 @@ const LandingPage = ({
                 <p className="text-slate-600 text-sm leading-relaxed">Captura y clasifica cada prospecto. Automatiza los recordatorios y nunca pierdas un cierre.</p>
               </SpotlightCard>
             </motion.div>
-          </div>
 
             {/* Card 3 */}
             <motion.div className="group">

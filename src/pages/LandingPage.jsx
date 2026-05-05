@@ -273,17 +273,32 @@ const LandingPage = ({
               <span className="mr-2 flex h-2 w-2 rounded-full bg-rose-500"></span>
               Auditorías Operativas + Automatización
             </motion.div>
-            <h1 className="mb-6 text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-8xl font-outfit leading-[1.1]">
+            <motion.h1 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="mb-6 text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-8xl font-outfit leading-[1.1]"
+            >
               Encontramos lo que <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-blue-500">tu empresa pierde</span> y lo automatizamos.
-            </h1>
-            <p className="mb-10 max-w-xl text-base leading-relaxed text-slate-300 sm:text-xl">
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="mb-10 max-w-xl text-base leading-relaxed text-slate-300 sm:text-xl"
+            >
               Hacemos una auditoría gratuita de tu operación, detectamos los procesos que te cuestan tiempo y dinero, y los convertimos en sistemas automáticos que trabajan por ti.
-            </p>
-            <div className="flex flex-col w-full sm:w-auto gap-4 sm:flex-row">
+            </motion.p>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="flex flex-col w-full sm:w-auto gap-4 sm:flex-row"
+            >
               <button onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-2 rounded-xl bg-rose-500 px-8 py-4 text-base font-bold text-white transition-all duration-300 transform hover:-translate-y-1 hover:bg-rose-600 hover:shadow-xl hover:shadow-rose-500/30 w-full sm:w-auto">
                 Solicita tu Auditoría Gratis <ArrowRight size={20} />
               </button>
-            </div>
+            </motion.div>
           </div>
 
           <div className="relative w-full">

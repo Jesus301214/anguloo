@@ -27,8 +27,8 @@ const SalesScriptGenerator = ({ lead }) => {
       const response = await result.response;
       setScript(response.text());
     } catch (error) {
-      console.error("Error con Gemini:", error);
-      setScript("Error al generar el guion. Verifica tu API Key de Gemini.");
+      console.error("DETALLE DEL ERROR GEMINI:", error);
+      setScript(`Error al generar el guion. Detalle: ${error.message || 'Verifica la consola del navegador'}`);
     } finally {
       setIsLoading(false);
     }

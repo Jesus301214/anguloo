@@ -273,14 +273,45 @@ const LandingPage = ({
               <span className="mr-2 flex h-2 w-2 rounded-full bg-rose-500"></span>
               Auditorías Operativas + Automatización
             </motion.div>
-            <motion.h1 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="mb-6 text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-8xl font-outfit leading-[1.1]"
-            >
-              Encontramos lo que <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-blue-500">tu empresa pierde</span> y lo automatizamos.
-            </motion.h1>
+            <h1 className="mb-6 text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-8xl font-outfit leading-[1.1]">
+              {[
+                { text: "Encontramos", gradient: false },
+                { text: "lo", gradient: false },
+                { text: "que", gradient: false },
+                { text: "tu", gradient: true },
+                { text: "empresa", gradient: true },
+                { text: "pierde", gradient: true },
+                { text: "y", gradient: false },
+                { text: "lo", gradient: false },
+                { text: "automatizamos.", gradient: false },
+              ].map((word, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ 
+                    opacity: 0, 
+                    y: (i % 2 === 0 ? -1 : 1) * (30 + Math.random() * 40),
+                    x: (i % 3 === 0 ? -1 : 1) * (20 + Math.random() * 30),
+                    filter: "blur(12px)",
+                    scale: 0.8
+                  }}
+                  animate={{ 
+                    opacity: 1, 
+                    y: 0, 
+                    x: 0, 
+                    filter: "blur(0px)",
+                    scale: 1
+                  }}
+                  transition={{ 
+                    duration: 0.7, 
+                    delay: 0.3 + i * 0.08,
+                    ease: [0.25, 0.46, 0.45, 0.94]
+                  }}
+                  className={`inline-block mr-[0.25em] ${word.gradient ? "text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-blue-500" : ""}`}
+                >
+                  {word.text}
+                </motion.span>
+              ))}
+            </h1>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

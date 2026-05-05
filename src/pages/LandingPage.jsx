@@ -550,7 +550,22 @@ const LandingPage = ({
               </SpotlightCard>
             </motion.div>
 
-            {/* Card 5 — Featured */}
+            {/* Card 5 — Radar */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.22 }}
+              className="group"
+            >
+              <SpotlightCard className="h-full bg-slate-900/60 p-10">
+                <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-6 border border-cyan-500/20 group-hover:scale-110 transition-transform">
+                  <Activity size={28} />
+                </div>
+                <p className="text-[10px] font-black tracking-[0.3em] text-cyan-400 uppercase mb-2">BÚSQUEDA · EXPANSIÓN</p>
+                <h3 className="text-xl font-black text-white mb-3">Radar de Prospectos B2B</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">Descubre nuevos clientes potenciales en tu zona. Extrae datos de contacto y ubicación en tiempo real para alimentar tu CRM sin teclear un solo dato.</p>
+              </SpotlightCard>
+            </motion.div>
+
+            {/* Card 6 — Featured */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.25 }}
               className="lg:col-span-2 group"

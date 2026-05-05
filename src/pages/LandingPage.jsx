@@ -253,7 +253,7 @@ const LandingPage = ({
       </nav>
 
       {/* Hero Section */}
-      <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-32 pb-24">
+      <section className="relative min-h-screen overflow-hidden px-6 pt-40 pb-24">
         <div className="absolute top-1/4 left-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-rose-500/20 blur-[120px]" />
         <div className="absolute bottom-1/4 right-1/4 -z-10 h-[400px] w-[400px] rounded-full bg-blue-500/20 blur-[120px]" />
         
@@ -261,9 +261,9 @@ const LandingPage = ({
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 md:grid-cols-2"
+          className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 md:gap-16 md:grid-cols-2 relative z-10"
         >
-          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+          <div className="flex flex-col items-center text-center md:items-start md:text-left relative z-20">
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -471,36 +471,116 @@ const LandingPage = ({
         </div>
       </section>
 
-      {/* Soluciones (Ecosistema Silicon Valley) - Marquee Horizontal */}
-      <section id="soluciones" className="py-24 bg-slate-900/20 overflow-hidden">
-        <div className="mx-auto max-w-7xl px-6 mb-16">
-          <div className="text-center">
+      {/* Soluciones — Lo que automatizamos */}
+      <section id="soluciones" className="py-32 bg-slate-950 px-6 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-rose-500/5 rounded-full blur-[150px]" />
+        <div className="mx-auto max-w-7xl relative z-10">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center rounded-full border border-rose-500/30 bg-rose-500/10 px-4 py-1.5 text-[10px] font-black text-rose-500 uppercase tracking-widest mb-6">
+              SOLUCIONES A MEDIDA
+            </div>
             <h2 className="text-4xl md:text-6xl font-black text-white font-outfit mb-6">Lo que <span className="text-rose-500">automatizamos</span> para ti.</h2>
-            <p className="text-slate-400 text-xl max-w-3xl mx-auto">Después de la auditoría, implementamos los módulos exactos que tu negocio necesita. Sin paquetes genéricos.</p>
+            <p className="text-slate-400 text-xl max-w-3xl mx-auto">Después de la auditoría, implementamos solo los módulos que tu negocio necesita. Sin paquetes genéricos — cada solución es única.</p>
           </div>
-        </div>
 
-        <div className="relative flex overflow-hidden">
-          {/* Degradados laterales para suavizar el borde */}
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-slate-950 to-transparent z-10" />
-          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-slate-950 to-transparent z-10" />
-
-          <div className="flex animate-marquee hover:[animation-play-state:paused] whitespace-nowrap gap-6 py-4">
-            {[...modules, ...modules].map((m, i) => (
-              <div key={i} className="w-[350px] shrink-0">
-                <SpotlightCard className="h-full">
-                  <div className="mb-6 text-rose-500 w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center ring-1 ring-rose-500/20 group-hover:ring-rose-500/50 transition-all">
-                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={m.icon} />
-                    </svg>
+          {/* Bento Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            {/* Card 1 — Featured */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+              className="lg:col-span-2 group"
+            >
+              <SpotlightCard className="h-full bg-slate-900/60 p-10">
+                <div className="flex flex-col md:flex-row md:items-center gap-8">
+                  <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-rose-500/20 to-rose-500/5 flex items-center justify-center text-rose-500 shrink-0 border border-rose-500/20 group-hover:scale-110 transition-transform">
+                    <BarChart size={36} />
                   </div>
-                  <p className="text-[10px] font-black tracking-[0.2em] text-slate-500 mb-2">{m.sub}</p>
-                  <h3 className="text-xl font-bold text-white mb-3 whitespace-normal">{m.title}</h3>
-                  <div className="h-1 w-8 bg-slate-800 group-hover:w-16 group-hover:bg-rose-500 transition-all duration-500" />
-                </SpotlightCard>
-              </div>
-            ))}
+                  <div>
+                    <p className="text-[10px] font-black tracking-[0.3em] text-rose-500 uppercase mb-2">ANALÍTICA · DECISIONES</p>
+                    <h3 className="text-2xl font-black text-white mb-3">Dashboards de Inteligencia Operativa</h3>
+                    <p className="text-slate-400 leading-relaxed">Visualiza en tiempo real cuánto vendes, cuánto gastas y dónde están las fugas. Sin Excel, sin reportes manuales — datos que se actualizan solos para que tomes decisiones con números, no con intuición.</p>
+                  </div>
+                </div>
+              </SpotlightCard>
+            </motion.div>
+
+            {/* Card 2 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+              className="group"
+            >
+              <SpotlightCard className="h-full bg-slate-900/60 p-10">
+                <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-6 border border-blue-500/20 group-hover:scale-110 transition-transform">
+                  <Users size={28} />
+                </div>
+                <p className="text-[10px] font-black tracking-[0.3em] text-blue-400 uppercase mb-2">CRM · PROSPECTOS</p>
+                <h3 className="text-xl font-black text-white mb-3">CRM y Gestión de Leads</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">Captura, clasifica y da seguimiento a cada prospecto. Automatiza los recordatorios y nunca pierdas un cierre por falta de seguimiento.</p>
+              </SpotlightCard>
+            </motion.div>
+
+            {/* Card 3 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.15 }}
+              className="group"
+            >
+              <SpotlightCard className="h-full bg-slate-900/60 p-10">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-6 border border-emerald-500/20 group-hover:scale-110 transition-transform">
+                  <Layers size={28} />
+                </div>
+                <p className="text-[10px] font-black tracking-[0.3em] text-emerald-400 uppercase mb-2">CONTROL · STOCK</p>
+                <h3 className="text-xl font-black text-white mb-3">Inventario Inteligente</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">Sabe exactamente qué tienes, qué falta y cuánto vale tu stock. Alertas automáticas antes de que algo se agote — cero sorpresas.</p>
+              </SpotlightCard>
+            </motion.div>
+
+            {/* Card 4 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+              className="group"
+            >
+              <SpotlightCard className="h-full bg-slate-900/60 p-10">
+                <div className="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-400 mb-6 border border-amber-500/20 group-hover:scale-110 transition-transform">
+                  <CreditCard size={28} />
+                </div>
+                <p className="text-[10px] font-black tracking-[0.3em] text-amber-400 uppercase mb-2">FINANZAS · CAJAS</p>
+                <h3 className="text-xl font-black text-white mb-3">Control Financiero Blindado</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">Registra ingresos, egresos y márgenes en tiempo real. Sabes al instante si el mes fue rentable — sin esperar al contador.</p>
+              </SpotlightCard>
+            </motion.div>
+
+            {/* Card 5 — Featured */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.25 }}
+              className="lg:col-span-2 group"
+            >
+              <SpotlightCard className="h-full bg-slate-900/60 p-10">
+                <div className="flex flex-col md:flex-row md:items-center gap-8">
+                  <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-purple-500/20 to-purple-500/5 flex items-center justify-center text-purple-400 shrink-0 border border-purple-500/20 group-hover:scale-110 transition-transform">
+                    <Zap size={36} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black tracking-[0.3em] text-purple-400 uppercase mb-2">AUTOMATIZACIÓN · INTEGRACIONES</p>
+                    <h3 className="text-2xl font-black text-white mb-3">Automatizaciones con WhatsApp, Zapier y más</h3>
+                    <p className="text-slate-400 leading-relaxed">Conectamos tus herramientas para que trabajen juntas sin intervención humana. Recordatorios por WhatsApp, sincronización con Google Calendar, alertas automáticas — tu negocio funciona incluso cuando duermes.</p>
+                  </div>
+                </div>
+              </SpotlightCard>
+            </motion.div>
+
           </div>
+
+          {/* CTA debajo de la grilla */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="text-center mt-16"
+          >
+            <p className="text-slate-500 text-sm font-bold mb-6">¿No ves tu necesidad aquí? En la auditoría diseñamos la solución exacta para tu caso.</p>
+            <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white font-black px-10 py-4 rounded-2xl text-base shadow-xl shadow-rose-500/20 transition-all transform hover:-translate-y-1 active:scale-95">
+              Solicita tu Auditoría Gratis <ArrowRight size={20} />
+            </button>
+          </motion.div>
         </div>
       </section>
 

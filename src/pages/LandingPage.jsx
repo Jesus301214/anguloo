@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ShieldCheck, ArrowRight, X, Phone, Mail, Globe, MessageCircle, BarChart, Zap, Layers, Smartphone, LayoutGrid, Check, CheckCircle, Shield, ChevronDown, Rocket, Activity, Users, CreditCard, Settings, AlertCircle, UserX, TrendingDown, Target, Handshake, BookOpen, Star, LineChart, Eye, Heart } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import PricingCardsSection from '../components/admin/PricingCardsSection';
 
 const SpotlightCard = ({ children, className = "" }) => {
   const mouseX = useMotionValue(0);
@@ -644,6 +645,9 @@ const LandingPage = ({
           </motion.div>
         </div>
       </section>
+
+      {/* Planes y Demo */}
+      <PricingCardsSection onOpenModal={() => setIsModalOpen(true)} />
 
       {/* 4. Metodología */}
       <section id="metodologia" className="py-24 bg-slate-950 px-6 relative overflow-hidden">

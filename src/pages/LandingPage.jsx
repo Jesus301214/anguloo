@@ -827,7 +827,7 @@ const LandingPage = ({
           <div className="absolute top-0 right-0 p-8">
              <div className="bg-rose-500 text-white text-[10px] font-black px-4 py-2 rounded-full animate-pulse uppercase tracking-widest shadow-lg shadow-rose-500/50">Cupos Limitados</div>
           </div>
-          <h2 className="text-4xl md:text-7xl font-black text-white font-outfit mb-8 leading-[1.1]">¿Cuánto dinero está perdiendo <span className="text-rose-500">tu empresa hoy?</span></h2>
+          <h2 className="text-4xl md:text-7xl font-black text-white font-outfit mb-8 leading-[1.1]">¿Estás listo para que tu empresa pase al <span className="text-rose-500">siguiente nivel?</span></h2>
           <p className="text-slate-400 text-xl mb-12 max-w-2xl mx-auto">Solicita tu auditoría gratuita. Te mostramos exactamente dónde pierdes tiempo y dinero — y cómo automatizarlo.</p>
           <div className="flex flex-col md:flex-row justify-center gap-6">
             <button onClick={() => setIsModalOpen(true)} className="bg-rose-500 hover:bg-rose-600 text-white font-black px-12 py-5 rounded-2xl text-lg shadow-2xl shadow-rose-500/30 transition-all transform hover:-translate-y-1 active:scale-95">

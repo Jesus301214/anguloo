@@ -19,7 +19,7 @@ const SpotlightCard = ({ children, className = "" }) => {
     <motion.div
       onMouseMove={handleMouseMove}
       whileHover={{ scale: 1.02 }}
-      className={`group relative overflow-hidden rounded-[2rem] border border-slate-800 bg-slate-900/50 p-8 transition-all hover:border-rose-500/50 ${className}`}
+      className={`group relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-8 transition-all hover:shadow-xl hover:border-rose-500/30 ${className}`}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-[2rem] opacity-0 transition duration-300 group-hover:opacity-100"
@@ -188,24 +188,24 @@ const LandingPage = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 font-sans text-slate-100 selection:bg-rose-500 selection:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-rose-500 selection:text-white overflow-x-hidden">
       {/* 1. Navbar Flotante */}
-      <nav className={`fixed top-0 left-0 right-0 z-[60] w-full transition-all duration-300 ${isMenuOpen ? 'bg-slate-950 h-screen md:h-auto' : 'bg-slate-950/80 backdrop-blur-md border-b border-slate-800'}`}>
+      <nav className={`fixed top-0 left-0 right-0 z-[60] w-full transition-all duration-300 ${isMenuOpen ? 'bg-white h-screen md:h-auto' : 'bg-white/80 backdrop-blur-md border-b border-slate-200'}`}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
-            <img src={logo} alt="Logo" className="h-10 w-10 rounded-full object-cover ring-2 ring-rose-500/20" />
-            <div className="text-2xl font-black tracking-tighter text-white font-outfit">
+            <img src={logo} alt="Logo" className="h-10 w-10 rounded-full object-cover ring-2 ring-rose-500/10 shadow-sm" />
+            <div className="text-2xl font-black tracking-tighter text-slate-900 font-outfit">
               ANGULO
             </div>
           </div>
           
           <div className="hidden items-center gap-10 md:flex">
-            <a href="#problemas" className="text-sm font-semibold text-slate-400 hover:text-white transition-colors">Problemas</a>
+            <a href="#problemas" className="text-sm font-semibold text-slate-600 hover:text-rose-500 transition-colors">Problemas</a>
             <NavItem label="Ecosistema" items={menuData.ecosistema} />
             <NavItem label="Soluciones" items={menuData.soluciones} />
             <NavItem label="Compañía" items={menuData.compania} />
             
-            <div className="h-6 w-px bg-slate-800 mx-2" />
+            <div className="h-6 w-px bg-slate-200 mx-2" />
             
             <a href="/login-admin" className="text-sm font-semibold text-slate-500 hover:text-rose-500 transition-colors">
               Admin
@@ -216,8 +216,8 @@ const LandingPage = ({
             </button>
           </div>
 
-          <button className="md:hidden text-white p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X size={24} /> : <div className="space-y-1"><div className="w-6 h-0.5 bg-white"></div><div className="w-6 h-0.5 bg-white"></div><div className="w-6 h-0.5 bg-white"></div></div>}
+          <button className="md:hidden text-slate-900 p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={24} /> : <div className="space-y-1"><div className="w-6 h-0.5 bg-slate-900"></div><div className="w-6 h-0.5 bg-slate-900"></div><div className="w-6 h-0.5 bg-slate-900"></div></div>}
           </button>
         </div>
 
@@ -228,22 +228,22 @@ const LandingPage = ({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-slate-950 border-t border-slate-900 px-6 py-8 space-y-8 overflow-y-auto max-h-[80vh]"
+              className="md:hidden bg-white border-t border-slate-100 px-6 py-8 space-y-8 overflow-y-auto max-h-[80vh]"
             >
               <div className="space-y-4">
                 <p className="text-[10px] font-black text-rose-500 uppercase tracking-widest">Ecosistema</p>
                 {menuData.ecosistema.map((m, idx) => (
-                  <a key={idx} href={m.href} onClick={() => setIsMenuOpen(false)} className="block text-xl font-bold text-white">{m.title}</a>
+                  <a key={idx} href={m.href} onClick={() => setIsMenuOpen(false)} className="block text-xl font-bold text-slate-900">{m.title}</a>
                 ))}
               </div>
               <div className="space-y-4">
                 <p className="text-[10px] font-black text-rose-500 uppercase tracking-widest">Soluciones</p>
                 {menuData.soluciones.map((m, idx) => (
-                  <a key={idx} href={m.href} onClick={() => setIsMenuOpen(false)} className="block text-xl font-bold text-white">{m.title}</a>
+                  <a key={idx} href={m.href} onClick={() => setIsMenuOpen(false)} className="block text-xl font-bold text-slate-900">{m.title}</a>
                 ))}
               </div>
-              <div className="pt-4 border-t border-slate-900 space-y-6">
-                <a href="/login-admin" className="block text-lg font-bold text-slate-400">Panel Admin</a>
+              <div className="pt-4 border-t border-slate-100 space-y-6">
+                <a href="/login-admin" className="block text-lg font-bold text-slate-600">Panel Admin</a>
                 <button onClick={() => { setIsModalOpen(true); setIsMenuOpen(false); }} className="w-full bg-rose-500 py-4 rounded-2xl font-black text-white shadow-xl shadow-rose-500/20">
                   Agenda una Demo
                 </button>
@@ -254,9 +254,9 @@ const LandingPage = ({
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen overflow-hidden px-6 pt-40 pb-24">
-        <div className="absolute top-1/4 left-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-rose-500/20 blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 -z-10 h-[400px] w-[400px] rounded-full bg-blue-500/20 blur-[120px]" />
+      <section className="relative min-h-screen overflow-hidden px-6 pt-40 pb-24 bg-white">
+        <div className="absolute top-1/4 left-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-rose-500/10 blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/4 -z-10 h-[400px] w-[400px] rounded-full bg-blue-500/10 blur-[120px]" />
         
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
@@ -269,12 +269,12 @@ const LandingPage = ({
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="mb-8 inline-flex items-center rounded-full border border-rose-500/30 bg-rose-500/10 px-4 py-1.5 text-xs sm:text-sm font-medium text-rose-400 backdrop-blur-sm"
+              className="mb-8 inline-flex items-center rounded-full border border-rose-500/20 bg-rose-500/5 px-4 py-1.5 text-xs sm:text-sm font-medium text-rose-600 backdrop-blur-sm"
             >
               <span className="mr-2 flex h-2 w-2 rounded-full bg-rose-500"></span>
               Auditorías Operativas + Automatización
             </motion.div>
-            <h1 className="mb-6 text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-8xl font-outfit leading-[1.1]">
+            <h1 className="mb-6 text-4xl font-black tracking-tight text-slate-900 sm:text-6xl lg:text-8xl font-outfit leading-[1.1]">
               {[
                 { text: "Encontramos", gradient: false },
                 { text: "lo", gradient: false },
@@ -317,7 +317,7 @@ const LandingPage = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="mb-10 max-w-xl text-base leading-relaxed text-slate-300 sm:text-xl"
+              className="mb-10 max-w-xl text-base leading-relaxed text-slate-600 sm:text-xl"
             >
               Hacemos una auditoría gratuita de tu operación, detectamos los procesos que te cuestan tiempo y dinero, y los convertimos en sistemas automáticos que trabajan por ti.
             </motion.p>
@@ -345,21 +345,21 @@ const LandingPage = ({
         </motion.div>
       </section>
 
-      {/* Tarea 2: Nuevo componente Diagnóstico / Problemas */}
-      <section id="problemas" className="py-32 bg-slate-950 px-6 relative overflow-hidden">
+      {/* Diagnóstico / Problemas */}
+      <section id="problemas" className="py-32 bg-slate-50 px-6 relative overflow-hidden">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-20">
             <div className="max-w-3xl">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-8 h-px bg-rose-500" />
-                <span className="text-xs font-black tracking-[0.3em] text-slate-500 uppercase">— TU DIAGNÓSTICO GRATUITO</span>
+                <span className="text-xs font-black tracking-[0.3em] text-slate-400 uppercase">— TU DIAGNÓSTICO GRATUITO</span>
               </div>
-              <h2 className="text-4xl md:text-6xl font-black text-white font-outfit mb-6 leading-[1.1]">
-                ¿Qué hace que tu empresa tenga que <span className="text-rose-500">vivir en urgencias y todo para ayer?</span>
+              <h2 className="text-4xl md:text-6xl font-black text-slate-900 font-outfit mb-6 leading-[1.1]">
+                ¿Qué hace que tu empresa tenga que <span className="text-rose-500">vivir en urgencias?</span>
               </h2>
-              <p className="text-slate-400 text-xl">Evaluamos tu operación gratis. Estos son los dolores que encontramos en el 90% de los negocios que auditamos.</p>
+              <p className="text-slate-600 text-xl">Evaluamos tu operación gratis. Estos son los dolores que encontramos en el 90% de los negocios que auditamos.</p>
             </div>
-            <button onClick={() => setIsModalOpen(true)} className="group flex items-center gap-2 px-6 py-3 rounded-xl border border-slate-800 bg-slate-900/50 text-slate-300 hover:text-white hover:border-rose-500/50 transition-all font-bold">
+            <button onClick={() => setIsModalOpen(true)} className="group flex items-center gap-2 px-6 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 hover:text-rose-500 hover:border-rose-500/50 shadow-sm hover:shadow-md transition-all font-bold">
               Solicitar auditoría gratuita 
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </button>
@@ -375,27 +375,27 @@ const LandingPage = ({
             {[
               { 
                 icon: <AlertCircle className="w-8 h-8" />, 
-                title: "Crecer duele cuando no hay procesos", 
-                desc: "Cada nueva venta trae más presión y más errores. En la auditoría detectamos exactamente dónde se rompe tu operación y diseñamos la automatización precisa para resolverlo." 
+                title: "Crecer duele sin procesos", 
+                desc: "Cada nueva venta trae más presión y más errores. En la auditoría detectamos exactamente dónde se rompe tu operación y diseñamos la automatización precisa." 
               },
               { 
                 icon: <UserX className="w-8 h-8" />, 
-                title: "El dueño atrapado en la operación", 
-                desc: "Vives apagando incendios y resolviendo urgencias. Nuestro trabajo es identificar esas tareas repetitivas, eliminarlas con automatización y devolverte las horas que pierdes cada semana." 
+                title: "Dueño atrapado en la operación", 
+                desc: "Vives apagando incendios. Identificamos esas tareas repetitivas, las eliminamos con automatización y te devolvemos las horas que pierdes cada semana." 
               },
               { 
-                icon: <TrendingDown className="w-6 h-6" />, 
-                title: "Pérdida invisible de recursos", 
-                desc: "Inventario sin registrar, horas que no se cobran, dinero que se evapora. En la auditoría te mostramos con números exactos cuánto estás perdiendo — y cómo recuperarlo." 
+                icon: <TrendingDown className="w-8 h-8" />, 
+                title: "Pérdida invisible de dinero", 
+                desc: "Inventario sin registrar, horas no cobradas. Te mostramos con números exactos cuánto estás perdiendo — y cómo recuperarlo con sistemas blindados." 
               }
             ].map((card, i) => (
               <motion.div key={i} variants={itemVariants}>
-                <SpotlightCard className="h-full bg-gray-900/40">
-                  <div className="w-16 h-16 rounded-2xl bg-slate-800 flex items-center justify-center text-rose-500 mb-8 group-hover:bg-rose-500 group-hover:text-white transition-all duration-500">
+                <SpotlightCard className="h-full shadow-md bg-white border-slate-100">
+                  <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-rose-500 mb-8 group-hover:bg-rose-500 group-hover:text-white transition-all duration-500">
                     {card.icon}
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-4 leading-tight">{card.title}</h3>
-                  <p className="text-slate-400 leading-relaxed">{card.desc}</p>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4 leading-tight">{card.title}</h3>
+                  <p className="text-slate-600 leading-relaxed">{card.desc}</p>
                 </SpotlightCard>
               </motion.div>
             ))}
@@ -518,114 +518,95 @@ const LandingPage = ({
         </div>
       </section>
 
-      {/* Soluciones — Lo que automatizamos */}
-      <section id="soluciones" className="py-32 bg-slate-950 px-6 relative overflow-hidden">
+      {/* Soluciones — Bento Grid */}
+      <section id="soluciones" className="py-32 bg-white px-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-rose-500/5 rounded-full blur-[150px]" />
         <div className="mx-auto max-w-7xl relative z-10">
           <div className="text-center mb-20">
-            <div className="inline-flex items-center rounded-full border border-rose-500/30 bg-rose-500/10 px-4 py-1.5 text-[10px] font-black text-rose-500 uppercase tracking-widest mb-6">
+            <div className="inline-flex items-center rounded-full border border-rose-500/20 bg-rose-500/5 px-4 py-1.5 text-[10px] font-black text-rose-600 uppercase tracking-widest mb-6">
               SOLUCIONES A MEDIDA
             </div>
-            <h2 className="text-4xl md:text-6xl font-black text-white font-outfit mb-6">Lo que <span className="text-rose-500">automatizamos</span> para ti.</h2>
-            <p className="text-slate-400 text-xl max-w-3xl mx-auto">Después de la auditoría, implementamos solo los módulos que tu negocio necesita. Sin paquetes genéricos — cada solución es única.</p>
+            <h2 className="text-4xl md:text-6xl font-black text-slate-900 font-outfit mb-6">Lo que <span className="text-rose-500">automatizamos</span> para ti.</h2>
+            <p className="text-slate-600 text-xl max-w-3xl mx-auto">Después de la auditoría, implementamos solo los módulos que tu negocio necesita. Sin paquetes genéricos.</p>
           </div>
 
-          {/* Bento Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            
             {/* Card 1 — Featured */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              className="lg:col-span-2 group"
-            >
-              <SpotlightCard className="h-full bg-slate-900/60 p-10">
+            <motion.div className="lg:col-span-2 group">
+              <SpotlightCard className="h-full bg-slate-50/50 p-10 border-slate-200 shadow-md hover:shadow-xl">
                 <div className="flex flex-col md:flex-row md:items-center gap-8">
-                  <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-rose-500/20 to-rose-500/5 flex items-center justify-center text-rose-500 shrink-0 border border-rose-500/20 group-hover:scale-110 transition-transform">
+                  <div className="w-20 h-20 rounded-3xl bg-white shadow-sm flex items-center justify-center text-rose-500 shrink-0 border border-slate-100 group-hover:scale-110 transition-transform">
                     <BarChart size={36} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-black tracking-[0.3em] text-rose-500 uppercase mb-2">ANALÍTICA · DECISIONES</p>
-                    <h3 className="text-2xl font-black text-white mb-3">Dashboards de Inteligencia Operativa</h3>
-                    <p className="text-slate-400 leading-relaxed">Visualiza en tiempo real cuánto vendes, cuánto gastas y dónde están las fugas. Sin Excel, sin reportes manuales — datos que se actualizan solos para que tomes decisiones con números, no con intuición.</p>
+                    <p className="text-[10px] font-black tracking-[0.3em] text-rose-600 uppercase mb-2">ANALÍTICA · DECISIONES</p>
+                    <h3 className="text-2xl font-black text-slate-900 mb-3">Dashboards de Inteligencia</h3>
+                    <p className="text-slate-600 leading-relaxed text-sm">Visualiza en tiempo real cuánto vendes y dónde están las fugas. Datos que se actualizan solos para que tomes decisiones con números.</p>
                   </div>
                 </div>
               </SpotlightCard>
             </motion.div>
 
             {/* Card 2 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-              className="group"
-            >
-              <SpotlightCard className="h-full bg-slate-900/60 p-10">
-                <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-6 border border-blue-500/20 group-hover:scale-110 transition-transform">
+            <motion.div className="group">
+              <SpotlightCard className="h-full bg-white p-10 border-slate-100 shadow-md hover:shadow-xl">
+                <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 mb-6 border border-blue-100">
                   <Users size={28} />
                 </div>
-                <p className="text-[10px] font-black tracking-[0.3em] text-blue-400 uppercase mb-2">CRM · PROSPECTOS</p>
-                <h3 className="text-xl font-black text-white mb-3">CRM y Gestión de Leads</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">Captura, clasifica y da seguimiento a cada prospecto. Automatiza los recordatorios y nunca pierdas un cierre por falta de seguimiento.</p>
+                <p className="text-[10px] font-black tracking-[0.3em] text-blue-600 uppercase mb-2">CRM · PROSPECTOS</p>
+                <h3 className="text-xl font-black text-slate-900 mb-3">CRM y Gestión</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">Captura y clasifica cada prospecto. Automatiza los recordatorios y nunca pierdas un cierre.</p>
               </SpotlightCard>
             </motion.div>
+          </div>
 
             {/* Card 3 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.15 }}
-              className="group"
-            >
-              <SpotlightCard className="h-full bg-slate-900/60 p-10">
-                <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-6 border border-emerald-500/20 group-hover:scale-110 transition-transform">
+            <motion.div className="group">
+              <SpotlightCard className="h-full bg-white p-10 border-slate-100 shadow-md hover:shadow-xl">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 mb-6 border border-emerald-100">
                   <Layers size={28} />
                 </div>
-                <p className="text-[10px] font-black tracking-[0.3em] text-emerald-400 uppercase mb-2">CONTROL · STOCK</p>
-                <h3 className="text-xl font-black text-white mb-3">Inventario Inteligente</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">Sabe exactamente qué tienes, qué falta y cuánto vale tu stock. Alertas automáticas antes de que algo se agote — cero sorpresas.</p>
+                <p className="text-[10px] font-black tracking-[0.3em] text-emerald-600 uppercase mb-2">CONTROL · STOCK</p>
+                <h3 className="text-xl font-black text-slate-900 mb-3">Inventario Inteligente</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">Sabe exactamente qué tienes y qué falta. Alertas automáticas — cero sorpresas.</p>
               </SpotlightCard>
             </motion.div>
 
             {/* Card 4 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-              className="group"
-            >
-              <SpotlightCard className="h-full bg-slate-900/60 p-10">
-                <div className="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-400 mb-6 border border-amber-500/20 group-hover:scale-110 transition-transform">
+            <motion.div className="group">
+              <SpotlightCard className="h-full bg-white p-10 border-slate-100 shadow-md hover:shadow-xl">
+                <div className="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-600 mb-6 border border-amber-100">
                   <CreditCard size={28} />
                 </div>
-                <p className="text-[10px] font-black tracking-[0.3em] text-amber-400 uppercase mb-2">FINANZAS · CAJAS</p>
-                <h3 className="text-xl font-black text-white mb-3">Control Financiero Blindado</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">Registra ingresos, egresos y márgenes en tiempo real. Sabes al instante si el mes fue rentable — sin esperar al contador.</p>
+                <p className="text-[10px] font-black tracking-[0.3em] text-amber-600 uppercase mb-2">FINANZAS · CAJAS</p>
+                <h3 className="text-xl font-black text-slate-900 mb-3">Control Financiero</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">Registra ingresos y márgenes en tiempo real. Sabes al instante si el mes fue rentable.</p>
               </SpotlightCard>
             </motion.div>
 
             {/* Card 5 — Radar */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.22 }}
-              className="group"
-            >
-              <SpotlightCard className="h-full bg-slate-900/60 p-10">
-                <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-6 border border-cyan-500/20 group-hover:scale-110 transition-transform">
+            <motion.div className="group">
+              <SpotlightCard className="h-full bg-white p-10 border-slate-100 shadow-md hover:shadow-xl">
+                <div className="w-14 h-14 rounded-2xl bg-cyan-50 flex items-center justify-center text-cyan-600 mb-6 border border-cyan-100">
                   <Activity size={28} />
                 </div>
-                <p className="text-[10px] font-black tracking-[0.3em] text-cyan-400 uppercase mb-2">BÚSQUEDA · EXPANSIÓN</p>
-                <h3 className="text-xl font-black text-white mb-3">Radar de Prospectos B2B</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">Descubre nuevos clientes potenciales en tu zona. Extrae datos de contacto y ubicación en tiempo real para alimentar tu CRM sin teclear un solo dato.</p>
+                <p className="text-[10px] font-black tracking-[0.3em] text-cyan-600 uppercase mb-2">BÚSQUEDA · EXPANSIÓN</p>
+                <h3 className="text-xl font-black text-slate-900 mb-3">Radar de Prospectos</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">Descubre nuevos clientes en tu zona. Extrae datos en tiempo real para tu CRM.</p>
               </SpotlightCard>
             </motion.div>
 
             {/* Card 6 — Featured */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.25 }}
-              className="lg:col-span-2 group"
-            >
-              <SpotlightCard className="h-full bg-slate-900/60 p-10">
+            <motion.div className="lg:col-span-2 group">
+              <SpotlightCard className="h-full bg-slate-50/50 p-10 border-slate-200 shadow-md hover:shadow-xl">
                 <div className="flex flex-col md:flex-row md:items-center gap-8">
-                  <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-purple-500/20 to-purple-500/5 flex items-center justify-center text-purple-400 shrink-0 border border-purple-500/20 group-hover:scale-110 transition-transform">
+                  <div className="w-20 h-20 rounded-3xl bg-white shadow-sm flex items-center justify-center text-purple-600 shrink-0 border border-slate-100 group-hover:scale-110 transition-transform">
                     <Zap size={36} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-black tracking-[0.3em] text-purple-400 uppercase mb-2">AUTOMATIZACIÓN · INTEGRACIONES</p>
-                    <h3 className="text-2xl font-black text-white mb-3">Automatizaciones con WhatsApp, Zapier y más</h3>
-                    <p className="text-slate-400 leading-relaxed">Conectamos tus herramientas para que trabajen juntas sin intervención humana. Recordatorios por WhatsApp, sincronización con Google Calendar, alertas automáticas — tu negocio funciona incluso cuando duermes.</p>
+                    <p className="text-[10px] font-black tracking-[0.3em] text-purple-600 uppercase mb-2">AUTOMATIZACIÓN · INTEGRACIONES</p>
+                    <h3 className="text-2xl font-black text-slate-900 mb-3">WhatsApp y Zapier</h3>
+                    <p className="text-slate-600 leading-relaxed text-sm">Conectamos tus herramientas. Recordatorios por WhatsApp, sincronización con Calendar y más.</p>
                   </div>
                 </div>
               </SpotlightCard>
@@ -650,7 +631,7 @@ const LandingPage = ({
       <PricingCardsSection onOpenModal={() => setIsModalOpen(true)} />
 
       {/* 4. Metodología */}
-      <section id="metodologia" className="py-24 bg-slate-950 px-6 relative overflow-hidden">
+      <section id="metodologia" className="py-24 bg-slate-50 px-6 relative overflow-hidden">
         <div className="mx-auto max-w-7xl relative z-10">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <motion.div 
@@ -658,23 +639,23 @@ const LandingPage = ({
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl md:text-6xl font-black text-white font-outfit mb-8">Nuestra Metodología: <br/><span className="text-rose-500 italic">Claridad Radical</span></h2>
+              <h2 className="text-4xl md:text-6xl font-black text-slate-900 font-outfit mb-8">Nuestra Metodología: <br/><span className="text-rose-500 italic">Claridad Radical</span></h2>
               <div className="relative space-y-12">
                 {/* Línea conectora */}
-                <div className="absolute left-6 top-6 bottom-6 w-px bg-gradient-to-b from-rose-500 via-blue-500 to-emerald-500 opacity-20 hidden sm:block" />
+                <div className="absolute left-6 top-6 bottom-6 w-px bg-slate-200 hidden sm:block" />
                 
                 {[
-                  { id: 1, title: "Auditoría Operativa", color: "rose", desc: "Analizamos cada rincón de tu negocio: cómo vendes, cómo cobras, cómo gastas y dónde pierdes dinero sin saberlo." },
-                  { id: 2, title: "Diseño de Automatización", color: "blue", desc: "Creamos un plan personalizado: eliminamos tareas repetitivas, conectamos tus herramientas y dejamos que el sistema trabaje solo." },
-                  { id: 3, title: "Implementación y Soporte", color: "emerald", desc: "Instalamos, entrenamos a tu equipo y te acompañamos. Tu operación crece y nosotros estamos ahí para escalarla contigo." }
+                  { id: 1, title: "Auditoría Operativa", color: "rose", desc: "Analizamos cada rincón de tu negocio: cómo vendes, cómo cobras y dónde pierdes dinero sin saberlo." },
+                  { id: 2, title: "Diseño de Automatización", color: "blue", desc: "Creamos un plan personalizado: eliminamos tareas repetitivas y conectamos tus herramientas." },
+                  { id: 3, title: "Implementación y Soporte", color: "emerald", desc: "Instalamos, entrenamos a tu equipo y te acompañamos. Tu operación crece con nosotros." }
                 ].map((step) => (
                   <div key={step.id} className="flex gap-6 group">
-                    <div className={`h-12 w-12 rounded-full bg-${step.color}-500/10 border border-${step.color}-500/30 flex items-center justify-center text-${step.color}-500 font-black shrink-0 group-hover:scale-110 transition-transform`}>
+                    <div className={`h-12 w-12 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-${step.color}-500 font-black shrink-0 group-hover:scale-110 transition-transform`}>
                       {step.id}
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-white mb-2">{step.title}</h4>
-                      <p className="text-slate-400">{step.desc}</p>
+                      <h4 className="text-xl font-bold text-slate-900 mb-2">{step.title}</h4>
+                      <p className="text-slate-600">{step.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -686,25 +667,25 @@ const LandingPage = ({
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="absolute inset-0 bg-rose-500/10 blur-3xl rounded-full animate-pulse"></div>
-              <img src={teamImage} alt="Team" className="relative rounded-[3rem] border border-slate-800 shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000" />
+              <div className="absolute inset-0 bg-rose-500/5 blur-3xl rounded-full"></div>
+              <img src={teamImage} alt="Team" className="relative rounded-[3rem] border border-slate-200 shadow-2xl transition-all duration-1000" />
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* 5. Cultura: Lo que nos mueve */}
-      <section id="cultura" className="py-24 bg-slate-950 px-6 relative overflow-hidden">
+      <section id="cultura" className="py-24 bg-white px-6 relative overflow-hidden">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-20">
-            <div className="inline-flex items-center rounded-full border border-rose-500/30 bg-rose-500/10 px-4 py-1.5 text-[10px] font-black text-rose-500 uppercase tracking-widest mb-6">
+            <div className="inline-flex items-center rounded-full border border-rose-500/20 bg-rose-500/5 px-4 py-1.5 text-[10px] font-black text-rose-600 uppercase tracking-widest mb-6">
               NUESTRA CULTURA
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">
               Lo que nos <span className="text-rose-500">mueve</span>
             </h2>
-            <p className="text-lg md:text-xl text-gray-300 font-medium leading-relaxed max-w-3xl mx-auto">
-              Guiamos a empresas a descubrir sus pérdidas ocultas, eliminar procesos manuales y construir una operación que funcione sola.
+            <p className="text-lg md:text-xl text-slate-600 font-medium leading-relaxed max-w-3xl mx-auto">
+              Guiamos a empresas a descubrir sus pérdidas ocultas y construir una operación que funcione sola.
             </p>
           </div>
 
@@ -712,10 +693,10 @@ const LandingPage = ({
             <div className="lg:col-span-1">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-8 h-px bg-rose-500" />
-                <span className="text-xs font-black tracking-[0.3em] text-slate-500 uppercase">— NUESTRA VISIÓN</span>
+                <span className="text-xs font-black tracking-[0.3em] text-slate-400 uppercase">— NUESTRA VISIÓN</span>
               </div>
-              <p className="text-lg text-gray-300 leading-relaxed font-medium">
-                No vendemos software genérico. Primero auditamos tu operación, detectamos los procesos que te cuestan tiempo y dinero, y luego diseñamos la automatización exacta que necesitas. Cada solución es única porque cada empresa es diferente.
+              <p className="text-lg text-slate-600 leading-relaxed font-medium">
+                No vendemos software genérico. Primero auditamos tu operación, detectamos los procesos que te cuestan tiempo y dinero, y luego diseñamos la automatización exacta que necesitas.
               </p>
             </div>
 
@@ -731,37 +712,37 @@ const LandingPage = ({
                 {
                   icon: <TrendingDown className="w-6 h-6" />,
                   title: "Rentabilidad Real",
-                  phrase: "Ganar más eliminando fugas invisibles.",
+                  phrase: "Ganar más eliminando fugas.",
                   bad: "El desorden te cuesta dinero todos los días.",
-                  good: "Cada proceso controlado es ganancia recuperada."
+                  good: "Cada proceso controlado es ganancia."
                 },
                 {
                   icon: <Handshake className="w-6 h-6" />,
                   title: "Sin Juicio",
                   phrase: "El error es parte del camino.",
-                  bad: "Sabemos que tu operación actual tiene fallas.",
-                  good: "No te juzgamos, construimos el sistema para resolverlas."
+                  bad: "Tu operación actual tiene fallas.",
+                  good: "Construimos el sistema para resolverlas."
                 },
                 {
                   icon: <Zap className="w-6 h-6" />,
                   title: "Transformación",
                   phrase: "Del caos al control total.",
-                  bad: "Antes: improvisación constante y estrés.",
-                  good: "Después: una empresa que opera sola mientras creces."
+                  bad: "Improvisación constante y estrés.",
+                  good: "Una empresa que opera sola mientras creces."
                 }
               ].map((card, idx) => (
-                <SpotlightCard key={idx} className="bg-gray-900/40 p-10 border-slate-800/50">
-                  <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-rose-500 mb-6">
+                <SpotlightCard key={idx} className="bg-white p-10 border-slate-100 shadow-md hover:shadow-xl">
+                  <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center text-rose-500 mb-6 border border-slate-100">
                     {card.icon}
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">{card.title}</h3>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-2">{card.title}</h3>
                   <p className="text-sm font-medium text-rose-500 mb-4">{card.phrase}</p>
                   <div className="space-y-3">
-                    <div className="flex items-start gap-3 text-sm text-gray-500">
+                    <div className="flex items-start gap-3 text-sm text-slate-400">
                       <span className="text-rose-500 mt-0.5 shrink-0">✕</span>
                       <span>{card.bad}</span>
                     </div>
-                    <div className="flex items-start gap-3 text-sm text-gray-300 font-bold">
+                    <div className="flex items-start gap-3 text-sm text-slate-700 font-bold">
                       <span className="text-emerald-500 mt-0.5 shrink-0">✓</span>
                       <span>{card.good}</span>
                     </div>
@@ -774,27 +755,27 @@ const LandingPage = ({
       </section>
 
       {/* 6. Valores: 8 Fundamentos */}
-      <section id="valores" className="py-24 bg-slate-900/10 px-6 border-t border-slate-900">
+      <section id="valores" className="py-24 bg-slate-50 px-6 border-t border-slate-100">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">
               Nuestros <span className="text-rose-500">8 Valores</span> Fundamentales
             </h2>
-            <p className="text-lg md:text-xl text-gray-300 font-medium leading-relaxed max-w-3xl mx-auto">
-              Lo que guía cada decisión, cada línea de código y cada conversación con nuestros clientes.
+            <p className="text-lg md:text-xl text-slate-600 font-medium leading-relaxed max-w-3xl mx-auto">
+              Lo que guía cada decisión y cada conversación con nuestros clientes.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: <Target />, title: "Foco en el objetivo", phrase: "¿Para qué hacemos esto?", desc: "Todo parte por entender qué se quiere lograr. El objetivo ordena la conversación." },
-              { icon: <BookOpen />, title: "Claridad para decidir", phrase: "Menos complejidad, mejores decisiones", desc: "La gestión debe entregar claridad, no enredos. Ordenamos lo relevante." },
-              { icon: <Star />, title: "Excelencia real", phrase: "Soluciones de tu operación, no genéricas", desc: "Software construido desde la trinchera de tu propia operación." },
-              { icon: <LineChart />, title: "Aprendizaje continuo", phrase: "El error es maestro, no enemigo", desc: "Se observa, se entiende y se transforma. Evolucionamos con cada dato." },
-              { icon: <Eye />, title: "Transparencia", phrase: "Sin letra chica, sin sorpresas", desc: "Somos claros con los alcances y los tiempos. La confianza es nuestro activo." },
-              { icon: <Heart />, title: "Impacto positivo", phrase: "Crecer debe mejorar tu vida", desc: "El crecimiento real significa menos estrés, más orden y más vida propia." },
-              { icon: <Users />, title: "Responsabilidad", phrase: "Hacemos lo que dijimos que íbamos a hacer", desc: "Sin excusas. Decimos la verdad, asumimos el compromiso y avanzamos." },
-              { icon: <Zap />, title: "Proactividad", phrase: "No esperamos a que explote para actuar", desc: "Anticipamos necesidades y entregamos soluciones antes de que sean urgencias." }
+              { icon: <Target />, title: "Foco en el objetivo", desc: "Todo parte por entender qué se quiere lograr. El objetivo ordena la conversación." },
+              { icon: <BookOpen />, title: "Claridad para decidir", desc: "La gestión debe entregar claridad, no enredos. Ordenamos lo relevante." },
+              { icon: <Star />, title: "Excelencia real", desc: "Software construido desde la trinchera de tu propia operación." },
+              { icon: <LineChart />, title: "Aprendizaje continuo", desc: "Se observa, se entiende y se transforma. Evolucionamos con cada dato." },
+              { icon: <Eye />, title: "Transparencia", desc: "Somos claros con los alcances y los tiempos. La confianza es nuestro activo." },
+              { icon: <Heart />, title: "Impacto positivo", desc: "El crecimiento real significa menos estrés, más orden y más vida propia." },
+              { icon: <Users />, title: "Responsabilidad", desc: "Hacemos lo que dijimos que íbamos a hacer. Sin excusas." },
+              { icon: <Zap />, title: "Proactividad", desc: "Anticipamos necesidades y entregamos soluciones antes de que sean urgencias." }
             ].map((v, i) => (
               <motion.div 
                 key={i}
@@ -802,14 +783,13 @@ const LandingPage = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
                 viewport={{ once: true }}
-                className="p-8 bg-slate-900/50 border border-slate-800 rounded-[2rem] hover:border-rose-500/30 transition-all group"
+                className="p-8 bg-white border border-slate-100 rounded-[2rem] hover:border-rose-500/30 transition-all group shadow-sm hover:shadow-md"
               >
-                <div className="mb-6 text-rose-500 w-10 h-10 flex items-center justify-center">
+                <div className="mb-6 text-rose-500 w-10 h-10 flex items-center justify-center bg-rose-50 rounded-xl">
                   {React.cloneElement(v.icon, { size: 24 })}
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">{v.title}</h3>
-                <p className="text-sm font-medium text-rose-500 mb-3">{v.phrase}</p>
-                <p className="text-sm text-gray-400 leading-relaxed">{v.desc}</p>
+                <h3 className="text-xl font-semibold text-slate-900 mb-3">{v.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">{v.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -817,8 +797,8 @@ const LandingPage = ({
       </section>
 
       {/* CTA Final */}
-      <section className="py-32 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent to-rose-500/10" />
+      <section className="py-32 px-6 relative overflow-hidden bg-white">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent to-rose-500/5" />
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -842,20 +822,22 @@ const LandingPage = ({
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-950 py-20 text-center border-t border-slate-900">
+      <footer className="bg-white py-20 text-center border-t border-slate-100">
         <div className="mx-auto max-w-7xl px-6">
            <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
              <div className="flex items-center gap-3">
-                <img src={logo} alt="Logo" className="h-8 w-8 grayscale opacity-50" />
-                <span className="text-xl font-black text-slate-500 tracking-tighter">ANGULO</span>
+                <div className="bg-slate-900 p-2 rounded-lg">
+                  <img src={logo} alt="Logo" className="h-6 w-6 brightness-0 invert" />
+                </div>
+                <span className="text-xl font-black text-slate-900 tracking-tighter">ANGULO</span>
              </div>
-             <div className="flex gap-8 text-slate-500 font-bold text-sm">
+             <div className="flex gap-8 text-slate-600 font-bold text-sm">
                 <Link to="/privacidad" className="hover:text-rose-500 transition-colors">Privacidad</Link>
                 <Link to="/terminos" className="hover:text-rose-500 transition-colors">Términos</Link>
                 <a href="mailto:hola@angulosoftwares.com" className="hover:text-rose-500 transition-colors">Soporte</a>
              </div>
           </div>
-          <p className="text-sm font-medium text-slate-700">© 2026 ANGULO. Auditorías operativas y automatización para empresas en crecimiento.</p>
+          <p className="text-sm font-medium text-slate-400">© 2026 ANGULO. Auditorías operativas y automatización para empresas en crecimiento.</p>
         </div>
       </footer>
 
@@ -866,32 +848,32 @@ const LandingPage = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/90 p-4 backdrop-blur-md"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-white/90 p-4 backdrop-blur-md"
           >
             <motion.div 
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="relative w-full max-w-md rounded-[2.5rem] bg-slate-900 border border-slate-800 p-10 shadow-2xl"
+              className="relative w-full max-w-md rounded-[2.5rem] bg-white border border-slate-200 p-10 shadow-2xl"
             >
-              <button onClick={() => setIsModalOpen(false)} className="absolute right-8 top-8 text-slate-500 hover:text-white transition-colors">
+              <button onClick={() => setIsModalOpen(false)} className="absolute right-8 top-8 text-slate-400 hover:text-slate-900 transition-colors">
                 <X size={24} />
               </button>
-              <h2 className="text-3xl font-black text-white mb-2 font-outfit">Comienza el Cambio</h2>
-              <p className="text-slate-500 mb-8 text-sm">Déjanos tus datos y un consultor senior se pondrá en contacto contigo.</p>
+              <h2 className="text-3xl font-black text-slate-900 mb-2 font-outfit">Comienza el Cambio</h2>
+              <p className="text-slate-600 mb-8 text-sm">Déjanos tus datos y un consultor senior se pondrá en contacto contigo.</p>
               
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Nombre</label>
-                  <input required name="nombre" value={formData.nombre} onChange={handleInputChange} placeholder="Tu nombre completo" className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-5 py-4 text-white focus:border-rose-500/50 transition-all outline-none" />
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nombre</label>
+                  <input required name="nombre" value={formData.nombre} onChange={handleInputChange} placeholder="Tu nombre completo" className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-slate-900 focus:border-rose-500/50 transition-all outline-none" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Email Corporativo</label>
-                  <input required type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="ejemplo@empresa.com" className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-5 py-4 text-white focus:border-rose-500/50 transition-all outline-none" />
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Corporativo</label>
+                  <input required type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="ejemplo@empresa.com" className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-slate-900 focus:border-rose-500/50 transition-all outline-none" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">WhatsApp</label>
-                  <input required type="tel" name="whatsapp" value={formData.whatsapp} onChange={handleInputChange} placeholder="+58..." className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-5 py-4 text-white focus:border-rose-500/50 transition-all outline-none" />
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">WhatsApp</label>
+                  <input required type="tel" name="whatsapp" value={formData.whatsapp} onChange={handleInputChange} placeholder="+58..." className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-slate-900 focus:border-rose-500/50 transition-all outline-none" />
                 </div>
                 
                 <button disabled={isSubmitting} type="submit" className="w-full bg-rose-600 py-5 rounded-2xl font-black text-white shadow-xl shadow-rose-600/20 hover:bg-rose-500 transition-all transform hover:-translate-y-1 active:scale-95 mt-4">

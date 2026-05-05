@@ -27,7 +27,7 @@ const PricingCardsSection = ({ onOpenModal }) => {
                 playsInline 
                 className="w-full h-auto object-cover aspect-video opacity-90 rounded-[3rem]"
               >
-                <source src="/tu-video.mp4" type="video/mp4" />
+                <source src="/Cinematic_fast_paced_tech_com.mp4" type="video/mp4" />
                 Tu navegador no soporta el formato de video.
               </video>
             </div>

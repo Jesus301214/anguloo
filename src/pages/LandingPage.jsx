@@ -420,11 +420,11 @@ const LandingPage = ({
       </div>
 
       {/* Comparativa: El Antes y el Después */}
-      <section id="comparativa" className="py-24 bg-slate-950 px-6 relative">
+      <section id="comparativa" className="py-24 bg-slate-50 px-6 relative">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-black text-white font-outfit mb-4">¿Tu empresa se siente así?</h2>
-            <p className="text-slate-400 text-lg">La falta de sistemas no solo quita tiempo, quita vida. Identifica tu estado actual.</p>
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 font-outfit mb-4">¿Tu empresa se siente así?</h2>
+            <p className="text-slate-600 text-lg">La falta de sistemas no solo quita tiempo, quita vida. Identifica tu estado actual.</p>
           </div>
 
           {/* Pain Points Grid */}
@@ -440,32 +440,32 @@ const LandingPage = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="p-8 rounded-[2.5rem] bg-slate-900/40 border border-slate-800/50 hover:border-rose-500/30 transition-all group"
+                className="p-8 rounded-[2.5rem] bg-white border border-slate-200 hover:border-rose-500/30 transition-all group shadow-sm hover:shadow-xl"
               >
-                <div className="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-500 mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-2xl bg-rose-500/5 flex items-center justify-center text-rose-500 mb-6 group-hover:scale-110 transition-transform border border-rose-500/10">
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={p.icon} />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">{p.title}</h3>
-                <p className="text-slate-500 text-sm">{p.desc}</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">{p.title}</h3>
+                <p className="text-slate-500 text-sm font-medium">{p.desc}</p>
               </motion.div>
             ))}
           </div>
 
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-black text-white font-outfit mb-4">Diagnóstico de Realidad</h2>
-            <p className="text-slate-400 text-lg">¿Sigues operando en el pasado o estás listo para el futuro?</p>
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 font-outfit mb-4">Diagnóstico de Realidad</h2>
+            <p className="text-slate-600 text-lg">¿Sigues operando en el pasado o estás listo para el futuro?</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-0 border border-slate-800 rounded-[3rem] overflow-hidden shadow-2xl">
+          <div className="grid md:grid-cols-2 gap-0 border border-slate-200 rounded-[3rem] overflow-hidden shadow-2xl bg-white">
             {/* Problema */}
-            <div className="p-12 bg-slate-900/50 border-r border-slate-800">
+            <div className="p-12 bg-slate-50/50 border-r border-slate-100">
                <div className="flex items-center gap-4 mb-8">
                   <div className="w-12 h-12 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-500">
                      <Shield size={24} />
                   </div>
-                  <h3 className="text-2xl font-black text-white">Gestión Tradicional</h3>
+                  <h3 className="text-2xl font-black text-slate-900">Gestión Tradicional</h3>
                </div>
                <ul className="space-y-6">
                   {[
@@ -475,9 +475,9 @@ const LandingPage = ({
                     "Clientes que olvidan sus citas (No-Show).",
                     "Cero datos para decisiones estratégicas."
                   ].map((text, i) => (
-                    <li key={i} className="flex items-start gap-4 text-slate-400 font-medium group">
+                    <li key={i} className="flex items-start gap-4 text-slate-500 font-bold group">
                        <span className="text-rose-500 mt-1 shrink-0 group-hover:scale-125 transition-transform text-xl">✕</span>
-                       <span className="group-hover:text-slate-200 transition-colors">{text}</span>
+                       <span className="group-hover:text-slate-900 transition-colors">{text}</span>
                     </li>
                   ))}
                </ul>
@@ -491,7 +491,7 @@ const LandingPage = ({
                      <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500">
                         <CheckCircle size={24} />
                      </div>
-                     <h3 className="text-2xl font-black text-white">Ecosistema ANGULO</h3>
+                     <h3 className="text-2xl font-black text-slate-900">Ecosistema ANGULO</h3>
                   </div>
                   <ul className="space-y-6">
                      {[
@@ -501,14 +501,14 @@ const LandingPage = ({
                        "Recordatorios automáticos vía WhatsApp.",
                        "Dashboards de BI con visión 360°."
                      ].map((text, i) => (
-                       <li key={i} className="flex items-start gap-4 text-slate-300 font-bold group">
+                       <li key={i} className="flex items-start gap-4 text-slate-700 font-black group">
                           <span className="text-emerald-500 mt-1 shrink-0 group-hover:scale-125 transition-transform text-xl">✓</span>
-                          <span className="group-hover:text-white transition-colors">{text}</span>
+                          <span className="group-hover:text-slate-900 transition-colors">{text}</span>
                        </li>
                      ))}
                   </ul>
                   <div className="mt-12">
-                     <button onClick={() => setIsModalOpen(true)} className="w-full bg-white text-slate-900 font-black py-4 rounded-2xl hover:bg-rose-500 hover:text-white transition-all shadow-xl">
+                     <button onClick={() => setIsModalOpen(true)} className="w-full bg-slate-900 text-white font-black py-4 rounded-2xl hover:bg-rose-500 transition-all shadow-xl shadow-slate-900/10">
                         Hacer el Cambio Ahora
                      </button>
                   </div>

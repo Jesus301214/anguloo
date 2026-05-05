@@ -9,47 +9,31 @@ const PricingCardsSection = ({ onOpenModal }) => {
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[500px] h-[500px] bg-rose-500/5 rounded-full blur-[120px] -z-10" />
       
       <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
-          {/* Columna Izquierda: Video / Demo */}
+          {/* Columna Izquierda: Video (Sin textos) */}
           <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="sticky top-32"
+            className="relative"
           >
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-px bg-rose-500" />
-              <span className="text-xs font-black tracking-[0.3em] text-slate-500 uppercase">— DEMO EN VIVO</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-black text-white font-outfit mb-8 leading-[1.1]">
-              Mira cómo <span className="text-rose-500">ÁNGULO</span> transforma tu día a día.
-            </h2>
-            
-            <div className="relative group overflow-hidden rounded-[2.5rem] border border-slate-800 shadow-2xl bg-slate-900">
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent z-10 opacity-60" />
+            <div className="relative group overflow-hidden rounded-[3rem] border border-slate-800 shadow-2xl bg-slate-900 ring-1 ring-slate-800">
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent z-10 pointer-events-none" />
               <video 
                 autoPlay 
                 loop 
                 muted 
                 playsInline 
-                className="w-full h-auto object-cover aspect-video opacity-90 group-hover:scale-105 transition-transform duration-1000"
+                className="w-full h-auto object-cover aspect-video opacity-90 rounded-[3rem]"
               >
                 <source src="/tu-video.mp4" type="video/mp4" />
                 Tu navegador no soporta el formato de video.
               </video>
-              
-              {/* Overlay de interacción visual */}
-              <div className="absolute inset-0 flex items-center justify-center z-20">
-                <div className="w-20 h-20 rounded-full bg-rose-500/20 backdrop-blur-md border border-rose-500/50 flex items-center justify-center text-white group-hover:scale-110 transition-transform shadow-2xl shadow-rose-500/20">
-                  <Play fill="currentColor" size={32} className="ml-1" />
-                </div>
-              </div>
             </div>
-
-            <p className="mt-8 text-slate-400 text-lg leading-relaxed italic">
-              "Buscamos que tu única preocupación sea atender a tus clientes, del orden y los datos nos encargamos nosotros."
-            </p>
+            
+            {/* Glow decorativo detrás del video */}
+            <div className="absolute -inset-4 bg-rose-500/10 blur-3xl -z-10 rounded-[4rem] animate-pulse" />
           </motion.div>
 
           {/* Columna Derecha: Tarjetas de Plan */}
@@ -57,13 +41,13 @@ const PricingCardsSection = ({ onOpenModal }) => {
             
             {/* Tarjeta 1: Ecosistema ÁNGULO */}
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               className="p-10 rounded-[3rem] bg-slate-900/50 border-2 border-rose-500/20 shadow-2xl relative group overflow-hidden"
             >
               <div className="absolute top-0 right-0 p-6">
-                <div className="bg-rose-500 text-white text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-widest shadow-lg shadow-rose-500/30 animate-pulse">Recomendado</div>
+                <div className="bg-rose-500 text-white text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-widest shadow-lg shadow-rose-500/30">Recomendado</div>
               </div>
 
               <div className="flex items-center gap-4 mb-8">
@@ -76,18 +60,22 @@ const PricingCardsSection = ({ onOpenModal }) => {
                 </div>
               </div>
 
-              <ul className="space-y-5 mb-10">
+              <ul className="grid grid-cols-1 gap-4 mb-10">
                 {[
                   "Dashboard Estratégico en tiempo real.",
                   "Prospección automática con LeadRadar y Guiones IA.",
                   "Gestión centralizada de agendas, reservas y servicios.",
-                  "Control total de finanzas, reportes e inventario."
+                  "Control de finanzas, reportes e inventario.",
+                  "Bases de datos en la nube y autenticación segura.",
+                  "Integración de Inteligencia Artificial.",
+                  "Migración y recuperación de datos.",
+                  "Soporte técnico y actualizaciones."
                 ].map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-4 group">
+                  <li key={idx} className="flex items-start gap-3 group">
                     <div className="mt-1 w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500 shrink-0">
                       <Check size={12} strokeWidth={4} />
                     </div>
-                    <span className="text-slate-300 font-medium group-hover:text-white transition-colors">{item}</span>
+                    <span className="text-slate-300 text-sm font-medium group-hover:text-white transition-colors">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -103,8 +91,8 @@ const PricingCardsSection = ({ onOpenModal }) => {
 
             {/* Tarjeta 2: Presencia Digital */}
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
               className="p-10 rounded-[3rem] bg-slate-900/30 border border-slate-800 hover:border-slate-700 transition-all group"
@@ -119,18 +107,22 @@ const PricingCardsSection = ({ onOpenModal }) => {
                 </div>
               </div>
 
-              <ul className="space-y-5 mb-10">
+              <ul className="grid grid-cols-1 gap-4 mb-10">
                 {[
-                  { text: "Diseño moderno y alineado a tu identidad visual.", icon: <Globe size={14}/> },
-                  { text: "Estructura estratégica enfocada en conversiones.", icon: <Zap size={14}/> },
-                  { text: "Integración de botones directos a WhatsApp/Redes.", icon: <MessageCircle size={14} className="hidden" /> }, // Use lucide icons
-                  { text: "Carga ultra rápida y 100% adaptable a celulares.", icon: <Smartphone size={14}/> }
+                  "Diseño moderno y alineado a tu identidad visual.",
+                  "Estructura estratégica enfocada en conversiones.",
+                  "Integración de botones directos a WhatsApp/Redes.",
+                  "Carga ultra rápida y 100% adaptable a celulares.",
+                  "Alojamiento Premium y configuración de dominio.",
+                  "SEO Básico (Optimización para motores de búsqueda).",
+                  "Formularios inteligentes.",
+                  "Mantenimiento mensual."
                 ].map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-4">
-                    <div className="mt-1 w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 shrink-0 group-hover:text-rose-500 transition-colors">
+                  <li key={idx} className="flex items-start gap-3">
+                    <div className="mt-1 w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 shrink-0">
                       <Check size={12} strokeWidth={4} />
                     </div>
-                    <span className="text-slate-400 font-medium group-hover:text-slate-200 transition-colors">{item.text}</span>
+                    <span className="text-slate-400 text-sm font-medium group-hover:text-slate-200 transition-colors">{item}</span>
                   </li>
                 ))}
               </ul>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
+import SalesScriptGenerator from './SalesScriptGenerator';
 import { 
   Users, 
   Search, 
@@ -515,6 +516,9 @@ const CRM = () => {
                 <div className="text-right"><p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Creado</p><p className="text-sm text-slate-400">{new Date(selectedLead.created_at).toLocaleDateString()}</p></div>
               </div>
             </div>
+
+            {/* Generador de Guiones con IA */}
+            <SalesScriptGenerator lead={selectedLead} />
 
             <div className="flex gap-3 mt-8">
               {selectedLead.whatsapp && (

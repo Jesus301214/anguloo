@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
-import { 
-  LayoutDashboard, 
-  Calendar, 
-  Users, 
-  Package, 
-  Wallet, 
-  Settings, 
+import React, { useState, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { supabase } from '../../lib/supabase'
+import {
+  LayoutDashboard,
+  Calendar,
+  Users,
+  Package,
+  Wallet,
+  Settings,
   LogOut,
   Bell,
   Search,
@@ -18,32 +18,35 @@ import {
   MessageCircle,
   Clock,
   ArrowRight,
-  Radar
-} from 'lucide-react';
+  Radar,
+} from 'lucide-react'
 
 const AdminLayout = ({ children }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
+  const [notifications, setNotifications] = useState([])
+  const [unreadCount, setUnreadCount] = useState(0)
+  const navigate = useNavigate()
+  const location = useLocation()
 
-  const activeTab = location.pathname.split('/').pop() === 'admin' ? 'dashboard' : location.pathname.split('/').pop();
+  const activeTab =
+    location.pathname.split('/').pop() === 'admin'
+      ? 'dashboard'
+      : location.pathname.split('/').pop()
 
   const handleTabChange = (id) => {
-    if (id === 'dashboard') navigate('/admin');
-    else navigate(`/admin/${id}`);
-  };
+    if (id === 'dashboard') navigate('/admin')
+    else navigate(`/admin/${id}`)
+  }
 
   // Solicitar permiso para notificaciones de navegador
   useEffect(() => {
-    if ("Notification" in window) {
-      if (Notification.permission !== "granted" && Notification.permission !== "denied") {
-        Notification.requestPermission();
+    if ('Notification' in window) {
+      if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+        Notification.requestPermission()
       }
     }
-  }, []);
+  }, [])
 
   // Suscripción Realtime a nuevos leads y reuniones
   useEffect(() => {
@@ -56,9 +59,9 @@ const AdminLayout = ({ children }) => {
           description: `${payload.new.nombre} de ${payload.new.compania || 'empresa desconocida'}`,
           type: 'lead',
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          read: false
-        });
-        showBrowserNotification('Nuevo Lead', `Se ha registrado ${payload.new.nombre}`);
+          read: false,
+        })
+        showBrowserNotification('Nuevo Lead', `Se ha registrado ${payload.new.nombre}`)
       })
       .on('postgres_changes', { event: 'INSERT', table: 'meetings' }, (payload) => {
         addNotification({
@@ -67,35 +70,35 @@ const AdminLayout = ({ children }) => {
           description: `Se agendó una cita para el ${payload.new.fecha}`,
           type: 'meeting',
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          read: false
-        });
-        showBrowserNotification('Nueva Reunión', 'Se ha agendado una nueva demo en el sistema.');
+          read: false,
+        })
+        showBrowserNotification('Nueva Reunión', 'Se ha agendado una nueva demo en el sistema.')
       })
-      .subscribe();
+      .subscribe()
 
     return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
+      supabase.removeChannel(channel)
+    }
+  }, [])
 
   const addNotification = (notif) => {
-    setNotifications(prev => [notif, ...prev].slice(0, 10)); // Guardar últimas 10
-    setUnreadCount(prev => prev + 1);
-  };
+    setNotifications((prev) => [notif, ...prev].slice(0, 10)) // Guardar últimas 10
+    setUnreadCount((prev) => prev + 1)
+  }
 
   const showBrowserNotification = (title, body) => {
-    if (Notification.permission === "granted") {
-      new Notification(title, { 
-        body, 
-        icon: '/logo192.png' // Asegúrate de tener un icono si quieres
-      });
+    if (Notification.permission === 'granted') {
+      new Notification(title, {
+        body,
+        icon: '/logo192.png', // Asegúrate de tener un icono si quieres
+      })
     }
-  };
+  }
 
   const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-    setUnreadCount(0);
-  };
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
+    setUnreadCount(0)
+  }
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -105,12 +108,12 @@ const AdminLayout = ({ children }) => {
     { id: 'inventario', label: 'Inventario', icon: Package },
     { id: 'finanzas', label: 'Finanzas', icon: Wallet },
     { id: 'ajustes', label: 'Ajustes', icon: Settings },
-  ];
+  ]
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex font-sans">
       {/* Sidebar */}
-      <aside 
+      <aside
         className={`fixed top-0 left-0 h-full bg-white text-slate-500 transition-all duration-300 z-50 border-r border-slate-200/60 ${
           isSidebarOpen ? 'w-72' : 'w-20'
         }`}
@@ -132,27 +135,25 @@ const AdminLayout = ({ children }) => {
         {/* Navigation Menu */}
         <nav className="mt-8 px-4 space-y-1.5">
           {menuItems.map((item) => {
-            const isActive = activeTab === item.id;
+            const isActive = activeTab === item.id
             return (
               <button
                 key={item.id}
                 onClick={() => handleTabChange(item.id)}
                 className={`w-full group flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 relative ${
-                  isActive 
-                    ? 'bg-blue-50 text-blue-600 shadow-[inset_0_0_0_1px_rgba(59,130,246,0.1)]' 
+                  isActive
+                    ? 'bg-blue-50 text-blue-600 shadow-[inset_0_0_0_1px_rgba(59,130,246,0.1)]'
                     : 'hover:bg-slate-50 hover:text-slate-900'
                 }`}
               >
-                <item.icon 
-                  size={22} 
-                  className={`shrink-0 transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} 
+                <item.icon
+                  size={22}
+                  className={`shrink-0 transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}
                 />
-                
+
                 {isSidebarOpen && (
                   <div className="flex items-center justify-between flex-1">
-                    <span className="font-bold text-sm tracking-wide">
-                      {item.label}
-                    </span>
+                    <span className="font-bold text-sm tracking-wide">{item.label}</span>
                     {item.badge && (
                       <span className="bg-blue-600 text-[8px] text-white px-1.5 py-0.5 rounded-full font-black animate-pulse">
                         {item.badge}
@@ -171,14 +172,17 @@ const AdminLayout = ({ children }) => {
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-500 rounded-r-full" />
                 )}
               </button>
-            );
+            )
           })}
         </nav>
 
         {/* Logout Section */}
         <div className="absolute bottom-8 left-0 w-full px-4">
-          <button 
-            onClick={async () => { await supabase.auth.signOut(); navigate('/login-admin'); }}
+          <button
+            onClick={async () => {
+              await supabase.auth.signOut()
+              navigate('/login-admin')
+            }}
             className="w-full flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:text-rose-400 hover:bg-rose-400/5 rounded-xl transition-all duration-300"
           >
             <LogOut size={22} />
@@ -188,22 +192,27 @@ const AdminLayout = ({ children }) => {
       </aside>
 
       {/* Main Content Area */}
-      <main className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'ml-72' : 'ml-20'}`}>
+      <main
+        className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'ml-72' : 'ml-20'}`}
+      >
         {/* Header Navigation */}
         <header className="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200/60 sticky top-0 z-40 px-8 flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <button 
+            <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               className="p-2 text-slate-500 hover:bg-slate-100 rounded-xl transition-colors"
             >
               <Menu size={22} />
             </button>
-            
+
             <div className="relative hidden md:block w-96">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-              <input 
-                type="text" 
-                placeholder="Buscar en el sistema..." 
+              <Search
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
+                size={18}
+              />
+              <input
+                type="text"
+                placeholder="Buscar en el sistema..."
                 className="w-full pl-11 pr-4 py-2.5 bg-slate-100/50 border border-transparent focus:bg-white focus:border-blue-500/30 rounded-xl text-sm transition-all outline-none"
               />
             </div>
@@ -212,8 +221,11 @@ const AdminLayout = ({ children }) => {
           <div className="flex items-center gap-4">
             {/* Notifications */}
             <div className="relative">
-              <button 
-                onClick={() => { setIsNotificationsOpen(!isNotificationsOpen); if(!isNotificationsOpen) setUnreadCount(0); }}
+              <button
+                onClick={() => {
+                  setIsNotificationsOpen(!isNotificationsOpen)
+                  if (!isNotificationsOpen) setUnreadCount(0)
+                }}
                 className="p-2.5 text-slate-500 hover:bg-slate-100 rounded-xl transition-all relative"
               >
                 <Bell size={20} />
@@ -229,25 +241,45 @@ const AdminLayout = ({ children }) => {
                 <div className="absolute top-14 right-0 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
                   <div className="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
                     <h4 className="font-black text-slate-900 text-sm">Notificaciones</h4>
-                    <button onClick={() => setIsNotificationsOpen(false)} className="text-slate-400 hover:text-slate-600"><X size={18} /></button>
+                    <button
+                      onClick={() => setIsNotificationsOpen(false)}
+                      className="text-slate-400 hover:text-slate-600"
+                    >
+                      <X size={18} />
+                    </button>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
                     {notifications.length === 0 ? (
                       <div className="p-8 text-center">
                         <Bell size={32} className="mx-auto text-slate-200 mb-2" />
-                        <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Sin notificaciones</p>
+                        <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">
+                          Sin notificaciones
+                        </p>
                       </div>
                     ) : (
                       <div className="divide-y divide-slate-100">
-                        {notifications.map(notif => (
-                          <div key={notif.id} className="p-4 hover:bg-slate-50 transition-colors cursor-pointer group">
+                        {notifications.map((notif) => (
+                          <div
+                            key={notif.id}
+                            className="p-4 hover:bg-slate-50 transition-colors cursor-pointer group"
+                          >
                             <div className="flex gap-3">
-                              <div className={`h-8 w-8 rounded-lg flex items-center justify-center shrink-0 ${notif.type === 'lead' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'}`}>
-                                {notif.type === 'lead' ? <Users size={16} /> : <Calendar size={16} />}
+                              <div
+                                className={`h-8 w-8 rounded-lg flex items-center justify-center shrink-0 ${notif.type === 'lead' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'}`}
+                              >
+                                {notif.type === 'lead' ? (
+                                  <Users size={16} />
+                                ) : (
+                                  <Calendar size={16} />
+                                )}
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-xs font-black text-slate-900 truncate">{notif.title}</p>
-                                <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-2 leading-relaxed">{notif.description}</p>
+                                <p className="text-xs font-black text-slate-900 truncate">
+                                  {notif.title}
+                                </p>
+                                <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-2 leading-relaxed">
+                                  {notif.description}
+                                </p>
                                 <div className="flex items-center gap-1.5 mt-2 text-[10px] text-slate-400 font-bold">
                                   <Clock size={12} />
                                   {notif.time}
@@ -272,7 +304,9 @@ const AdminLayout = ({ children }) => {
             <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
               <div className="text-right hidden lg:block">
                 <p className="text-sm font-black text-slate-900 leading-none">Admin User</p>
-                <p className="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Super Administrador</p>
+                <p className="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">
+                  Super Administrador
+                </p>
               </div>
               <div className="h-10 w-10 bg-gradient-to-tr from-slate-200 to-slate-100 rounded-xl border border-slate-200 shadow-sm flex items-center justify-center text-slate-600">
                 <User size={22} />
@@ -282,12 +316,10 @@ const AdminLayout = ({ children }) => {
         </header>
 
         {/* Content Viewport */}
-        <div className="p-8 max-w-[1600px] mx-auto w-full">
-          {children}
-        </div>
+        <div className="p-8 max-w-[1600px] mx-auto w-full">{children}</div>
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default AdminLayout;
+export default AdminLayout

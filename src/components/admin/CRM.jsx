@@ -73,13 +73,6 @@ const CRM = () => {
   const fetchLeads = async () => {
     setIsLoading(true)
     try {
-      // Auto-purge: try to delete old trash (silently ignore if deleted_at column missing)
-      await supabase
-        .from('leads')
-        .delete()
-        .eq('status', 'trash')
-        .lt('deleted_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
-
       const { data, error } = await supabase
         .from('leads')
         .select('*')
@@ -88,7 +81,7 @@ const CRM = () => {
       if (error) throw error
       setLeads(data || [])
     } catch (error) {
-      logger.error('CRM.fetchLeads (second attempt)', error)
+      logger.error('CRM.fetchLeads', error)
       setLeads([])
     } finally {
       setIsLoading(false)
@@ -96,32 +89,36 @@ const CRM = () => {
   }
 
   const handleTrashLead = async (id) => {
-    // Try with deleted_at first
-    const { error } = await supabase
-      .from('leads')
-      .update({ status: 'trash', deleted_at: new Date().toISOString() })
-      .eq('id', id)
+    // Optimistic UI Update
+    setLeads(leads.map(l => l.id === id ? { ...l, status: 'trash' } : l))
+
+    const { error } = await supabase.from('leads').update({ status: 'trash' }).eq('id', id)
     if (error) {
-      // Fallback: update only status
-      await supabase.from('leads').update({ status: 'trash' }).eq('id', id)
+      logger.error('CRM.handleTrashLead', error)
+      fetchLeads() // Rollback on error
     }
-    fetchLeads()
   }
 
   const handleRestoreLead = async (id) => {
-    const { error } = await supabase
-      .from('leads')
-      .update({ status: 'new', deleted_at: null })
-      .eq('id', id)
+    // Optimistic UI Update
+    setLeads(leads.map(l => l.id === id ? { ...l, status: 'new' } : l))
+
+    const { error } = await supabase.from('leads').update({ status: 'new' }).eq('id', id)
     if (error) {
-      await supabase.from('leads').update({ status: 'new' }).eq('id', id)
+      logger.error('CRM.handleRestoreLead', error)
+      fetchLeads() // Rollback on error
     }
-    fetchLeads()
   }
 
   const handleDeletePermanent = async (id) => {
-    await supabase.from('leads').delete().eq('id', id)
-    fetchLeads()
+    // Optimistic UI Update
+    setLeads(leads.filter(l => l.id !== id))
+
+    const { error } = await supabase.from('leads').delete().eq('id', id)
+    if (error) {
+      logger.error('CRM.handleDeletePermanent', error)
+      fetchLeads() // Rollback on error
+    }
   }
 
   useEffect(() => {

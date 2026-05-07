@@ -219,6 +219,27 @@ const CRM = () => {
     }
   }
 
+  const probarConexionZapier = async () => {
+    try {
+      const response = await fetch(import.meta.env.VITE_ZAPIER_WEBHOOK_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          nombre: "Jesús Moreno - Prueba",
+          empresa: "Ángulo Softwares",
+          email: "test@angulosoftwares.com",
+          estado: "Nuevo Lead Generado"
+        }),
+      })
+      if (response.ok) {
+        alert("¡Disparo exitoso a Zapier! 🚀")
+      } else {
+        console.error("Error en la respuesta de Zapier:", response.statusText)
+      }
+    } catch (error) {
+      console.error("Error al disparar webhook a Zapier:", error)
+    }
+  }
+
   const filteredLeads = leads.filter((lead) => {
     const isTrash = lead.status === 'trash'
     if (showTrash !== isTrash) return false
@@ -266,7 +287,13 @@ const CRM = () => {
             className="w-full pl-12 pr-4 py-4 bg-slate-800/40 border border-slate-700/50 focus:bg-slate-800/60 focus:border-blue-500/30 rounded-2xl text-slate-200 outline-none transition-all placeholder:text-slate-500/50 font-medium"
           />
         </div>
-        <div className="flex gap-2 w-full md:w-auto">
+        <div className="flex gap-2 w-full md:w-auto items-center">
+          <button
+            onClick={probarConexionZapier}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
+          >
+            Probar Conexión Zapier
+          </button>
           <button
             onClick={() => {
               setShowTrash(!showTrash)

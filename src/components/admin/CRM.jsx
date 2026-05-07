@@ -92,10 +92,14 @@ const CRM = () => {
     // Optimistic UI Update
     setLeads(leads.map(l => l.id === id ? { ...l, status: 'trash' } : l))
 
-    const { error } = await supabase.from('leads').update({ status: 'trash' }).eq('id', id)
+    const { data, error } = await supabase.from('leads').update({ status: 'trash' }).eq('id', id).select()
     if (error) {
       logger.error('CRM.handleTrashLead', error)
+      alert(`Error de base de datos: ${error.message}\nAsegúrate de que la columna 'status' permite el valor 'trash' y que no hay restricciones activas.`)
       fetchLeads() // Rollback on error
+    } else if (!data || data.length === 0) {
+      alert('Error: No se pudo actualizar. Es posible que no tengas permisos (RLS) en Supabase.')
+      fetchLeads()
     }
   }
 
@@ -103,10 +107,14 @@ const CRM = () => {
     // Optimistic UI Update
     setLeads(leads.map(l => l.id === id ? { ...l, status: 'new' } : l))
 
-    const { error } = await supabase.from('leads').update({ status: 'new' }).eq('id', id)
+    const { data, error } = await supabase.from('leads').update({ status: 'new' }).eq('id', id).select()
     if (error) {
       logger.error('CRM.handleRestoreLead', error)
+      alert(`Error de base de datos: ${error.message}`)
       fetchLeads() // Rollback on error
+    } else if (!data || data.length === 0) {
+      alert('Error: No se pudo actualizar por políticas de RLS en Supabase.')
+      fetchLeads()
     }
   }
 
@@ -114,10 +122,14 @@ const CRM = () => {
     // Optimistic UI Update
     setLeads(leads.filter(l => l.id !== id))
 
-    const { error } = await supabase.from('leads').delete().eq('id', id)
+    const { data, error } = await supabase.from('leads').delete().eq('id', id).select()
     if (error) {
       logger.error('CRM.handleDeletePermanent', error)
+      alert(`Error de base de datos al eliminar: ${error.message}`)
       fetchLeads() // Rollback on error
+    } else if (!data || data.length === 0) {
+      alert('Error: No se pudo eliminar por políticas de seguridad (RLS) de Supabase.')
+      fetchLeads()
     }
   }
 

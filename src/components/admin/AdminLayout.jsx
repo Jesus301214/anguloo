@@ -26,8 +26,19 @@ const AdminLayout = ({ children }) => {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
   const [notifications, setNotifications] = useState([])
   const [unreadCount, setUnreadCount] = useState(0)
+  const [user, setUser] = useState(null)
   const navigate = useNavigate()
   const location = useLocation()
+
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      setUser(user)
+    }
+    getUser()
+  }, [])
 
   const activeTab =
     location.pathname.split('/').pop() === 'admin'
@@ -303,9 +314,11 @@ const AdminLayout = ({ children }) => {
             {/* User Profile */}
             <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
               <div className="text-right hidden lg:block">
-                <p className="text-sm font-black text-slate-900 leading-none">Admin User</p>
+                <p className="text-sm font-black text-slate-900 leading-none">
+                  {user?.email ? user.email.split('@')[0] : 'Admin User'}
+                </p>
                 <p className="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">
-                  Super Administrador
+                  {user?.email || 'Super Administrador'}
                 </p>
               </div>
               <div className="h-10 w-10 bg-gradient-to-tr from-slate-200 to-slate-100 rounded-xl border border-slate-200 shadow-sm flex items-center justify-center text-slate-600">

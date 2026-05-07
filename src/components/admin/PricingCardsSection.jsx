@@ -25,86 +25,47 @@ const PricingCardsSection = ({ onOpenModal }) => {
 
   const plans = [
     {
-      name: 'Presencia Digital',
-      price: isAnnual ? 197 : 247,
-      period: '/mes',
-      desc: 'Landing page profesional para tu negocio.',
+      name: 'Landing Pages Premium',
+      desc: 'Tu carta de presentación digital de alta conversión.',
       features: [
-        'Landing page optimizada',
-        'Formulario de captura de leads',
-        'Hosting y dominio incluidos',
-        'Soporte por email',
-        'Actualizaciones mensuales',
+        'Diseño 100% personalizado y moderno.',
+        'Arquitectura optimizada para captación de leads.',
+        'Alta velocidad de carga (Performance SEO).',
+        'Integración automatizada con tu correo o CRM.',
+        'Soporte técnico y mantenimiento.',
       ],
-      cta: 'Comenzar Ahora',
+      cta: 'Cotizar Landing Page',
       highlighted: false,
     },
     {
-      name: 'Ecosistema ANGULO',
-      price: isAnnual ? 397 : 497,
-      period: '/mes',
-      desc: 'Software + CRM + IA. La solución completa.',
+      name: 'Desarrollo de Software y Sistemas',
+      desc: 'Digitalizamos y automatizamos la operación de tu empresa.',
       features: [
-        'Todo lo de Presencia Digital',
-        'CRM con pipeline de ventas',
-        'Agenda inteligente',
-        'Dashboard de BI Analytics',
-        'Inventario y finanzas',
-        'Radar de prospectos IA',
-        'Recordatorios WhatsApp',
-        'Soporte prioritario 24/7',
-        'Auditoría operativa incluida',
+        'Auditoría operativa previa de tus procesos.',
+        'Desarrollo de sistemas 100% a la medida.',
+        'Arquitectura SaaS de alto nivel (Dashboards, finanzas).',
+        'Automatización de tareas repetitivas.',
+        'Soporte técnico especializado en horario laboral.',
       ],
-      cta: 'Solicitar Auditoría Gratis',
+      cta: 'Agendar Auditoría Gratuita',
       highlighted: true,
+      highlightText: 'SERVICIO ESTRELLA',
     },
   ]
 
   return (
     <section ref={sectionRef} id="planes" className="py-24 bg-white px-6">
       <div className="mx-auto max-w-5xl">
-        <div className="text-center mb-12">
+        <div className="text-center mb-16">
           <div className="inline-flex items-center rounded-full border border-rose-500/20 bg-rose-500/5 px-4 py-1.5 text-[10px] font-black text-rose-600 uppercase tracking-widest mb-6">
-            PLANES
+            SERVICIOS
           </div>
           <h2 className="text-3xl md:text-5xl font-black text-slate-900 font-outfit mb-4">
-            Inversión <span className="text-rose-500">transparente</span>
+            Soluciones Tecnológicas <span className="text-rose-500">a Medida</span>
           </h2>
           <p className="text-slate-600 text-lg max-w-2xl mx-auto">
-            Sin costos ocultos. Sin sorpresas. Solo resultados.
+            Desarrollamos el ecosistema digital exacto que tu operación necesita para escalar sin límites.
           </p>
-        </div>
-
-        <div className="flex justify-center items-center gap-4 mb-12">
-          <span
-            className={`text-sm font-bold transition-colors ${
-              !isAnnual ? 'text-slate-900' : 'text-slate-400'
-            }`}
-          >
-            Mensual
-          </span>
-          <button
-            onClick={() => setIsAnnual(!isAnnual)}
-            className={`relative w-14 h-7 rounded-full transition-colors ${
-              isAnnual ? 'bg-rose-500' : 'bg-slate-300'
-            }`}
-          >
-            <div
-              className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow transition-transform ${
-                isAnnual ? 'translate-x-8' : 'translate-x-1'
-              }`}
-            />
-          </button>
-          <span
-            className={`text-sm font-bold transition-colors flex items-center gap-2 ${
-              isAnnual ? 'text-slate-900' : 'text-slate-400'
-            }`}
-          >
-            Anual
-            <span className="bg-emerald-100 text-emerald-700 text-[10px] font-black px-2 py-0.5 rounded-full">
-              -20%
-            </span>
-          </span>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -119,20 +80,13 @@ const PricingCardsSection = ({ onOpenModal }) => {
             >
               {plan.highlighted && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-rose-500 text-white text-[10px] font-black px-5 py-1.5 rounded-full uppercase tracking-widest shadow-lg shadow-rose-500/20">
-                  Más Popular
+                  {plan.highlightText || 'MÁS POPULAR'}
                 </div>
               )}
 
-              <div className="mb-6">
-                <h3 className="text-xl font-black text-slate-900 mb-2">{plan.name}</h3>
-                <p className="text-sm text-slate-500">{plan.desc}</p>
-              </div>
-
               <div className="mb-8">
-                <span className="text-5xl font-black text-slate-900 font-outfit">
-                  ${plan.price}
-                </span>
-                <span className="text-slate-400 font-medium">{plan.period}</span>
+                <h3 className="text-2xl font-black text-slate-900 mb-3">{plan.name}</h3>
+                <p className="text-slate-500">{plan.desc}</p>
               </div>
 
               <ul className="space-y-3 mb-8">

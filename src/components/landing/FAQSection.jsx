@@ -7,7 +7,6 @@ const faqs = [
     q: '¿Qué incluye la auditoría gratuita?',
     a: 'Analizamos tu operación completa: procesos de ventas, gestión de citas, control de inventario, finanzas y atención al cliente. Recibirás un informe detallado con las fugas detectadas y un plan de automatización personalizado.',
   },
-  },
   {
     q: '¿Necesito conocimientos técnicos para usar el sistema?',
     a: 'No. ANGULO está diseñado para ser intuitivo. Incluye entrenamiento para tu equipo y soporte continuo. Si sabes usar WhatsApp, sabes usar ANGULO.',

@@ -141,11 +141,20 @@ const LandingPage = ({
 
       const zapierUrl = import.meta.env.VITE_ZAPIER_WEBHOOK_URL
       if (zapierUrl) {
+        // Mapear los campos al formato exacto que Zapier espera
+        const zapierPayload = {
+          nombre: formData.nombre,
+          email: formData.email,
+          empresa: formData.compania, // Mapeamos compania a empresa
+          estado: 'Nuevo Lead Generado',
+          whatsapp: formData.whatsapp
+        };
+        
         await fetch(zapierUrl, { 
           method: 'POST', 
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(formData).toString()
+          body: new URLSearchParams(zapierPayload).toString()
         })
       }
 

@@ -13,9 +13,9 @@ const ComparisonSection = ({ setIsModalOpen }) => {
 
   useGSAP(
     () => {
-      gsap.from('.compare-header', { y: 20, opacity: 0, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } })
-      gsap.from('.pain-card', { y: 20, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' } })
-      gsap.from('.compare-panels', { y: 20, opacity: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 60%' } })
+      gsap.from('.compare-header', { y: 20, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } })
+      gsap.from('.pain-card', { y: 20, stagger: 0.1, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' } })
+      gsap.from('.compare-panels', { y: 20, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 60%' } })
     },
     { scope: sectionRef },
   )

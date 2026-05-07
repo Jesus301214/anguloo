@@ -7,9 +7,6 @@ const faqs = [
     q: '¿Qué incluye la auditoría gratuita?',
     a: 'Analizamos tu operación completa: procesos de ventas, gestión de citas, control de inventario, finanzas y atención al cliente. Recibirás un informe detallado con las fugas detectadas y un plan de automatización personalizado.',
   },
-  {
-    q: '¿Cuánto tiempo toma implementar ANGULO?',
-    a: 'Depende del tamaño de tu operación. Una empresa pequeña puede estar operando en 3-5 días. Empresas multisucursal pueden tomar 2-3 semanas incluyendo la migración de datos y entrenamiento del equipo.',
   },
   {
     q: '¿Necesito conocimientos técnicos para usar el sistema?',
@@ -37,7 +34,6 @@ const FAQSection = () => {
     () => {
       gsap.from('.faq-title', {
         y: 40,
-        autoAlpha: 0,
         duration: 0.7,
         ease: 'power3.out',
         scrollTrigger: {
@@ -48,7 +44,6 @@ const FAQSection = () => {
       })
       gsap.from('.faq-item', {
         y: 30,
-        autoAlpha: 0,
         stagger: 0.08,
         duration: 0.6,
         ease: 'power3.out',

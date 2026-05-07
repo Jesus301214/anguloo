@@ -27,12 +27,12 @@ const ProblemsSection = ({ setIsModalOpen }) => {
   useGSAP(
     () => {
       gsap.from('.problems-title', {
-        y: 40, autoAlpha: 0, duration: 0.7, ease: 'power3.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%', toggleActions: 'play none none none' },
+        y: 20, duration: 0.7, ease: 'power3.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' },
       })
       gsap.from('.problems-card', {
-        y: 50, autoAlpha: 0, stagger: 0.15, duration: 0.7, ease: 'power3.out',
-        scrollTrigger: { trigger: '.problems-grid', start: 'top 80%', toggleActions: 'play none none none' },
+        y: 20, stagger: 0.1, duration: 0.7, ease: 'power3.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
       })
     },
     { scope: sectionRef },

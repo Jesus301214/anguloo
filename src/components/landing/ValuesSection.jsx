@@ -18,8 +18,8 @@ const ValuesSection = () => {
 
   useGSAP(
     () => {
-      gsap.from('.values-title', { y: 20, opacity: 0, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } })
-      gsap.from('.value-card', { y: 20, opacity: 0, stagger: 0.05, duration: 0.5, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' } })
+      gsap.from('.values-title', { y: 20, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } })
+      gsap.from('.value-card', { y: 20, stagger: 0.05, duration: 0.5, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' } })
     },
     { scope: sectionRef },
   )

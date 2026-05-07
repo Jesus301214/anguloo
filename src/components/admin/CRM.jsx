@@ -220,9 +220,20 @@ const CRM = () => {
   }
 
   const probarConexionZapier = async () => {
+    const url = import.meta.env.VITE_ZAPIER_WEBHOOK_URL;
+    
+    if (!url) {
+      alert("⚠️ Error: No se ha configurado la URL de Zapier (VITE_ZAPIER_WEBHOOK_URL) en el archivo .env");
+      return;
+    }
+
     try {
-      const response = await fetch(import.meta.env.VITE_ZAPIER_WEBHOOK_URL, {
+      const response = await fetch(url, {
         method: 'POST',
+        mode: 'no-cors', // Algunos webhooks prefieren no-cors si no hay cabeceras CORS
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           nombre: "Jesús Moreno - Prueba",
           empresa: "Ángulo Softwares",
@@ -230,13 +241,15 @@ const CRM = () => {
           estado: "Nuevo Lead Generado"
         }),
       })
-      if (response.ok) {
-        alert("¡Disparo exitoso a Zapier! 🚀")
-      } else {
-        console.error("Error en la respuesta de Zapier:", response.statusText)
-      }
+      
+      // Con mode: 'no-cors', la respuesta es opaca y response.ok siempre es false (o similar)
+      // pero el disparo se realiza. Para una prueba real, mejor quitar no-cors si Zapier lo permite.
+      // Vamos a intentar sin no-cors primero para recibir confirmación.
+      
+      alert("🚀 Intento de disparo enviado a Zapier. Revisa tu panel de Zapier para confirmar la recepción.");
     } catch (error) {
-      console.error("Error al disparar webhook a Zapier:", error)
+      logger.error('Zapier Test', error);
+      alert("❌ Error al conectar con Zapier: " + error.message);
     }
   }
 

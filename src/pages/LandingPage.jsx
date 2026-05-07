@@ -11,6 +11,7 @@ import {
   Zap,
   LayoutGrid,
 } from 'lucide-react'
+import PricingCardsSection from '../components/admin/PricingCardsSection'
 import Navbar from '../components/landing/Navbar'
 import HeroSection from '../components/landing/HeroSection'
 import TrustBar from '../components/landing/TrustBar'
@@ -145,6 +146,7 @@ const LandingPage = ({
       <ComparisonSection setIsModalOpen={setIsModalOpen} />
       <SolutionsSection setIsModalOpen={setIsModalOpen} />
       <TestimonialsSection />
+      <PricingCardsSection onOpenModal={() => setIsModalOpen(true)} />
       <MethodologySection teamImage={teamImage} />
       <CultureSection />
       <ValuesSection />

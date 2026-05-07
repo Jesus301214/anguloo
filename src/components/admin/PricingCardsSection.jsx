@@ -9,8 +9,7 @@ const PricingCardsSection = ({ onOpenModal }) => {
   useGSAP(
     () => {
       gsap.from('.pricing-card', {
-        y: 50,
-        autoAlpha: 0,
+        y: 20,
         stagger: 0.15,
         duration: 0.7,
         ease: 'power3.out',

@@ -33,11 +33,20 @@ const HeroSection = ({ heroImage, setIsModalOpen }) => {
 
       gsap.from('.hero-dashboard', {
         y: 40,
-        autoAlpha: 0,
+        opacity: 0,
         scale: 0.95,
         duration: 1,
         delay: 0.8,
         ease: 'power3.out',
+        onComplete: () => {
+          gsap.to('.hero-dashboard', {
+            y: '+=20',
+            duration: 3,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut'
+          })
+        }
       })
 
       gsap.to('.hero-glow-1', {

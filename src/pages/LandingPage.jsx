@@ -11,7 +11,6 @@ import {
   Zap,
   LayoutGrid,
 } from 'lucide-react'
-import PricingCardsSection from '../components/admin/PricingCardsSection'
 import Navbar from '../components/landing/Navbar'
 import HeroSection from '../components/landing/HeroSection'
 import TrustBar from '../components/landing/TrustBar'
@@ -85,7 +84,7 @@ const LandingPage = ({
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleReservaSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
     setFormStatus(null)
@@ -99,17 +98,32 @@ const LandingPage = ({
 
       const zapierUrl = import.meta.env.VITE_ZAPIER_WEBHOOK_URL
       if (zapierUrl) {
-        fetch(zapierUrl, { method: 'POST', body: JSON.stringify(formData) }).catch(() => {})
+        const zapierPayload = {
+          nombre: formData.nombre,
+          email: formData.email,
+          empresa: formData.compania,
+          estado: 'Nuevo Lead Generado',
+          whatsapp: formData.whatsapp
+        };
+        
+        await fetch(zapierUrl, { 
+          method: 'POST', 
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(zapierPayload).toString()
+        })
       }
+
+      alert("¡Reserva recibida! Revisa tu correo.")
 
       setFormStatus('success')
       setFormData({ nombre: '', email: '', whatsapp: '', compania: '', notas: '' })
-      setTimeout(() => {
-        setIsModalOpen(false)
-        setFormStatus(null)
-      }, 3000)
+      
+      setIsModalOpen(false)
+      setFormStatus(null)
     } catch (_error) {
       setFormStatus('error')
+      console.error(_error)
     } finally {
       setIsSubmitting(false)
     }
@@ -131,7 +145,6 @@ const LandingPage = ({
       <ComparisonSection setIsModalOpen={setIsModalOpen} />
       <SolutionsSection setIsModalOpen={setIsModalOpen} />
       <TestimonialsSection />
-      <PricingCardsSection onOpenModal={() => setIsModalOpen(true)} />
       <MethodologySection teamImage={teamImage} />
       <CultureSection />
       <ValuesSection />
@@ -146,7 +159,7 @@ const LandingPage = ({
         isSubmitting={isSubmitting}
         formStatus={formStatus}
         handleInputChange={handleInputChange}
-        handleSubmit={handleSubmit}
+        handleReservaSubmit={handleReservaSubmit}
       />
       <WhatsAppButton whatsappLink={whatsappLink} />
     </div>

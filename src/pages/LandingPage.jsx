@@ -127,7 +127,7 @@ const LandingPage = ({
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleReservaSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
     setFormStatus(null)
@@ -141,17 +141,25 @@ const LandingPage = ({
 
       const zapierUrl = import.meta.env.VITE_ZAPIER_WEBHOOK_URL
       if (zapierUrl) {
-        fetch(zapierUrl, { method: 'POST', body: JSON.stringify(formData) }).catch(() => {})
+        await fetch(zapierUrl, { 
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData) 
+        })
       }
 
+      // Feedback al usuario
+      alert("¡Reserva recibida! Revisa tu correo.")
+
       setFormStatus('success')
+      // Limpiar los campos del formulario
       setFormData({ nombre: '', email: '', whatsapp: '', compania: '', notas: '' })
-      setTimeout(() => {
-        setIsModalOpen(false)
-        setFormStatus(null)
-      }, 3000)
+      
+      setIsModalOpen(false)
+      setFormStatus(null)
     } catch (_error) {
       setFormStatus('error')
+      console.error(_error)
     } finally {
       setIsSubmitting(false)
     }
@@ -185,7 +193,7 @@ const LandingPage = ({
         isSubmitting={isSubmitting}
         formStatus={formStatus}
         handleInputChange={handleInputChange}
-        handleSubmit={handleSubmit}
+        handleReservaSubmit={handleReservaSubmit}
       />
       <WhatsAppButton whatsappLink={whatsappLink} />
     </div>

@@ -1,7 +1,7 @@
 import { X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const DemoModal = ({ isModalOpen, setIsModalOpen, formData, isSubmitting, formStatus, handleInputChange, handleSubmit }) => {
+const DemoModal = ({ isModalOpen, setIsModalOpen, formData, isSubmitting, formStatus, handleInputChange, handleReservaSubmit }) => {
   return (
     <AnimatePresence>
       {isModalOpen && (
@@ -30,7 +30,7 @@ const DemoModal = ({ isModalOpen, setIsModalOpen, formData, isSubmitting, formSt
               Déjanos tus datos y un consultor senior se pondrá en contacto contigo.
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleReservaSubmit} className="space-y-4">
               <div className="space-y-1.5">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
                   Nombre
@@ -55,6 +55,20 @@ const DemoModal = ({ isModalOpen, setIsModalOpen, formData, isSubmitting, formSt
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="ejemplo@empresa.com"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-slate-900 focus:border-rose-500/50 transition-all outline-none"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+                  Empresa
+                </label>
+                <input
+                  required
+                  type="text"
+                  name="compania"
+                  value={formData.compania}
+                  onChange={handleInputChange}
+                  placeholder="Nombre de tu empresa"
                   className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-slate-900 focus:border-rose-500/50 transition-all outline-none"
                 />
               </div>

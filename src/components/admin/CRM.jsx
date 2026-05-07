@@ -50,6 +50,10 @@ const CRM = () => {
     website: '',
     instagram: '',
     facebook: '',
+    ciudad: '',
+    categoria: '',
+    fuente_contacto: '',
+    comentario: '',
     status: 'new',
   })
   const [selectedLead, setSelectedLead] = useState(null)
@@ -59,10 +63,11 @@ const CRM = () => {
 
   const statusOptions = [
     { value: 'new', label: 'Nuevo', color: 'text-blue-400' },
-    { value: 'contacted', label: 'Contactado', color: 'text-amber-400' },
-    { value: 'demo', label: 'Demo Agendada', color: 'text-purple-400' },
-    { value: 'won', label: 'Ganado', color: 'text-emerald-400' },
-    { value: 'lost', label: 'Perdido', color: 'text-rose-400' },
+    { value: 'responded', label: 'Sí Respondió', color: 'text-emerald-400' },
+    { value: 'no_response', label: 'No Respondió', color: 'text-rose-400' },
+    { value: 'demo', label: 'Se Agendó Llamada', color: 'text-purple-400' },
+    { value: 'future', label: 'Para un Futuro', color: 'text-amber-400' },
+    { value: 'not_interested', label: 'Sin Interés', color: 'text-slate-400' },
   ]
 
   const fetchLeads = async () => {
@@ -86,7 +91,7 @@ const CRM = () => {
       logger.error('CRM.fetchLeads (second attempt)', error)
       setLeads([])
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
@@ -143,6 +148,10 @@ const CRM = () => {
         website: '',
         instagram: '',
         facebook: '',
+        ciudad: '',
+        categoria: '',
+        fuente_contacto: '',
+        comentario: '',
         status: 'new',
       })
       fetchLeads()
@@ -551,6 +560,61 @@ const CRM = () => {
                 </div>
               </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
+                    Ciudad
+                  </label>
+                  <input
+                    type="text"
+                    value={newLead.ciudad}
+                    onChange={(e) => setNewLead({ ...newLead, ciudad: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all"
+                    placeholder="Ej: Caracas"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
+                    Categoría
+                  </label>
+                  <input
+                    type="text"
+                    value={newLead.categoria}
+                    onChange={(e) => setNewLead({ ...newLead, categoria: e.target.value })}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all"
+                    placeholder="Ej: B2B, B2C, VIP"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
+                  Por Dónde fue Contactado
+                </label>
+                <select
+                  value={newLead.fuente_contacto}
+                  onChange={(e) => setNewLead({ ...newLead, fuente_contacto: e.target.value })}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all"
+                >
+                  <option value="">Seleccione una opción</option>
+                  <option value="whatsapp">WhatsApp</option>
+                  <option value="email">Email</option>
+                  <option value="llamadas">Llamadas</option>
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
+                  Comentario
+                </label>
+                <textarea
+                  value={newLead.comentario}
+                  onChange={(e) => setNewLead({ ...newLead, comentario: e.target.value })}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all resize-none min-h-[80px]"
+                  placeholder="Detalles adicionales sobre el lead..."
+                />
+              </div>
+
               <div className="pt-4 border-t border-slate-800">
                 <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">
                   Presencia Digital e Inteligencia
@@ -770,6 +834,40 @@ const CRM = () => {
                     </p>
                     <p className="text-sm text-blue-400">{selectedLead.facebook}</p>
                   </div>
+                </div>
+              )}
+              {selectedLead.ciudad && (
+                <div className="p-3 bg-slate-800/50 rounded-xl">
+                  <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">
+                    Ciudad
+                  </p>
+                  <p className="text-sm text-slate-300">{selectedLead.ciudad}</p>
+                </div>
+              )}
+              {selectedLead.categoria && (
+                <div className="p-3 bg-slate-800/50 rounded-xl">
+                  <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">
+                    Categoría
+                  </p>
+                  <p className="text-sm text-slate-300">{selectedLead.categoria}</p>
+                </div>
+              )}
+              {selectedLead.fuente_contacto && (
+                <div className="p-3 bg-slate-800/50 rounded-xl">
+                  <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">
+                    Fuente de Contacto
+                  </p>
+                  <p className="text-sm text-slate-300 capitalize">{selectedLead.fuente_contacto}</p>
+                </div>
+              )}
+              {selectedLead.comentario && (
+                <div className="p-3 bg-slate-800/50 rounded-xl">
+                  <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-2">
+                    Comentario
+                  </p>
+                  <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                    {selectedLead.comentario}
+                  </p>
                 </div>
               )}
               {selectedLead.notas && (

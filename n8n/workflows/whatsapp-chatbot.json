@@ -1,0 +1,95 @@
+@'
+{
+  "name": "ANGULO - WhatsApp Chatbot de Soporte Basico",
+  "nodes": [
+    {
+      "parameters": { "updates": ["messages"] },
+      "id": "whatsapp-trigger",
+      "name": "WhatsApp Trigger",
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "angulo-whatsapp-chatbot",
+      "credentials": { "whatsAppTriggerApi": { "id": "4", "name": "ANGULO WhatsApp Trigger" } }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "version": 2, "caseSensitive": true, "typeValidation": "strict" },
+          "combinator": "and",
+          "conditions": [{ "operator": { "type": "string", "operation": "equals" }, "leftValue": "={{ $json.messages[0].type }}", "rightValue": "text" }]
+        },
+        "rules": { "values": [{ "outputKey": "texto", "renameOutput": true }, { "outputKey": "otro", "renameOutput": true }] }
+      },
+      "id": "filter-message-type",
+      "name": "Filtrar tipo mensaje",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={{ $env.VITE_GEMINI_API_KEY }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\"parts\": [{\"text\": \"Eres el asistente virtual de ANGULO, un software de gestion empresarial para negocios de servicios (spas, peluquerias, consultorios). Responde de forma amable, en espanol y en maximo 3 oraciones. Si te preguntan algo que no sabes, sugiere agendar una auditoria gratuita en https://angulosoftware.com. El cliente dice: {{ $json.messages[0].text.body }}\"}]}]\n}",
+        "options": { "timeout": 15000 }
+      },
+      "id": "gemini-ai",
+      "name": "Responder con Gemini",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [750, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "const aiResponse = $input.first().json.candidates?.[0]?.content?.parts?.[0]?.text || 'Hola! Soy el asistente de ANGULO. Como puedo ayudarte?';\nreturn { response: aiResponse.trim() };"
+      },
+      "id": "parse-response",
+      "name": "Parsear respuesta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, 200]
+    },
+    {
+      "parameters": {
+        "textBody": "={{ $json.response }}",
+        "operation": "send",
+        "phoneNumberId": "477115632141067",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.messages[0].from }}",
+        "additionalFields": { "previewUrl": false }
+      },
+      "id": "reply-whatsapp",
+      "name": "Responder por WhatsApp",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [1250, 200],
+      "credentials": { "whatsAppApi": { "id": "2", "name": "ANGULO WhatsApp" } }
+    },
+    {
+      "parameters": {
+        "textBody": "=Gracias por tu mensaje. Actualmente solo procesamos mensajes de texto. Escribenos y con gusto te ayudamos.",
+        "operation": "send",
+        "phoneNumberId": "477115632141067",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.messages[0].from }}",
+        "additionalFields": { "previewUrl": false }
+      },
+      "id": "reply-non-text",
+      "name": "Responder (no texto)",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [1250, 400],
+      "credentials": { "whatsAppApi": { "id": "2", "name": "ANGULO WhatsApp" } }
+    }
+  ],
+  "connections": {
+    "WhatsApp Trigger": { "main": [[{ "node": "Filtrar tipo mensaje", "type": "main", "index": 0 }]] },
+    "Filtrar tipo mensaje": { "main": [[{ "node": "Responder con Gemini", "type": "main", "index": 0 }], [{ "node": "Responder (no texto)", "type": "main", "index": 0 }]] },
+    "Responder con Gemini": { "main": [[{ "node": "Parsear respuesta", "type": "main", "index": 0 }]] },
+    "Parsear respuesta": { "main": [[{ "node": "Responder por WhatsApp", "type": "main", "index": 0 }]] }
+  },
+  "pinData": {},
+  "meta": { "instanceId": "angulo-whatsapp-bot-001" }
+}
+'@

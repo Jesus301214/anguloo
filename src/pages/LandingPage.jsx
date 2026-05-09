@@ -91,28 +91,28 @@ const LandingPage = ({
     setFormStatus(null)
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('leads')
         .insert([{ ...formData, status: 'new', created_at: new Date().toISOString() }])
+        .select('id')
+        .single()
 
       if (error) throw error
 
+      // Enviar a Zapier (legado)
       const zapierUrl = import.meta.env.VITE_ZAPIER_WEBHOOK_URL
       if (zapierUrl) {
-        const zapierPayload = {
-          nombre: formData.nombre,
-          email: formData.email,
-          empresa: formData.compania,
-          estado: 'Nuevo Lead Generado',
-          whatsapp: formData.whatsapp
-        };
-        
-        await fetch(zapierUrl, { 
-          method: 'POST', 
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(zapierPayload).toString()
-        })
+        fetch(zapierUrl, { method: 'POST', body: JSON.stringify(formData) }).catch(() => {})
+      }
+
+      // Enviar a n8n para clasificacion con IA
+      const n8nUrl = import.meta.env.VITE_N8N_WEBHOOK_URL
+      if (n8nUrl && data?.id) {
+        fetch(n8nUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...formData, lead_id: data.id }),
+        }).catch(() => {})
       }
 
       alert("¡Reserva recibida! Revisa tu correo.")

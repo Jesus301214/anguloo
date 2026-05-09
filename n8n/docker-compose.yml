@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: angulo-n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=n8n.angulosoftware.com
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - NODE_ENV=production
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY:-changeme-change-me-change-me-change}
+      - DB_TYPE=sqlite
+      - N8N_USER_FOLDER=/home/node/.n8n
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./workflows:/home/node/workflows
+    networks:
+      - n8n_network
+
+  # Opcional: ngrok para exponer n8n si no tienes dominio
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: angulo-ngrok
+    restart: unless-stopped
+    command: http n8n:5678
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN:-}
+    profiles:
+      - ngrok
+    depends_on:
+      - n8n
+    networks:
+      - n8n_network
+
+volumes:
+  n8n_data:
+
+networks:
+  n8n_network:
+    driver: bridge

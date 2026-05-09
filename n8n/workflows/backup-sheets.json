@@ -1,0 +1,55 @@
+@'
+{
+  "name": "ANGULO - Respaldo Automatico a Google Sheets",
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [{ "field": "hours", "hoursInterval": 6 }] } },
+      "id": "schedule-backup",
+      "name": "Cada 6 horas",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": { "operation": "getAll", "tableId": "leads", "options": {} },
+      "id": "get-leads",
+      "name": "Obtener leads",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [500, 300],
+      "credentials": { "supabaseApi": { "id": "1", "name": "ANGULO Supabase" } }
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => ({\n  json: {\n    nombre: item.json.nombre || '',\n    email: item.json.email || '',\n    whatsapp: item.json.whatsapp || '',\n    compania: item.json.compania || '',\n    status: item.json.status || 'new',\n    value: item.json.value || 0,\n    notas: item.json.notas || '',\n    fecha: new Date(item.json.created_at).toLocaleDateString('es')\n  }\n}));"
+      },
+      "id": "format-data",
+      "name": "Formatear datos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": { "__rl": true, "value": "={{ $env.GOOGLE_SHEET_ID }}", "mode": "id" },
+        "sheetName": "Leads",
+        "options": {}
+      },
+      "id": "google-sheets",
+      "name": "Guardar en Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1000, 300],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "3", "name": "ANGULO Google Sheets" } }
+    }
+  ],
+  "connections": {
+    "Cada 6 horas": { "main": [[{ "node": "Obtener leads", "type": "main", "index": 0 }]] },
+    "Obtener leads": { "main": [[{ "node": "Formatear datos", "type": "main", "index": 0 }]] },
+    "Formatear datos": { "main": [[{ "node": "Guardar en Google Sheets", "type": "main", "index": 0 }]] }
+  },
+  "pinData": {},
+  "meta": { "instanceId": "angulo-backup-sheets-001" }
+}
+'@

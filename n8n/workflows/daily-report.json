@@ -1,0 +1,77 @@
+@'
+{
+  "name": "ANGULO - Reporte Diario al Admin por WhatsApp",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "hours", "hoursInterval": 24 }, { "field": "minutes", "minutesInterval": 0 }], "triggerAtHour": 8, "triggerAtMinute": 0 }
+      },
+      "id": "daily-schedule",
+      "name": "Cada dia 8:00 AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": { "operation": "getAll", "tableId": "leads", "options": {} },
+      "id": "get-leads",
+      "name": "Obtener todos los leads",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [500, 300],
+      "credentials": { "supabaseApi": { "id": "1", "name": "ANGULO Supabase" } }
+    },
+    {
+      "parameters": { "operation": "getAll", "tableId": "meetings", "options": {} },
+      "id": "get-meetings",
+      "name": "Obtener reuniones",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [500, 500],
+      "credentials": { "supabaseApi": { "id": "1", "name": "ANGULO Supabase" } }
+    },
+    {
+      "parameters": {
+        "jsCode": "const leads = $('Obtener todos los leads').all();\nconst meetings = $('Obtener reuniones').all();\nconst today = new Date().toISOString().split('T')[0];\n\nconst totalLeads = leads.length;\nconst newLeads = leads.filter(l => l.json.status === 'new').length;\nconst demoLeads = leads.filter(l => l.json.status === 'demo').length;\nconst wonLeads = leads.filter(l => l.json.status === 'won').length;\nconst todayMeetings = meetings.filter(m => m.json.fecha === today).length;\nconst pipelineValue = leads.reduce((sum, l) => sum + (l.json.value || 0), 0);\n\nconst message = `📊 *ANGULO - Reporte Diario*\n\n📈 Leads Totales: ${totalLeads}\n🆕 Nuevos: ${newLeads}\n📅 Demos: ${demoLeads}\n✅ Ganados: ${wonLeads}\n💵 Pipeline: $${pipelineValue.toLocaleString()}\n📌 Citas Hoy: ${todayMeetings}\n\n_Fecha: ${new Date().toLocaleDateString('es')}_`;\n\nreturn { message, totalLeads, newLeads, demoLeads, wonLeads, pipelineValue, todayMeetings };"
+      },
+      "id": "generate-report",
+      "name": "Generar reporte",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [750, 400]
+    },
+    {
+      "parameters": {
+        "textBody": "={{ $json.message }}",
+        "operation": "send",
+        "phoneNumberId": "={{ $env.WHATSAPP_PHONE_ID }}",
+        "recipientPhoneNumber": "={{ $env.ADMIN_WHATSAPP || '584249313359' }}",
+        "additionalFields": { "previewUrl": false }
+      },
+      "id": "send-whatsapp",
+      "name": "Enviar al Admin",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [1000, 400],
+      "credentials": { "whatsAppApi": { "id": "2", "name": "ANGULO WhatsApp" } }
+    },
+    {
+      "parameters": { "content": "## Reporte Diario ANGULO\n\nSe ejecuta cada dia a las 8:00 AM.\n\nObtiene estadisticas de leads y reuniones desde Supabase y envia un resumen por WhatsApp al administrador.\n\nRequiere:\n- Credenciales Supabase\n- WhatsApp Business API\n- Variable ADMIN_WHATSAPP configurada", "height": 250, "width": 400 },
+      "id": "sticky-note",
+      "name": "Nota",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-250, 300]
+    }
+  ],
+  "connections": {
+    "Cada dia 8:00 AM": { "main": [[{ "node": "Obtener todos los leads", "type": "main", "index": 0 }], [{ "node": "Obtener reuniones", "type": "main", "index": 0 }]] },
+    "Obtener todos los leads": { "main": [[{ "node": "Generar reporte", "type": "main", "index": 0 }]] },
+    "Obtener reuniones": { "main": [[{ "node": "Generar reporte", "type": "main", "index": 1 }]] },
+    "Generar reporte": { "main": [[{ "node": "Enviar al Admin", "type": "main", "index": 0 }]] },
+    "Enviar al Admin": { "main": [[]] }
+  },
+  "pinData": {},
+  "meta": { "instanceId": "angulo-daily-report-001" }
+}
+'@

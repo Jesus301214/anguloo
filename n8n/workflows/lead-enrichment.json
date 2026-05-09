@@ -1,0 +1,88 @@
+@'
+{
+  "name": "ANGULO - Lead Scraper + Enriquecimiento con IA",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "hours", "hoursInterval": 12 }] }
+      },
+      "id": "periodic-trigger",
+      "name": "Cada 12 horas",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "leads",
+        "options": {}
+      },
+      "id": "get-leads",
+      "name": "Obtener leads nuevos",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [500, 300],
+      "credentials": { "supabaseApi": { "id": "1", "name": "ANGULO Supabase" } }
+    },
+    {
+      "parameters": {
+        "jsCode": "const leads = $input.all().filter(l => l.json.status === 'new' && !l.json.notas?.includes('[IA]'));\nif (leads.length === 0) return [];\nreturn leads.slice(0, 10);"
+      },
+      "id": "filter-unprocessed",
+      "name": "Filtrar sin procesar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={{ $env.VITE_GEMINI_API_KEY }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\"parts\": [{\"text\": \"Investiga esta empresa: {{ $json.compania || 'desconocida' }}. Dame SOLO JSON con: {\\\"sector\\\": \\\"...\\\", \\\"tamano_estimado\\\": \\\"pequena|mediana|grande\\\", \\\"pais\\\": \\\"...\\\", \\\"necesidad_probable\\\": \\\"descripcion en 1 linea\\\"}\"}]}\n]}",
+        "options": { "timeout": 15000 }
+      },
+      "id": "gemini-research",
+      "name": "Investigar con Gemini",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1000, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputData = $input.first().json;\nconst rawText = inputData.candidates?.[0]?.content?.parts?.[0]?.text || '{}';\nconst cleaned = rawText.replace(/```json|```/g, '').trim();\nconst research = JSON.parse(cleaned);\n\nreturn {\n  id: $('Filtrar sin procesar').first().json.id,\n  notas: `[IA] Sector: ${research.sector || 'N/A'} | Tamano: ${research.tamano_estimado || 'N/A'} | ${research.necesidad_probable || ''}`,\n  lead_sector: research.sector,\n  lead_tamano: research.tamano_estimado,\n  lead_pais: research.pais\n};"
+      },
+      "id": "parse-research",
+      "name": "Parsear investigacion",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "leads",
+        "dataToSend": "autoMapInputData",
+        "options": {}
+      },
+      "id": "update-lead",
+      "name": "Actualizar lead en Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1500, 300],
+      "credentials": { "supabaseApi": { "id": "1", "name": "ANGULO Supabase" } }
+    }
+  ],
+  "connections": {
+    "Cada 12 horas": { "main": [[{ "node": "Obtener leads nuevos", "type": "main", "index": 0 }]] },
+    "Obtener leads nuevos": { "main": [[{ "node": "Filtrar sin procesar", "type": "main", "index": 0 }]] },
+    "Filtrar sin procesar": { "main": [[{ "node": "Investigar con Gemini", "type": "main", "index": 0 }]] },
+    "Investigar con Gemini": { "main": [[{ "node": "Parsear investigacion", "type": "main", "index": 0 }]] },
+    "Parsear investigacion": { "main": [[{ "node": "Actualizar lead en Supabase", "type": "main", "index": 0 }]] }
+  },
+  "pinData": {},
+  "meta": { "instanceId": "angulo-lead-enrichment-001" }
+}
+'@

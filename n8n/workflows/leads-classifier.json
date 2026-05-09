@@ -1,81 +1,115 @@
-@'
 {
-  "name": "ANGULO - Clasificacion de Leads con IA",
+  "name": "ANGULO - Clasificacion de Leads con IA v2",
   "nodes": [
     {
-      "parameters": {
-        "path": "angulo-lead-webhook",
-        "responseMode": "responseNode",
-        "options": {}
-      },
       "id": "webhook-trigger",
       "name": "Webhook (nuevo lead)",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1.1,
-      "position": [250, 300]
+      "position": [250, 300],
+      "parameters": {
+        "path": "angulo-lead-webhook",
+        "responseMode": "responseNode",
+        "options": {}
+      }
     },
     {
+      "id": "gemini-analyze",
+      "name": "Gemini Classifier",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [500, 300],
       "parameters": {
         "method": "POST",
-        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={{ $env.VITE_GEMINI_API_KEY }}",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
         "sendHeaders": true,
-        "headerParameters": { "parameters": [{ "name": "Content-Type", "value": "application/json" }] },
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "key", "value": "={{ $env.VITE_GEMINI_API_KEY }}" }
+          ]
+        },
         "sendBody": true,
-        "bodyParameters": { "parameters": [] },
         "specifyBody": "json",
-        "jsonBody": "{\n  \"contents\": [{\n    \"parts\": [{\n      \"text\": \"Eres un clasificador de leads para un software de gestion empresarial llamado ANGULO. Analiza este lead y devuelve SOLO un JSON con: { \\\"score\\\": (1-10), \\\"category\\\": \\\"caliente|tibio|frio\\\", \\\"insight\\\": \\\"breve analisis en una linea\\\", \\\"recomendacion\\\": \\\"siguiente accion sugerida\\\" }. Lead: Nombre={{ $json.body.nombre }}, Email={{ $json.body.email }}, Empresa={{ $json.body.compania }}, Notas={{ $json.body.notas }}\"\n    }]\n  }]\n}",
-        "options": { "timeout": 30000 }
-      },
-      "id": "gemini-analyze",
-      "name": "Analizar con Gemini",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.1,
-      "position": [500, 300]
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [{\n      \"text\": \"Eres un clasificador de leads para ANGULO, SaaS de gestion empresarial. Analiza y responde SOLO un JSON valido (sin markdown): {\\\"score\\\":1-10,\\\"category\\\":\\\"caliente|tibio|frio\\\",\\\"insight\\\":\\\"analisis 1 linea\\\",\\\"recomendacion\\\":\\\"accion sugerida\\\"}. Lead: nombre={{ $json.body.nombre }}, email={{ $json.body.email }}, empresa={{ $json.body.compania }}\"\n    }]\n  }]\n}"
+      }
     },
     {
-      "parameters": {
-        "jsCode": "const response = JSON.parse($input.first().json.candidates[0].content.parts[0].text.replace(/```json|```/g, '').trim());\nconst leadData = $('Webhook (nuevo lead)').first().json.body;\n\nreturn {\n  nombre: leadData.nombre,\n  email: leadData.email,\n  compania: leadData.compania,\n  whatsapp: leadData.whatsapp,\n  notas: `[IA] Score: ${response.score}/10 | ${response.insight} | ${response.recomendacion}`,\n  status: response.score >= 7 ? 'demo' : 'new',\n  value: response.score * 100,\n  lead_score: response.score,\n  lead_category: response.category\n};"
-      },
       "id": "code-transform",
-      "name": "Transformar respuesta IA",
+      "name": "Parsear respuesta IA",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [750, 300]
+      "position": [750, 300],
+      "parameters": {
+        "jsCode": "const rawText = $input.first().json.candidates[0].content.parts[0].text;\nconst cleaned = rawText.replace(/```json|```/g, '').trim();\nconst ai = JSON.parse(cleaned);\nconst webhookData = $('Webhook (nuevo lead)').first().json.body;\n\nreturn {\n  lead_id: webhookData.lead_id || webhookData.id,\n  lead_score: ai.score,\n  lead_category: ai.category,\n  lead_insight: ai.insight,\n  lead_recommendation: ai.recomendacion,\n  status: ai.score >= 7 ? 'demo' : ai.score >= 4 ? 'contacted' : 'new',\n  value: Math.round(ai.score * 100),\n  notas: `[IA] Score: ${ai.score}/10 | ${ai.insight}`\n};"
+      }
     },
     {
-      "parameters": {
-        "operation": "update",
-        "tableId": "leads",
-        "dataToSend": "autoMapInputData",
-        "options": {}
-      },
       "id": "supabase-update",
       "name": "Actualizar Lead en Supabase",
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [1000, 300],
-      "credentials": { "supabaseApi": { "id": "1", "name": "ANGULO Supabase" } }
+      "parameters": {
+        "tableId": "leads",
+        "operation": "update",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "={{ $('Parsear respuesta IA').item.json.lead_id }}",
+              "condition": "eq"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            { "fieldId": "status", "fieldValue": "={{ $('Parsear respuesta IA').item.json.status }}" },
+            { "fieldId": "value", "fieldValue": "={{ $('Parsear respuesta IA').item.json.value }}" },
+            { "fieldId": "notas", "fieldValue": "={{ $('Parsear respuesta IA').item.json.notas }}" }
+          ]
+        }
+      },
+      "credentials": {
+        "supabaseApi": {
+          "id": "lIfyq9tp1bnPVjei",
+          "name": "Supabase account"
+        }
+      }
     },
     {
-      "parameters": {
-        "respondWith": "json",
-        "responseBody": "={ \"success\": true, \"lead_id\": $input.first().json.id, \"score\": $input.first().json.lead_score, \"category\": $input.first().json.lead_category }",
-        "options": {}
-      },
       "id": "response-node",
-      "name": "Responder al webhook",
+      "name": "Responder JSON",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [1250, 300]
+      "position": [1250, 300],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"lead_id\": \"{{ $('Parsear respuesta IA').first().json.lead_id }}\",\n  \"score\": {{ $('Parsear respuesta IA').first().json.lead_score }},\n  \"category\": \"{{ $('Parsear respuesta IA').first().json.lead_category }}\",\n  \"insight\": \"{{ $('Parsear respuesta IA').first().json.lead_insight }}\",\n  \"recommendation\": \"{{ $('Parsear respuesta IA').first().json.lead_recommendation }}\"\n}"
+      }
     }
   ],
   "connections": {
-    "Webhook (nuevo lead)": { "main": [[{ "node": "Analizar con Gemini", "type": "main", "index": 0 }]] },
-    "Analizar con Gemini": { "main": [[{ "node": "Transformar respuesta IA", "type": "main", "index": 0 }]] },
-    "Transformar respuesta IA": { "main": [[{ "node": "Actualizar Lead en Supabase", "type": "main", "index": 0 }]] },
-    "Actualizar Lead en Supabase": { "main": [[{ "node": "Responder al webhook", "type": "main", "index": 0 }]] }
+    "Webhook (nuevo lead)": {
+      "main": [[{ "node": "Gemini Classifier", "type": "main", "index": 0 }]]
+    },
+    "Gemini Classifier": {
+      "main": [[{ "node": "Parsear respuesta IA", "type": "main", "index": 0 }]]
+    },
+    "Parsear respuesta IA": {
+      "main": [[{ "node": "Actualizar Lead en Supabase", "type": "main", "index": 0 }]]
+    },
+    "Actualizar Lead en Supabase": {
+      "main": [[{ "node": "Responder JSON", "type": "main", "index": 0 }]]
+    }
   },
   "pinData": {},
-  "meta": { "instanceId": "angulo-leads-classifier-001" }
+  "meta": { "instanceId": "angulo-leads-classifier-v2-001" }
 }
-'@

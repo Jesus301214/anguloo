@@ -43,6 +43,7 @@ const LandingPage = ({
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formStatus, setFormStatus] = useState(null)
+  const [n8nResult, setN8nResult] = useState(null)
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
@@ -108,20 +109,29 @@ const LandingPage = ({
       // Enviar a n8n para clasificacion con IA
       const n8nUrl = import.meta.env.VITE_N8N_WEBHOOK_URL
       if (n8nUrl && data?.id) {
-        fetch(n8nUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...formData, lead_id: data.id }),
-        }).catch(() => {})
+        try {
+          const n8nRes = await fetch(n8nUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...formData, lead_id: data.id }),
+          })
+          if (n8nRes.ok) {
+            const n8nData = await n8nRes.json()
+            setN8nResult(n8nData)
+          }
+        } catch (e) {
+          console.error('[N8N] Error al clasificar lead:', e)
+        }
       }
-
-      alert("¡Reserva recibida! Revisa tu correo.")
 
       setFormStatus('success')
       setFormData({ nombre: '', email: '', whatsapp: '', compania: '', notas: '' })
-      
-      setIsModalOpen(false)
-      setFormStatus(null)
+
+      setTimeout(() => {
+        setIsModalOpen(false)
+        setFormStatus(null)
+        setN8nResult(null)
+      }, 4000)
     } catch (_error) {
       setFormStatus('error')
       console.error(_error)
@@ -160,6 +170,7 @@ const LandingPage = ({
         formData={formData}
         isSubmitting={isSubmitting}
         formStatus={formStatus}
+        n8nResult={n8nResult}
         handleInputChange={handleInputChange}
         handleReservaSubmit={handleReservaSubmit}
       />

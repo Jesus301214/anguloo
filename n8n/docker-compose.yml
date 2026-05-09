@@ -8,13 +8,15 @@ services:
     ports:
       - "5678:5678"
     environment:
-      - N8N_HOST=n8n.angulosoftware.com
+      - N8N_HOST=localhost
       - N8N_PORT=5678
-      - N8N_PROTOCOL=https
+      - N8N_PROTOCOL=http
       - NODE_ENV=production
       - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY:-changeme-change-me-change-me-change}
       - DB_TYPE=sqlite
       - N8N_USER_FOLDER=/home/node/.n8n
+      - VITE_GEMINI_API_KEY=AIzaSyCIQqQzKmM37QfSNqUjdfNURHfHYqfTbQs
+      - VITE_SUPABASE_URL=https://pgcxnmjjwohrwpwqjtjc.supabase.co
     volumes:
       - n8n_data:/home/node/.n8n
       - ./workflows:/home/node/workflows

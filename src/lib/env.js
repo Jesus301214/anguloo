@@ -5,7 +5,7 @@ const requiredVars = [
   'VITE_GEMINI_API_KEY',
 ]
 
-const optionalVars = ['VITE_ZAPIER_WEBHOOK_URL', 'VITE_N8N_WEBHOOK_URL']
+const optionalVars = ['VITE_ZAPIER_WEBHOOK_URL', 'VITE_N8N_WEBHOOK_URL', 'VITE_GEMINI_API_KEY']
 
 export function validateEnv() {
   const missing = []

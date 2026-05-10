@@ -15,7 +15,7 @@ services:
       - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY:-changeme-change-me-change-me-change}
       - DB_TYPE=sqlite
       - N8N_USER_FOLDER=/home/node/.n8n
-      - VITE_GEMINI_API_KEY=AIzaSyCIQqQzKmM37QfSNqUjdfNURHfHYqfTbQs
+      - VITE_GEMINI_API_KEY=AIzaSyBeXbcl-WkcaNo5eTnoqtKhVOPctBmAkE8
       - VITE_SUPABASE_URL=https://pgcxnmjjwohrwpwqjtjc.supabase.co
     volumes:
       - n8n_data:/home/node/.n8n

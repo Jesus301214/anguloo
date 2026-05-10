@@ -1,0 +1,147 @@
+{
+  "name": "ANGULO - Agente Prospeccion IA",
+  "nodes": [
+    {
+      "id": "webhook-prospector",
+      "name": "Webhook (niche + ubicacion)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [250, 300],
+      "parameters": {
+        "path": "angulo-prospector",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "serper-search",
+      "name": "Buscar en Google (Serper)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [500, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "https://google.serper.dev/search",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "X-API-KEY", "value": "={{ $env.SERPER_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"q\": \"{{ $json.body.niche }} {{ $json.body.ubicacion }} contacto telefono sitio web\",\n  \"gl\": \"{{ $json.body.pais || 'co' }}\",\n  \"num\": 20\n}"
+      }
+    },
+    {
+      "id": "format-results",
+      "name": "Preparar datos para IA",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [750, 300],
+      "parameters": {
+        "jsCode": "const results = $input.first().json.organic || [];\nlet text = 'Lista de resultados de busqueda:\\n\\n';\nresults.forEach((r, i) => {\n  text += `${i+1}. Titulo: ${r.title}\\n   Link: ${r.link}\\n   Snippet: ${r.snippet}\\n\\n`;\n});\n\nreturn { searchResults: text, totalFound: results.length };\n"
+      }
+    },
+    {
+      "id": "gemini-extract",
+      "name": "Gemini Extractor de Empresas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1000, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBeXbcl-WkcaNo5eTnoqtKhVOPctBmAkE8",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "Content-Type", "value": "application/json" }] },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [{\n      \"text\": \"De esta lista de resultados de busqueda, extrae SOLO las empresas encontradas en formato JSON. Devuelve UNICAMENTE un array JSON valido (sin markdown) con este formato: [{\\\"nombre\\\":\\\"...\\\",\\\"descripcion\\\":\\\"...\\\",\\\"ubicacion\\\":\\\"...\\\",\\\"telefono\\\":\\\"...\\\",\\\"website\\\":\\\"...\\\"}]. Si no encuentras datos claros, no inventes. Resultados:\\n\\n{{ $json.searchResults }}\"\n    }]\n  }]\n}"
+      }
+    },
+    {
+      "id": "parse-empresas",
+      "name": "Parsear empresas JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1250, 300],
+      "parameters": {
+        "jsCode": "const aiText = $input.first().json.candidates[0].content.parts[0].text;\nconst cleaned = aiText.replace(/```json|```/g, '').trim();\nconst empresas = JSON.parse(cleaned);\n\nif (!Array.isArray(empresas) || empresas.length === 0) {\n  return [];\n}\n\nreturn empresas.map((emp, i) => ({\n  nombre: emp.nombre || `Empresa ${i+1}`,\n  descripcion: emp.descripcion || '',\n  ubicacion: emp.ubicacion || '',\n  telefono: emp.telefono || '',\n  website: emp.website || '',\n}));\n"
+      }
+    },
+    {
+      "id": "split-batch",
+      "name": "Procesar por lotes",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [1500, 300],
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      }
+    },
+    {
+      "id": "supabase-insert",
+      "name": "Insertar empresa en Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1750, 300],
+      "parameters": {
+        "tableId": "leads",
+        "operation": "create",
+        "fieldsUi": {
+          "fieldValues": [
+            { "fieldId": "nombre", "fieldValue": "={{ $json.nombre }}" },
+            { "fieldId": "compania", "fieldValue": "={{ $json.nombre }}" },
+            { "fieldId": "notas", "fieldValue": "={{ $json.descripcion }}" },
+            { "fieldId": "website", "fieldValue": "={{ $json.website }}" },
+            { "fieldId": "status", "fieldValue": "prospeccion_ia" },
+            { "fieldId": "created_at", "fieldValue": "={{ new Date().toISOString() }}" }
+          ]
+        }
+      },
+      "credentials": {
+        "supabaseApi": { "id": "lIfyq9tp1bnPVjei", "name": "Supabase account" }
+      }
+    },
+    {
+      "id": "response-prospector",
+      "name": "Responder JSON",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [2000, 300],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"empresas\": [{\n    \"nombre\": \"={{ $('Parsear empresas JSON').first().json[0].nombre }}\",\n    \"descripcion\": \"={{ $('Parsear empresas JSON').first().json[0].descripcion }}\",\n    \"ubicacion\": \"={{ $('Parsear empresas JSON').first().json[0].ubicacion }}\",\n    \"telefono\": \"={{ $('Parsear empresas JSON').first().json[0].telefono }}\",\n    \"website\": \"={{ $('Parsear empresas JSON').first().json[0].website }}\"\n  }],\n  \"total\": {{ $('Parsear empresas JSON').first().json.length }}\n}"
+      }
+    }
+  ],
+  "connections": {
+    "Webhook (niche + ubicacion)": {
+      "main": [[{ "node": "Buscar en Google (Serper)", "type": "main", "index": 0 }]]
+    },
+    "Buscar en Google (Serper)": {
+      "main": [[{ "node": "Preparar datos para IA", "type": "main", "index": 0 }]]
+    },
+    "Preparar datos para IA": {
+      "main": [[{ "node": "Gemini Extractor de Empresas", "type": "main", "index": 0 }]]
+    },
+    "Gemini Extractor de Empresas": {
+      "main": [[{ "node": "Parsear empresas JSON", "type": "main", "index": 0 }]]
+    },
+    "Parsear empresas JSON": {
+      "main": [[{ "node": "Procesar por lotes", "type": "main", "index": 0 }]]
+    },
+    "Procesar por lotes": {
+      "main": [[{ "node": "Insertar empresa en Supabase", "type": "main", "index": 0 }]]
+    },
+    "Insertar empresa en Supabase": {
+      "main": [[{ "node": "Responder JSON", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "meta": { "instanceId": "angulo-ai-prospector-001" }
+}

@@ -116,6 +116,7 @@ const AdminLayout = ({ children }) => {
     { id: 'agenda', label: 'Agenda', icon: Calendar },
     { id: 'crm', label: 'CRM / Leads', icon: Users },
     { id: 'radar', label: 'LeadRadar', icon: Radar, badge: 'NUEVO' },
+    { id: 'prospector', label: 'Prospector IA', icon: Search, badge: 'IA' },
     { id: 'inventario', label: 'Inventario', icon: Package },
     { id: 'finanzas', label: 'Finanzas', icon: Wallet },
     { id: 'ajustes', label: 'Ajustes', icon: Settings },

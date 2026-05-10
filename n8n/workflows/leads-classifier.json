@@ -21,19 +21,12 @@
       "position": [500, 300],
       "parameters": {
         "method": "POST",
-        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpQueryAuth",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBeXbcl-WkcaNo5eTnoqtKhVOPctBmAkE8",
+        "authentication": "none",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             { "name": "Content-Type", "value": "application/json" }
-          ]
-        },
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            { "name": "key", "value": "={{ $env.VITE_GEMINI_API_KEY }}" }
           ]
         },
         "sendBody": true,

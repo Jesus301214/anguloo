@@ -88,6 +88,9 @@
         "subject": "={{ $('Redactar Email IA').item.json.subject }}",
         "text": "={{ $('Redactar Email IA').item.json.body }}",
         "options": {}
+      },
+      "credentials": {
+        "smtp": { "id": "zoho-smtp", "name": "Zoho Mail SMTP" }
       }
     },
     {

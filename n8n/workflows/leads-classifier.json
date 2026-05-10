@@ -1,5 +1,5 @@
 {
-  "name": "ANGULO - Clasificacion de Leads con IA v2",
+  "name": "ANGULO - Clasificacion + Email IA",
   "nodes": [
     {
       "id": "webhook-trigger",
@@ -24,11 +24,7 @@
         "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBeXbcl-WkcaNo5eTnoqtKhVOPctBmAkE8",
         "authentication": "none",
         "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            { "name": "Content-Type", "value": "application/json" }
-          ]
-        },
+        "headerParameters": { "parameters": [{ "name": "Content-Type", "value": "application/json" }] },
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [{\n      \"text\": \"Eres un clasificador de leads para ANGULO, SaaS de gestion empresarial. Analiza y responde SOLO un JSON valido (sin markdown): {\\\"score\\\":1-10,\\\"category\\\":\\\"caliente|tibio|frio\\\",\\\"insight\\\":\\\"analisis 1 linea\\\",\\\"recomendacion\\\":\\\"accion sugerida\\\"}. Lead: nombre={{ $json.body.nombre }}, email={{ $json.body.email }}, empresa={{ $json.body.compania }}\"\n    }]\n  }]\n}"
@@ -41,7 +37,7 @@
       "typeVersion": 2,
       "position": [750, 300],
       "parameters": {
-        "jsCode": "const rawText = $input.first().json.candidates[0].content.parts[0].text;\nconst cleaned = rawText.replace(/```json|```/g, '').trim();\nconst ai = JSON.parse(cleaned);\nconst webhookData = $('Webhook (nuevo lead)').first().json.body;\n\nreturn {\n  lead_id: webhookData.lead_id || webhookData.id,\n  lead_score: ai.score,\n  lead_category: ai.category,\n  lead_insight: ai.insight,\n  lead_recommendation: ai.recomendacion,\n  status: ai.score >= 7 ? 'demo' : ai.score >= 4 ? 'contacted' : 'new',\n  value: Math.round(ai.score * 100),\n  notas: `[IA] Score: ${ai.score}/10 | ${ai.insight}`\n};"
+        "jsCode": "const aiText = $input.first().json.candidates[0].content.parts[0].text;\nconst cleaned = aiText.replace(/```json|```/g, '').trim();\nconst ai = JSON.parse(cleaned);\nconst webhookData = $('Webhook (nuevo lead)').first().json.body;\n\nreturn {\n  lead_id: webhookData.lead_id || webhookData.id,\n  lead_score: ai.score,\n  lead_category: ai.category,\n  lead_insight: ai.insight,\n  lead_recommendation: ai.recomendacion,\n  lead_nombre: webhookData.nombre,\n  lead_email: webhookData.email,\n  lead_compania: webhookData.compania,\n  status: ai.score >= 7 ? 'demo' : ai.score >= 4 ? 'contacted' : 'new',\n  value: Math.round(ai.score * 100),\n  notas: `[IA] Score: ${ai.score}/10 | ${ai.insight}`\n};"
       }
     },
     {
@@ -55,11 +51,7 @@
         "operation": "update",
         "filters": {
           "conditions": [
-            {
-              "keyName": "id",
-              "keyValue": "={{ $('Parsear respuesta IA').item.json.lead_id }}",
-              "condition": "eq"
-            }
+            { "keyName": "id", "keyValue": "={{ $('Parsear respuesta IA').item.json.lead_id }}", "condition": "eq" }
           ]
         },
         "fieldsUi": {
@@ -71,10 +63,31 @@
         }
       },
       "credentials": {
-        "supabaseApi": {
-          "id": "lIfyq9tp1bnPVjei",
-          "name": "Supabase account"
-        }
+        "supabaseApi": { "id": "lIfyq9tp1bnPVjei", "name": "Supabase account" }
+      }
+    },
+    {
+      "id": "code-email",
+      "name": "Redactar Email IA",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1250, 300],
+      "parameters": {
+        "jsCode": "const parsed = $('Parsear respuesta IA').first().json;\nconst nombre = parsed.lead_nombre || 'cliente';\nconst compania = parsed.lead_compania || 'su empresa';\nconst score = parsed.lead_score || 5;\nconst insight = parsed.lead_insight || 'optimizar sus procesos operativos';\nconst recomendacion = parsed.lead_recommendation || 'agendar una auditoria gratuita';\n\nlet subject = `Propuesta inicial para ${compania} - Agencia ANGULO`;\n\nlet body = `Hola ${nombre},\\n\\n`;\nbody += `Gracias por contactar a ANGULO. Tras analizar la informacion de ${compania}, nuestro sistema de IA ha identificado que: ${insight}.\\n\\n`;\n\nif (score >= 7) {\n  body += `Esto es una gran oportunidad. ${recomendacion}.\\n\\n`;\n  body += `Podemos agendar una auditoria gratuita esta misma semana para mostrarle exactamente como ANGULO puede transformar su operacion.\\n\\n`;\n} else if (score >= 4) {\n  body += `Creemos que hay potencial para mejorar. ${recomendacion}.\\n\\n`;\n  body += `Le proponemos una llamada de 15 minutos sin compromiso para entender mejor sus necesidades.\\n\\n`;\n} else {\n  body += `Aunque en este momento no detectamos urgencia inmediata, ${recomendacion}. Le mantendremos informado sobre como ANGULO puede ayudar a empresas como ${compania}.\\n\\n`;\n}\n\nbody += `Que tenga un excelente dia,\\nEquipo ANGULO\\nwww.angulosoftware.com\\nWhatsApp: +58 424 9313359`;\n\nreturn { subject, body, toEmail: parsed.lead_email };\n"
+      }
+    },
+    {
+      "id": "send-email",
+      "name": "Enviar Email Personalizado",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [1500, 300],
+      "parameters": {
+        "fromEmail": "hola@angulosoftware.com",
+        "toEmail": "={{ $('Redactar Email IA').item.json.toEmail }}",
+        "subject": "={{ $('Redactar Email IA').item.json.subject }}",
+        "text": "={{ $('Redactar Email IA').item.json.body }}",
+        "options": {}
       }
     },
     {
@@ -82,10 +95,10 @@
       "name": "Responder JSON",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [1250, 300],
+      "position": [1750, 300],
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={\n  \"success\": true,\n  \"lead_id\": \"{{ $('Parsear respuesta IA').first().json.lead_id }}\",\n  \"score\": {{ $('Parsear respuesta IA').first().json.lead_score }},\n  \"category\": \"{{ $('Parsear respuesta IA').first().json.lead_category }}\",\n  \"insight\": \"{{ $('Parsear respuesta IA').first().json.lead_insight }}\",\n  \"recommendation\": \"{{ $('Parsear respuesta IA').first().json.lead_recommendation }}\"\n}"
+        "responseBody": "={\n  \"success\": true,\n  \"lead_id\": \"{{ $('Parsear respuesta IA').first().json.lead_id }}\",\n  \"score\": {{ $('Parsear respuesta IA').first().json.lead_score }},\n  \"category\": \"{{ $('Parsear respuesta IA').first().json.lead_category }}\",\n  \"insight\": \"{{ $('Parsear respuesta IA').first().json.lead_insight }}\",\n  \"recommendation\": \"{{ $('Parsear respuesta IA').first().json.lead_recommendation }}\",\n  \"email_sent\": true\n}"
       }
     }
   ],
@@ -100,9 +113,15 @@
       "main": [[{ "node": "Actualizar Lead en Supabase", "type": "main", "index": 0 }]]
     },
     "Actualizar Lead en Supabase": {
+      "main": [[{ "node": "Redactar Email IA", "type": "main", "index": 0 }]]
+    },
+    "Redactar Email IA": {
+      "main": [[{ "node": "Enviar Email Personalizado", "type": "main", "index": 0 }]]
+    },
+    "Enviar Email Personalizado": {
       "main": [[{ "node": "Responder JSON", "type": "main", "index": 0 }]]
     }
   },
   "pinData": {},
-  "meta": { "instanceId": "angulo-leads-classifier-v2-001" }
+  "meta": { "instanceId": "angulo-leads-classifier-email-001" }
 }

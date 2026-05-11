@@ -22,20 +22,17 @@
       "parameters": {
         "method": "POST",
         "url": "https://google.serper.dev/search",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "authentication": "none",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
+            { "name": "X-API-KEY", "value": "c95efc8159c6e0454dd4bcd271430e7db943879f" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={\n  \"q\": \"{{ $json.body.niche }} {{ $json.body.ubicacion }} contacto telefono sitio web\",\n  \"gl\": \"{{ $json.body.pais || 'co' }}\",\n  \"num\": 20\n}"
-      },
-      "credentials": {
-        "httpHeaderAuth": { "id": "serper-api-key", "name": "Serper API Key" }
       }
     },
     {

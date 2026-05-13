@@ -137,6 +137,18 @@ const CRM = () => {
     fetchLeads()
   }, [])
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsModalOpen(false)
+        setIsScheduleModalOpen(false)
+        setIsDetailOpen(false)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
   const handleCreateLead = async (e) => {
     e.preventDefault()
     setIsProcessing(true)
@@ -276,11 +288,11 @@ const CRM = () => {
   }
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-700 bg-[#0F172A] p-8 rounded-3xl border border-slate-800/40 min-h-screen shadow-xl shadow-black/20">
+    <div className="space-y-6 animate-in fade-in duration-700 bg-white p-8 rounded-3xl border border-slate-200 min-h-screen shadow-xl shadow-slate-200/50">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-black text-white font-outfit">Pipeline Comercial</h1>
-        <p className="text-slate-400 mt-1 font-medium">
+        <h1 className="text-3xl font-black text-slate-900 font-outfit">Pipeline Comercial</h1>
+        <p className="text-slate-500 mt-1 font-medium">
           Gestión avanzada de prospectos y agendamiento.
         </p>
       </div>
@@ -297,7 +309,7 @@ const CRM = () => {
               setSearchTerm(e.target.value)
               setCurrentPage(1)
             }}
-            className="w-full pl-12 pr-4 py-4 bg-slate-800/40 border border-slate-700/50 focus:bg-slate-800/60 focus:border-blue-500/30 rounded-2xl text-slate-200 outline-none transition-all placeholder:text-slate-500/50 font-medium"
+            className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 focus:bg-white focus:border-blue-500/50 rounded-2xl text-slate-900 outline-none transition-all placeholder:text-slate-400 font-medium"
           />
         </div>
         <div className="flex gap-2 w-full md:w-auto items-center">
@@ -315,7 +327,7 @@ const CRM = () => {
             className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-4 rounded-2xl text-sm font-black transition-all ${
               showTrash
                 ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/20'
-                : 'bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700 hover:text-white'
+                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:text-slate-900'
             }`}
           >
             <Trash2 size={18} />
@@ -335,7 +347,7 @@ const CRM = () => {
       </div>
 
       {/* Leads Table */}
-      <div className="bg-slate-800/20 rounded-2xl border border-slate-800/50 overflow-hidden shadow-sm">
+      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-24 text-slate-500">
             <Loader2 className="animate-spin mb-4" size={40} />
@@ -347,12 +359,12 @@ const CRM = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-800/40 border-b border-slate-700/50">
+                <tr className="bg-slate-50 border-b border-slate-200">
                   <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">
-                    Prospecto
+                    Prospecto / Empresa
                   </th>
                   <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">
-                    Compañía / Web
+                    Datos de Contacto
                   </th>
                   <th className="px-6 py-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">
                     Pipeline / Estado
@@ -362,7 +374,7 @@ const CRM = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/50">
+              <tbody className="divide-y divide-slate-100">
                 {currentLeads.map((lead) => (
                   <tr
                     key={lead.id}
@@ -370,60 +382,66 @@ const CRM = () => {
                       setSelectedLead(lead)
                       setIsDetailOpen(true)
                     }}
-                    className="hover:bg-white/[0.02] transition-colors group cursor-pointer"
+                    className="hover:bg-slate-50 transition-colors group cursor-pointer"
                   >
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-4">
-                        <div className="h-11 w-11 bg-slate-800 rounded-2xl flex items-center justify-center text-blue-400 font-bold border border-slate-700/50 shadow-inner">
+                        <div className="h-11 w-11 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 font-bold border border-blue-100 shadow-inner">
                           {lead.nombre?.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="text-sm font-black text-slate-100">{lead.nombre}</p>
-                          <p className="text-xs text-slate-500 mt-1">{lead.email}</p>
+                          <p className="text-sm font-black text-slate-900">{lead.nombre}</p>
+                          <div className="flex items-center gap-1.5 mt-1 text-slate-500">
+                            <Building2 size={12} className="text-slate-400" />
+                            <span className="text-xs font-medium">{lead.compania || 'Independiente'}</span>
+                          </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-5">
                       <div className="space-y-1.5">
-                        <div className="flex items-center gap-2.5 text-slate-400">
-                          <Building2 size={14} className="text-slate-600" />
-                          <span className="text-sm font-bold">
-                            {lead.compania || 'Independiente'}
-                          </span>
-                        </div>
-                        {lead.website && (
-                          <a
-                            href={
-                              lead.website.startsWith('http')
-                                ? lead.website
-                                : `https://${lead.website}`
-                            }
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex items-center gap-2.5 text-blue-500 hover:text-blue-400 text-xs font-medium"
-                          >
-                            <Globe size={12} />
-                            {lead.website.replace(/^https?:\/\//, '')}
-                          </a>
+                        {lead.email ? (
+                          <div className="flex items-center gap-2 text-slate-600">
+                            <Mail size={12} className="text-slate-400" />
+                            <span className="text-xs font-medium">{lead.email}</span>
+                          </div>
+                        ) : (
+                          <span className="text-[10px] text-slate-400 italic">Sin email</span>
+                        )}
+                        {lead.whatsapp ? (
+                          <div className="flex items-center gap-2 text-slate-600">
+                            <Phone size={12} className="text-emerald-500" />
+                            <span className="text-xs font-medium">{lead.whatsapp}</span>
+                          </div>
+                        ) : (
+                          <span className="text-[10px] text-slate-400 italic">Sin teléfono</span>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-5">
-                      <select
-                        value={lead.status || 'new'}
-                        onChange={(e) => handleUpdateStatus(lead.id, e.target.value)}
-                        className={`bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-[10px] font-black uppercase tracking-wider outline-none cursor-pointer hover:border-slate-700 transition-all ${statusOptions.find((opt) => opt.value === (lead.status || 'new'))?.color}`}
-                      >
-                        {statusOptions.map((opt) => (
-                          <option
-                            key={opt.value}
-                            value={opt.value}
-                            className="bg-slate-950 text-slate-300"
-                          >
-                            {opt.label}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-1.5">
+                          <span className={`h-1.5 w-1.5 rounded-full ${lead.status === 'new' ? 'bg-rose-500' : 'bg-emerald-500'}`}></span>
+                          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                            {lead.status === 'new' ? 'Sin Contactar' : 'Contactado'}
+                          </span>
+                        </div>
+                        <select
+                          value={lead.status || 'new'}
+                          onChange={(e) => handleUpdateStatus(lead.id, e.target.value)}
+                          className={`bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-[10px] font-black uppercase tracking-wider outline-none cursor-pointer hover:border-slate-300 transition-all ${statusOptions.find((opt) => opt.value === (lead.status || 'new'))?.color}`}
+                        >
+                          {statusOptions.map((opt) => (
+                            <option
+                              key={opt.value}
+                              value={opt.value}
+                              className="bg-white text-slate-700"
+                            >
+                              {opt.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </td>
                     <td className="px-6 py-5">
                       <div className="flex items-center justify-end gap-2">
@@ -495,19 +513,19 @@ const CRM = () => {
 
         {/* Paginador */}
         {!isLoading && totalPages > 1 && (
-          <div className="px-6 py-4 bg-slate-900/20 border-t border-slate-800/50 flex items-center justify-between">
+          <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
             <p className="text-xs text-slate-500 font-medium">
-              Mostrando <span className="text-slate-300">{indexOfFirstItem + 1}</span> a{' '}
-              <span className="text-slate-300">
+              Mostrando <span className="text-slate-900">{indexOfFirstItem + 1}</span> a{' '}
+              <span className="text-slate-900">
                 {Math.min(indexOfLastItem, filteredLeads.length)}
               </span>{' '}
-              de <span className="text-slate-300">{filteredLeads.length}</span> leads
+              de <span className="text-slate-900">{filteredLeads.length}</span> leads
             </p>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => paginate(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-700 transition-all"
+                className="p-2 bg-white border border-slate-200 rounded-lg text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-50 transition-all"
               >
                 <ChevronLeft size={16} />
               </button>
@@ -516,7 +534,7 @@ const CRM = () => {
                   <button
                     key={i + 1}
                     onClick={() => paginate(i + 1)}
-                    className={`h-8 w-8 rounded-lg text-[10px] font-black transition-all ${currentPage === i + 1 ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
+                    className={`h-8 w-8 rounded-lg text-[10px] font-black transition-all ${currentPage === i + 1 ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'}`}
                   >
                     {i + 1}
                   </button>
@@ -525,7 +543,7 @@ const CRM = () => {
               <button
                 onClick={() => paginate(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-700 transition-all"
+                className="p-2 bg-white border border-slate-200 rounded-lg text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-50 transition-all"
               >
                 <ChevronRight size={16} />
               </button>
@@ -536,15 +554,15 @@ const CRM = () => {
 
       {/* Modal Nuevo Lead */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-          <div className="bg-slate-900 border border-slate-800 w-full max-w-2xl rounded-3xl p-8 shadow-2xl relative animate-in zoom-in duration-300 max-h-[90vh] overflow-y-auto scrollbar-hide">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+          <div className="bg-white border border-slate-200 w-full max-w-2xl rounded-3xl p-8 shadow-2xl relative animate-in zoom-in duration-300 max-h-[90vh] overflow-y-auto scrollbar-hide">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors"
+              className="absolute top-6 right-6 text-slate-500 hover:text-slate-900 transition-colors"
             >
               <X size={24} />
             </button>
-            <h2 className="text-2xl font-black text-white mb-2 font-outfit">
+            <h2 className="text-2xl font-black text-slate-900 mb-2 font-outfit">
               Nuevo Lead Estratégico
             </h2>
             <p className="text-slate-500 text-sm mb-8 font-medium">
@@ -562,7 +580,7 @@ const CRM = () => {
                     type="text"
                     value={newLead.nombre}
                     onChange={(e) => setNewLead({ ...newLead, nombre: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 outline-none focus:bg-white focus:border-blue-500/50 transition-all"
                     placeholder="Ej: Juan Pérez"
                   />
                 </div>
@@ -574,7 +592,7 @@ const CRM = () => {
                     type="text"
                     value={newLead.compania}
                     onChange={(e) => setNewLead({ ...newLead, compania: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 outline-none focus:bg-white focus:border-blue-500/50 transition-all"
                     placeholder="Ej: Servicios Integrales S.A."
                   />
                 </div>
@@ -586,11 +604,10 @@ const CRM = () => {
                     Email Corporativo
                   </label>
                   <input
-                    required
                     type="email"
                     value={newLead.email}
                     onChange={(e) => setNewLead({ ...newLead, email: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 outline-none focus:border-blue-500/50 transition-all"
                     placeholder="ejemplo@empresa.com"
                   />
                 </div>
@@ -603,7 +620,7 @@ const CRM = () => {
                     type="tel"
                     value={newLead.whatsapp}
                     onChange={(e) => setNewLead({ ...newLead, whatsapp: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 outline-none focus:bg-white focus:border-blue-500/50 transition-all"
                     placeholder="+58..."
                   />
                 </div>
@@ -618,7 +635,7 @@ const CRM = () => {
                     type="text"
                     value={newLead.ciudad}
                     onChange={(e) => setNewLead({ ...newLead, ciudad: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 outline-none focus:bg-white focus:border-blue-500/50 transition-all"
                     placeholder="Ej: Caracas"
                   />
                 </div>
@@ -630,7 +647,7 @@ const CRM = () => {
                     type="text"
                     value={newLead.categoria}
                     onChange={(e) => setNewLead({ ...newLead, categoria: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 outline-none focus:bg-white focus:border-blue-500/50 transition-all"
                     placeholder="Ej: B2B, B2C, VIP"
                   />
                 </div>
@@ -643,7 +660,7 @@ const CRM = () => {
                 <select
                   value={newLead.fuente_contacto}
                   onChange={(e) => setNewLead({ ...newLead, fuente_contacto: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 outline-none focus:bg-white focus:border-blue-500/50 transition-all"
                 >
                   <option value="">Seleccione una opción</option>
                   <option value="whatsapp">WhatsApp</option>
@@ -659,7 +676,7 @@ const CRM = () => {
                 <textarea
                   value={newLead.comentario}
                   onChange={(e) => setNewLead({ ...newLead, comentario: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all resize-none min-h-[80px]"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 outline-none focus:bg-white focus:border-blue-500/50 transition-all resize-none min-h-[80px]"
                   placeholder="Detalles adicionales sobre el lead..."
                 />
               </div>
@@ -677,7 +694,7 @@ const CRM = () => {
                       type="text"
                       value={newLead.website}
                       onChange={(e) => setNewLead({ ...newLead, website: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 outline-none focus:bg-white focus:border-blue-500/50 transition-all"
                       placeholder="www.ejemplo.com"
                     />
                   </div>
@@ -691,7 +708,7 @@ const CRM = () => {
                         type="text"
                         value={newLead.instagram}
                         onChange={(e) => setNewLead({ ...newLead, instagram: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 outline-none focus:bg-white focus:border-blue-500/50 transition-all"
                         placeholder="@usuario"
                       />
                     </div>
@@ -703,7 +720,7 @@ const CRM = () => {
                         type="text"
                         value={newLead.facebook}
                         onChange={(e) => setNewLead({ ...newLead, facebook: e.target.value })}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 outline-none focus:bg-white focus:border-blue-500/50 transition-all"
                         placeholder="facebook.com/pagina"
                       />
                     </div>
@@ -726,21 +743,21 @@ const CRM = () => {
 
       {/* Modal Agendar Reunión (Meetings) */}
       {isScheduleModalOpen && selectedLead && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-          <div className="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-8 shadow-2xl relative animate-in zoom-in duration-300">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+          <div className="bg-white border border-slate-200 w-full max-w-md rounded-3xl p-8 shadow-2xl relative animate-in zoom-in duration-300">
             <button
               onClick={() => setIsScheduleModalOpen(false)}
-              className="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors"
+              className="absolute top-6 right-6 text-slate-500 hover:text-slate-900 transition-colors"
             >
               <X size={24} />
             </button>
             <div className="flex items-center gap-4 mb-6">
-              <div className="h-12 w-12 bg-purple-500/20 rounded-2xl flex items-center justify-center text-purple-400">
+              <div className="h-12 w-12 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 border border-purple-100">
                 <CalendarIcon size={24} />
               </div>
               <div>
-                <h2 className="text-xl font-black text-white font-outfit">Agendar Demo</h2>
-                <p className="text-xs text-slate-400">
+                <h2 className="text-xl font-black text-slate-900 font-outfit">Agendar Demo</h2>
+                <p className="text-xs text-slate-500">
                   Preparando sesión para:{' '}
                   <span className="text-purple-400 font-bold">{selectedLead.nombre}</span>
                 </p>
@@ -757,7 +774,7 @@ const CRM = () => {
                   type="date"
                   value={meetingData.fecha}
                   onChange={(e) => setMeetingData({ ...meetingData, fecha: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-purple-500/50 transition-all"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 outline-none focus:bg-white focus:border-purple-500/50 transition-all"
                 />
               </div>
               <div>
@@ -769,7 +786,7 @@ const CRM = () => {
                   type="time"
                   value={meetingData.hora}
                   onChange={(e) => setMeetingData({ ...meetingData, hora: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-white outline-none focus:border-purple-500/50 transition-all"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 outline-none focus:bg-white focus:border-purple-500/50 transition-all"
                 />
               </div>
               <button
@@ -787,28 +804,28 @@ const CRM = () => {
 
       {/* Modal Detalle de Lead */}
       {isDetailOpen && selectedLead && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-          <div className="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-8 shadow-2xl relative animate-in zoom-in duration-300 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+          <div className="bg-white border border-slate-200 w-full max-w-lg rounded-3xl p-8 shadow-2xl relative animate-in zoom-in duration-300 max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setIsDetailOpen(false)}
-              className="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors"
+              className="absolute top-6 right-6 text-slate-500 hover:text-slate-900 transition-colors"
             >
               <X size={24} />
             </button>
 
             <div className="flex items-center gap-4 mb-8">
-              <div className="h-14 w-14 bg-blue-600/20 rounded-2xl flex items-center justify-center text-blue-400 font-black text-xl border border-blue-500/20">
+              <div className="h-14 w-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 font-black text-xl border border-blue-100">
                 {selectedLead.nombre?.charAt(0).toUpperCase()}
               </div>
               <div>
-                <h2 className="text-xl font-black text-white font-outfit">{selectedLead.nombre}</h2>
+                <h2 className="text-xl font-black text-slate-900 font-outfit">{selectedLead.nombre}</h2>
                 <p className="text-slate-500 text-sm">{selectedLead.compania || 'Independiente'}</p>
               </div>
             </div>
 
             <div className="space-y-4">
               {selectedLead.email && (
-                <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl">
+                <div className="flex items-center gap-3 p-3 bg-slate-50 border border-slate-100 rounded-xl">
                   <Mail size={18} className="text-slate-500 shrink-0" />
                   <div>
                     <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">
@@ -824,7 +841,7 @@ const CRM = () => {
                 </div>
               )}
               {selectedLead.whatsapp && (
-                <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl">
+                <div className="flex items-center gap-3 p-3 bg-slate-50 border border-slate-100 rounded-xl">
                   <Phone size={18} className="text-emerald-500 shrink-0" />
                   <div>
                     <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">
@@ -842,7 +859,7 @@ const CRM = () => {
                 </div>
               )}
               {selectedLead.website && (
-                <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl">
+                <div className="flex items-center gap-3 p-3 bg-slate-50 border border-slate-100 rounded-xl">
                   <Globe size={18} className="text-slate-500 shrink-0" />
                   <div>
                     <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">
@@ -864,7 +881,7 @@ const CRM = () => {
                 </div>
               )}
               {selectedLead.instagram && (
-                <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl">
+                <div className="flex items-center gap-3 p-3 bg-slate-50 border border-slate-100 rounded-xl">
                   <ExternalLink size={18} className="text-pink-500 shrink-0" />
                   <div>
                     <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">
@@ -875,7 +892,7 @@ const CRM = () => {
                 </div>
               )}
               {selectedLead.facebook && (
-                <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl">
+                <div className="flex items-center gap-3 p-3 bg-slate-50 border border-slate-100 rounded-xl">
                   <ExternalLink size={18} className="text-blue-500 shrink-0" />
                   <div>
                     <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">
@@ -886,50 +903,50 @@ const CRM = () => {
                 </div>
               )}
               {selectedLead.ciudad && (
-                <div className="p-3 bg-slate-800/50 rounded-xl">
+                <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl">
                   <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">
                     Ciudad
                   </p>
-                  <p className="text-sm text-slate-300">{selectedLead.ciudad}</p>
+                  <p className="text-sm text-slate-700">{selectedLead.ciudad}</p>
                 </div>
               )}
               {selectedLead.categoria && (
-                <div className="p-3 bg-slate-800/50 rounded-xl">
+                <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl">
                   <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">
                     Categoría
                   </p>
-                  <p className="text-sm text-slate-300">{selectedLead.categoria}</p>
+                  <p className="text-sm text-slate-700">{selectedLead.categoria}</p>
                 </div>
               )}
               {selectedLead.fuente_contacto && (
-                <div className="p-3 bg-slate-800/50 rounded-xl">
+                <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl">
                   <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">
                     Fuente de Contacto
                   </p>
-                  <p className="text-sm text-slate-300 capitalize">{selectedLead.fuente_contacto}</p>
+                  <p className="text-sm text-slate-700 capitalize">{selectedLead.fuente_contacto}</p>
                 </div>
               )}
               {selectedLead.comentario && (
-                <div className="p-3 bg-slate-800/50 rounded-xl">
+                <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl">
                   <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-2">
                     Comentario
                   </p>
-                  <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                  <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
                     {selectedLead.comentario}
                   </p>
                 </div>
               )}
               {selectedLead.notas && (
-                <div className="p-3 bg-slate-800/50 rounded-xl">
+                <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl">
                   <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-2">
                     Notas
                   </p>
-                  <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                  <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
                     {selectedLead.notas}
                   </p>
                 </div>
               )}
-              <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl">
+              <div className="flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-xl">
                 <div>
                   <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">
                     Estado

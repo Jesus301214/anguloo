@@ -126,18 +126,18 @@ const AdminLayout = ({ children }) => {
     <div className="min-h-screen bg-[#F8FAFC] flex font-sans">
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full bg-white text-slate-500 transition-all duration-300 z-50 border-r border-slate-200/60 ${
+        className={`fixed top-0 left-0 h-full bg-slate-900 text-slate-400 transition-all duration-300 z-50 border-r border-slate-800 ${
           isSidebarOpen ? 'w-72' : 'w-20'
         }`}
       >
         {/* Brand Logo */}
-        <div className="h-20 flex items-center px-6 border-b border-slate-100">
+        <div className="h-20 flex items-center px-6 border-b border-slate-800">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-600/20">
               A
             </div>
             {isSidebarOpen && (
-              <span className="text-slate-900 font-black text-2xl tracking-tighter font-outfit">
+              <span className="text-white font-black text-2xl tracking-tighter font-outfit">
                 ANGULO
               </span>
             )}
@@ -154,8 +154,8 @@ const AdminLayout = ({ children }) => {
                 onClick={() => handleTabChange(item.id)}
                 className={`w-full group flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 relative ${
                   isActive
-                    ? 'bg-blue-50 text-blue-600 shadow-[inset_0_0_0_1px_rgba(59,130,246,0.1)]'
-                    : 'hover:bg-slate-50 hover:text-slate-900'
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                    : 'hover:bg-slate-800 hover:text-white'
                 }`}
               >
                 <item.icon
@@ -181,7 +181,7 @@ const AdminLayout = ({ children }) => {
                 )}
 
                 {isActive && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-500 rounded-r-full" />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-white rounded-r-full" />
                 )}
               </button>
             )
@@ -195,7 +195,7 @@ const AdminLayout = ({ children }) => {
               await supabase.auth.signOut()
               navigate('/login-admin')
             }}
-            className="w-full flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:text-rose-400 hover:bg-rose-400/5 rounded-xl transition-all duration-300"
+            className="w-full flex items-center gap-3 px-4 py-3.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition-all duration-300"
           >
             <LogOut size={22} />
             {isSidebarOpen && <span className="font-bold text-sm">Cerrar Sesión</span>}

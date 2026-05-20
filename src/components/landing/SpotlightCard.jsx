@@ -14,7 +14,7 @@ const SpotlightCard = ({ children, className = '' }) => {
     <motion.div
       onMouseMove={handleMouseMove}
       whileHover={{ scale: 1.02 }}
-      className={`group relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-8 transition-all hover:shadow-xl hover:border-rose-500/30 ${className}`}
+      className={`group relative overflow-hidden rounded-[2rem] border border-gray-800 bg-[#0a0f1a] p-8 transition-all hover:shadow-xl hover:border-rose-500/30 ${className}`}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-[2rem] opacity-0 transition duration-300 group-hover:opacity-100"
@@ -22,7 +22,7 @@ const SpotlightCard = ({ children, className = '' }) => {
           background: useTransform(
             [mouseX, mouseY],
             ([x, y]) =>
-              `radial-gradient(400px circle at ${x}px ${y}px, rgba(244, 63, 94, 0.15), transparent 80%)`,
+              `radial-gradient(400px circle at ${x}px ${y}px, rgba(244, 63, 94, 0.12), transparent 80%)`,
           ),
         }}
       />

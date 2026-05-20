@@ -18,10 +18,6 @@ import Terminos from './pages/Terminos'
 // Assets
 const heroImage = '/Gemini_Generated_Image_cb7f6xcb7f6xcb7f.png'
 const logo = '/logo.png'
-const teamImage =
-  '/happy-business-team-with-raised-hands-celebrating-their-success-in-the-office_1.jpg'
-const sadImage = '/teenager-suffering-from-hangover.webp'
-const happyImage = '/low-angle-happy-modern-man.webp'
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -41,9 +37,6 @@ const App = () => {
               isMenuOpen={isMenuOpen}
               logo={logo}
               heroImage={heroImage}
-              sadImage={sadImage}
-              happyImage={happyImage}
-              teamImage={teamImage}
             />
           }
         />

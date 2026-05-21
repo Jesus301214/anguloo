@@ -1,8 +1,6 @@
 const requiredVars = [
   'VITE_SUPABASE_URL',
   'VITE_SUPABASE_ANON_KEY',
-  'VITE_GOOGLE_CLIENT_ID',
-  'VITE_GEMINI_API_KEY',
 ]
 
 const optionalVars = ['VITE_ZAPIER_WEBHOOK_URL', 'VITE_N8N_WEBHOOK_URL', 'VITE_GEMINI_API_KEY']
@@ -10,11 +8,8 @@ const optionalVars = ['VITE_ZAPIER_WEBHOOK_URL', 'VITE_N8N_WEBHOOK_URL', 'VITE_G
 export function validateEnv() {
   const missing = []
 
-  for (const key of requiredVars) {
-    if (!import.meta.env[key]) {
-      missing.push(key)
-    }
-  }
+  if (!import.meta.env.VITE_SUPABASE_URL) missing.push('VITE_SUPABASE_URL')
+  if (!import.meta.env.VITE_SUPABASE_ANON_KEY) missing.push('VITE_SUPABASE_ANON_KEY')
 
   if (missing.length > 0) {
     const message = `Faltan variables de entorno requeridas: ${missing.join(', ')}. Revisa tu archivo .env`
@@ -24,16 +19,9 @@ export function validateEnv() {
     }
   }
 
-  const missingOptional = []
-  for (const key of optionalVars) {
-    if (!import.meta.env[key]) {
-      missingOptional.push(key)
-    }
-  }
-
-  if (missingOptional.length > 0) {
-    console.warn(`Variables de entorno opcionales no configuradas: ${missingOptional.join(', ')}`)
-  }
+  if (!import.meta.env.VITE_GEMINI_API_KEY) console.warn('VITE_GEMINI_API_KEY no configurada (opcional)')
+  if (!import.meta.env.VITE_ZAPIER_WEBHOOK_URL) console.warn('VITE_ZAPIER_WEBHOOK_URL no configurada (opcional)')
+  if (!import.meta.env.VITE_N8N_WEBHOOK_URL) console.warn('VITE_N8N_WEBHOOK_URL no configurada (opcional)')
 }
 
 export const logger = {

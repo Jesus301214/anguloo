@@ -17,7 +17,8 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo, menuData }) =
         <div className="hidden items-center gap-8 md:flex">
           <a href="#problemas" className="text-sm font-semibold text-gray-400 hover:text-rose-400 transition-colors">Problema</a>
           <a href="#soluciones" className="text-sm font-semibold text-gray-400 hover:text-rose-400 transition-colors">Funcionalidades</a>
-          <a href="#planes" className="text-sm font-semibold text-gray-400 hover:text-rose-400 transition-colors">Precios</a>
+          <a href="#precos" className="text-sm font-semibold text-gray-400 hover:text-rose-400 transition-colors">Precios</a>
+          <a href="/login-admin" className="rounded-full border border-gray-700 bg-transparent px-4 py-2 text-sm font-semibold text-gray-300 hover:text-white hover:border-gray-500 transition-all">Admin</a>
           <div className="h-6 w-px bg-gray-800" />
           <button onClick={() => setIsModalOpen(true)} className="rounded-full bg-rose-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-rose-500/20 hover:bg-rose-600 transition-all active:scale-95">
             Prueba Gratis
@@ -36,6 +37,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo, menuData }) =
             <a href="#soluciones" onClick={() => setIsMenuOpen(false)} className="block text-xl font-bold text-white">Funcionalidades</a>
             <a href="#planes" onClick={() => setIsMenuOpen(false)} className="block text-xl font-bold text-white">Precios</a>
             <div className="pt-4 border-t border-gray-800 space-y-4">
+              <a href="/login-admin" className="block text-lg font-semibold text-gray-400">Panel Admin</a>
               <button onClick={() => { setIsModalOpen(true); setIsMenuOpen(false) }} className="w-full bg-rose-500 py-4 rounded-2xl font-black text-white">Prueba Gratis</button>
             </div>
           </motion.div>

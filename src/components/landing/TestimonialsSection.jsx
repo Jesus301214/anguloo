@@ -54,20 +54,20 @@ const TestimonialsSection = () => {
         </div>
 
         <div className="relative">
-          <div className="rounded-[2.5rem] bg-gradient-to-br from-[#0a0f1a] to-[#0d122a] border border-gray-800 p-10 md:p-14 shadow-xl">
-            <div className="flex gap-1 mb-4">
+          <div className="rounded-[2rem] bg-gradient-to-br from-[#0a0f1a] to-[#0d122a] border border-gray-800 p-8 md:p-10 shadow-xl">
+            <div className="flex gap-1 mb-3">
               {Array.from({ length: testimonials[current].rating }).map((_, i) => (
-                <Star key={i} size={18} className="fill-amber-400 text-amber-400" />
+                <Star key={i} size={16} className="fill-amber-400 text-amber-400" />
               ))}
             </div>
-            <div className="text-emerald-400 font-bold text-lg mb-6">
+            <div className="text-emerald-400 font-bold text-base mb-4">
               {testimonials[current].metric}
             </div>
-            <blockquote className="text-lg md:text-xl text-gray-300 font-medium leading-relaxed mb-10">
+            <blockquote className="text-base md:text-lg text-gray-300 font-medium leading-relaxed mb-8">
               "{testimonials[current].quote}"
             </blockquote>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-400 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
                 {testimonials[current].image}
               </div>
               <div>

@@ -55,13 +55,13 @@ const PainPointsSection = ({ setIsModalOpen }) => {
         <div className="pains-grid grid gap-8 lg:grid-cols-3">
           {pains.map((card, i) => (
             <div key={i} className="pains-card">
-              <SpotlightCard className="h-full bg-[#0a0f1a] border-gray-800 p-8">
-                <div className="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 mb-6">
+              <SpotlightCard className="h-full bg-[#0a0f1a] border-gray-800 p-6">
+                <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 mb-4">
                   {card.icon}
                 </div>
-                <p className="text-gray-500 line-through text-sm mb-3 italic">{card.before}</p>
-                <h3 className="text-lg font-bold text-white mb-3 leading-relaxed">{card.after}</h3>
-                <div className="flex items-center gap-2 text-emerald-400 text-sm font-bold mt-4 pt-4 border-t border-gray-800">
+                <p className="text-gray-500 line-through text-xs mb-2 italic">{card.before}</p>
+                <h3 className="text-base font-bold text-white mb-3 leading-relaxed">{card.after}</h3>
+                <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold pt-3 border-t border-gray-800">
                   <div className="w-2 h-2 rounded-full bg-emerald-400" />
                   {card.stat}
                 </div>

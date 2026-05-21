@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { ArrowRight, Sparkles } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { useGSAP } from '../../lib/gsap'
 import { gsap } from '../../lib/gsap'
 
@@ -11,8 +12,13 @@ const words = [
   { text: 'crecer', gradient: true },
   { text: 'tu', gradient: false },
   { text: 'negocio', gradient: true },
-  { text: 'de', gradient: false },
-  { text: 'belleza.', gradient: false },
+  { text: 'y', gradient: false },
+  { text: 'lo', gradient: false },
+  { text: 'hace', gradient: false },
+  { text: 'pasar', gradient: false },
+  { text: 'al', gradient: false },
+  { text: 'siguiente', gradient: true },
+  { text: 'nivel.', gradient: false },
 ]
 
 const stats = [
@@ -92,8 +98,14 @@ const HeroSection = ({ heroImage, setIsModalOpen }) => {
           </div>
         </div>
 
-        <div className="hero-mockup relative">
-          <div className="relative overflow-hidden rounded-3xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950 p-3 shadow-2xl shadow-rose-500/10">
+        <div className="hero-mockup relative flex items-center justify-center">
+          <div className="absolute w-80 h-80 bg-rose-500/20 rounded-full blur-[80px] animate-pulse" style={{ animationDuration: '4s' }} />
+          <div className="absolute w-60 h-60 bg-purple-500/15 rounded-full blur-[60px] animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
+          <motion.div
+            animate={{ y: [0, -15, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            className="relative overflow-hidden rounded-3xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950 p-3 shadow-2xl shadow-rose-500/10 max-w-md"
+          >
             <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-800 mb-3">
               <div className="w-3 h-3 rounded-full bg-rose-500" />
               <div className="w-3 h-3 rounded-full bg-amber-500" />
@@ -104,7 +116,7 @@ const HeroSection = ({ heroImage, setIsModalOpen }) => {
               alt="Dashboard ANGULO"
               className="w-full h-auto object-cover rounded-2xl"
             />
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

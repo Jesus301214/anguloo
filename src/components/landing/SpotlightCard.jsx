@@ -13,8 +13,9 @@ const SpotlightCard = ({ children, className = '' }) => {
   return (
     <motion.div
       onMouseMove={handleMouseMove}
-      whileHover={{ scale: 1.02 }}
-      className={`group relative overflow-hidden rounded-[2rem] border border-gray-800 bg-[#0a0f1a] p-8 transition-all hover:shadow-xl hover:border-rose-500/30 ${className}`}
+      whileHover={{ scale: 1.02, rotateY: 2, rotateX: -2 }}
+      style={{ perspective: 1000, transformStyle: 'preserve-3d' }}
+      className={`group relative overflow-hidden rounded-3xl border border-gray-800 bg-[#0a0f1a] transition-all duration-300 hover:shadow-xl hover:shadow-rose-500/10 hover:border-rose-500/20 ${className}`}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-[2rem] opacity-0 transition duration-300 group-hover:opacity-100"

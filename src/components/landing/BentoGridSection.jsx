@@ -69,8 +69,8 @@ const BentoGridSection = () => {
         <div className="bento-grid grid grid-cols-1 lg:grid-cols-3 gap-6">
           {modules.map((m, i) => (
             <div key={i} className={`bento-card ${m.span || ''}`}>
-              <div className={`h-full rounded-3xl border bg-gradient-to-br ${colorMap[m.color]} p-8 lg:p-10 hover:scale-[1.02] transition-transform duration-300`}>
-                <div className={`w-14 h-14 rounded-2xl bg-${m.color}-500/10 border border-${m.color}-500/20 flex items-center justify-center mb-6`}>
+              <div className={`h-full rounded-2xl border bg-gradient-to-br ${colorMap[m.color]} p-6 lg:p-8 hover:scale-[1.02] transition-transform duration-300`} style={{ perspective: '800px' }}>
+                <div className={`w-12 h-12 rounded-xl bg-${m.color}-500/10 border border-${m.color}-500/20 flex items-center justify-center mb-4`}>
                   {m.icon || m.icon}
                 </div>
                 <h3 className="text-2xl font-black text-white mb-3">{m.title}</h3>

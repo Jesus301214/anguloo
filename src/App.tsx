@@ -16,8 +16,8 @@ import Privacidad from './pages/Privacidad'
 import Terminos from './pages/Terminos'
 
 // Assets
-const heroImage = '/logo-angulo-este-si.jpg'
-const logo = '/logo-angulo-este-si.jpg'
+const heroImage = '/logo-angulo-este-si.jpeg'
+const logo = '/logo-angulo-este-si.jpeg'
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)

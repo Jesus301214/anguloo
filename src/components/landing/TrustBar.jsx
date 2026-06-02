@@ -1,55 +1,55 @@
 import { useRef } from 'react'
-import { useGSAP } from '../../lib/gsap'
-import { gsap } from '../../lib/gsap'
-
-const metrics = [
-  { value: '120+', label: 'Empresas Auditadas' },
-  { value: '89%', label: 'Reducción de Fugas' },
-  { value: '4.8/5', label: 'Satisfacción' },
-  { value: '48h', label: 'Diagnóstico Inicial' },
-]
+import { useGSAP, gsap } from '../../lib/gsap'
 
 const TrustBar = () => {
-  const containerRef = useRef(null)
+  const sectionRef = useRef(null)
 
   useGSAP(
     () => {
-      gsap.from('.trust-item', {
-        y: 40,
+      gsap.from('.trust-logo', {
+        y: 20,
         autoAlpha: 0,
-        duration: 0.8,
         stagger: 0.1,
+        duration: 0.8,
         ease: 'power3.out',
         scrollTrigger: {
-          trigger: containerRef.current,
+          trigger: sectionRef.current,
           start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
+        }
       })
     },
-    { scope: containerRef },
+    { scope: sectionRef }
   )
 
+  const logos = [
+    { name: 'Studio 9', subtitle: 'BARBERSHOP' },
+    { name: 'LUXE', subtitle: 'SALON' },
+    { name: 'Bella', subtitle: 'SPA & BEAUTY' },
+    { name: 'Premium', subtitle: 'BARBERIA' },
+    { name: 'Glow', subtitle: 'BEAUTY STUDIO' },
+    { name: 'Urban', subtitle: 'NAILS & SPA' },
+  ]
+
   return (
-    <section
-      ref={containerRef}
-      className="py-16 px-6 bg-gradient-to-r from-slate-50 via-white to-slate-50 border-y border-slate-100"
-    >
-      <div className="mx-auto max-w-5xl">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {metrics.map((m, i) => (
-            <div key={i} className="trust-item text-center">
-              <div className="text-3xl md:text-4xl font-black text-slate-900 font-outfit mb-1">
-                {m.value}
-              </div>
-              <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                {m.label}
-              </div>
+    <div ref={sectionRef} className="py-12 bg-[#030712] border-b border-gray-800/30">
+      <div className="mx-auto max-w-7xl px-6">
+        <p className="text-center text-sm font-semibold text-gray-500 mb-8 tracking-wide">
+          Más de 2,000 negocios ya confían en Angulo
+        </p>
+        <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 md:gap-x-20">
+          {logos.map((logo, i) => (
+            <div key={i} className="trust-logo flex flex-col items-center opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-pointer">
+              <span className={`text-2xl font-black text-white ${i % 2 === 0 ? 'font-serif italic' : 'font-sans'}`}>
+                {logo.name}
+              </span>
+              <span className="text-[9px] font-bold tracking-[0.2em] text-gray-400 mt-1 uppercase">
+                {logo.subtitle}
+              </span>
             </div>
           ))}
         </div>
       </div>
-    </section>
+    </div>
   )
 }
 

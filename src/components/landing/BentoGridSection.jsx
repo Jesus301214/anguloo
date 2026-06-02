@@ -1,84 +1,96 @@
 import { useRef } from 'react'
-import { CalendarDays, MessageCircle, BarChart3, Package } from 'lucide-react'
+import { Calendar, Users, Package, BarChart2, Zap, Share2 } from 'lucide-react'
 import { useGSAP, gsap } from '../../lib/gsap'
 
-const modules = [
+const features = [
   {
-    title: 'Agenda Inteligente',
-    desc: 'Reservas online 24/7 sin intervención humana. Tus clientes agendan, confirman y reprograman solos.',
-    icon: <CalendarDays size={32} />,
-    color: 'rose',
-    span: 'lg:col-span-2 lg:row-span-2',
+    icon: <Calendar size={24} className="text-gray-300" />,
+    title: 'Calendario Inteligente',
+    desc: 'Gestiona reservas, reduce inasistencias y envía recordatorios automáticos por WhatsApp.',
   },
   {
-    title: 'Marketing Automatizado',
-    desc: 'Campañas de WhatsApp desde el panel. Recupera clientes inactivos y llena tu agenda sin esfuerzo.',
-    icon: <MessageCircle size={28} />,
-    color: 'emerald',
+    icon: <Users size={24} className="text-gray-300" />,
+    title: 'CRM Avanzado',
+    desc: 'Conoce a tus clientes, su historial, preferencias y aumenta su fidelización.',
   },
   {
-    title: 'Finanzas y POS',
-    desc: 'Flujo de caja en tiempo real, comisiones automáticas y cierres de caja blindados.',
-    icon: <BarChart3 size={28} />,
-    color: 'purple',
+    icon: <Package size={24} className="text-gray-300" />,
+    title: 'Inventario Inteligente',
+    desc: 'Controla tu inventario en tiempo real y recibe alertas de stock bajo.',
   },
   {
-    title: 'Inventario al Milímetro',
-    desc: 'Cada servicio descuenta productos del stock. Alertas cuando el nivel está bajo. Cero sorpresas.',
-    icon: <Package size={28} />,
-    color: 'amber',
-    span: 'lg:col-span-2',
+    icon: <BarChart2 size={24} className="text-gray-300" />,
+    title: 'Reportes & Analytics',
+    desc: 'Toma decisiones basadas en datos reales. Ve lo que funciona y escala tu negocio.',
+  },
+  {
+    icon: <Zap size={24} className="text-gray-300" />,
+    title: 'Automatizaciones con IA',
+    desc: 'Responde mensajes, confirma citas y sigue a tus clientes mientras duermes.',
+  },
+  {
+    icon: <Share2 size={24} className="text-gray-300" />,
+    title: 'Marketing Integrado',
+    desc: 'Crea campañas, promociones y programas de lealtad que sí funcionan.',
   },
 ]
-
-const colorMap = {
-  rose: 'from-rose-500/20 to-rose-500/5 border-rose-500/20 text-rose-400',
-  emerald: 'from-emerald-500/20 to-emerald-500/5 border-emerald-500/20 text-emerald-400',
-  purple: 'from-purple-500/20 to-purple-500/5 border-purple-500/20 text-purple-400',
-  amber: 'from-amber-500/20 to-amber-500/5 border-amber-500/20 text-amber-400',
-}
 
 const BentoGridSection = () => {
   const sectionRef = useRef(null)
 
   useGSAP(
     () => {
-      gsap.from('.bento-title', { y: 40, autoAlpha: 0, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 75%', toggleActions: 'play none none none' } })
-      gsap.from('.bento-card', { y: 40, autoAlpha: 0, stagger: 0.12, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: '.bento-grid', start: 'top 80%', toggleActions: 'play none none none' } })
+      gsap.from('.feature-header', { 
+        y: 30, 
+        autoAlpha: 0, 
+        duration: 0.8, 
+        ease: 'power3.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' } 
+      })
+      
+      gsap.from('.feature-card', { 
+        y: 40, 
+        autoAlpha: 0, 
+        stagger: 0.1, 
+        duration: 0.7, 
+        ease: 'power3.out', 
+        scrollTrigger: { trigger: '.features-grid', start: 'top 85%' } 
+      })
     },
-    { scope: sectionRef },
+    { scope: sectionRef }
   )
 
   return (
-    <section ref={sectionRef} id="soluciones" className="py-32 bg-[#030712] px-6 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[120px]" />
-      <div className="mx-auto max-w-7xl relative z-10">
-        <div className="bento-title text-center mb-20">
-          <div className="inline-flex items-center rounded-full border border-rose-500/30 bg-rose-500/10 px-4 py-1.5 text-xs font-bold text-rose-400 uppercase tracking-wider mb-6">
-            FUNCIONALIDADES
+    <section ref={sectionRef} id="funciones" className="py-24 bg-[#050a14] px-6 relative border-b border-gray-800/30">
+      <div className="mx-auto max-w-7xl">
+        
+        <div className="feature-header mb-16 max-w-2xl">
+          <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">
+            TODO LO QUE NECESITAS <span className="inline-block w-8 h-px bg-gray-600 align-middle ml-2"></span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-black font-outfit mb-4">
-            <span className="text-white">Todo lo que necesitas. </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-purple-400">En un solo lugar.</span>
+          <h2 className="text-3xl md:text-5xl font-black font-outfit leading-tight text-white">
+            Una plataforma completa para gestionar tu negocio
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Sin módulos separados, sin integraciones complicadas. ANGULO funciona desde el minuto uno.
-          </p>
         </div>
 
-        <div className="bento-grid grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {modules.map((m, i) => (
-            <div key={i} className={`bento-card ${m.span || ''}`}>
-              <div className={`h-full rounded-2xl border bg-gradient-to-br ${colorMap[m.color]} p-6 lg:p-8 hover:scale-[1.02] transition-transform duration-300`} style={{ perspective: '800px' }}>
-                <div className={`w-12 h-12 rounded-xl bg-${m.color}-500/10 border border-${m.color}-500/20 flex items-center justify-center mb-4`}>
-                  {m.icon || m.icon}
+        <div className="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {features.map((f, i) => (
+            <div key={i} className="feature-card group rounded-3xl bg-[#0a0f1a] border border-gray-800/60 p-8 hover:bg-[#0d1222] transition-colors duration-300">
+              <div className="flex gap-5">
+                <div className="w-12 h-12 shrink-0 rounded-2xl bg-gray-800/50 flex items-center justify-center group-hover:bg-gray-700/50 transition-colors">
+                  {f.icon}
                 </div>
-                <h3 className="text-2xl font-black text-white mb-3">{m.title}</h3>
-                <p className="text-gray-400 text-base leading-relaxed">{m.desc}</p>
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-2">{f.title}</h3>
+                  <p className="text-sm text-gray-400 leading-relaxed font-medium">
+                    {f.desc}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   )

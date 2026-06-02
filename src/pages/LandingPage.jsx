@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
 import { supabase } from '../lib/supabase'
-import PricingSection from '../components/landing/PricingSection'
+
+// Secciones
 import Navbar from '../components/landing/Navbar'
 import HeroSection from '../components/landing/HeroSection'
-import PainPointsSection from '../components/landing/PainPointsSection'
+import TrustBar from '../components/landing/TrustBar'
 import BentoGridSection from '../components/landing/BentoGridSection'
+import ResultsSection from '../components/landing/ResultsSection'
 import TestimonialsSection from '../components/landing/TestimonialsSection'
-import FAQSection from '../components/landing/FAQSection'
 import FinalCTASection from '../components/landing/FinalCTA'
 import Footer from '../components/landing/Footer'
+
+// Modals/Float
 import DemoModal from '../components/landing/DemoModal'
 import WhatsAppButton from '../components/landing/WhatsAppButton'
 
@@ -67,17 +70,30 @@ const LandingPage = ({ setIsModalOpen, isModalOpen, setIsMenuOpen, isMenuOpen, l
   }
 
   return (
-    <div className="min-h-screen bg-[#030712] font-sans text-white selection:bg-rose-500 selection:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#030712] font-sans text-white selection:bg-gray-700 selection:text-white overflow-x-hidden">
       <Navbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} setIsModalOpen={setIsModalOpen} logo={logo} />
-      <HeroSection heroImage={heroImage} setIsModalOpen={setIsModalOpen} />
-      <PainPointsSection setIsModalOpen={setIsModalOpen} />
-      <BentoGridSection />
-      <TestimonialsSection />
-      <PricingSection onOpenModal={() => setIsModalOpen(true)} />
-      <FAQSection />
-      <FinalCTASection setIsModalOpen={setIsModalOpen} />
+      
+      <main>
+        <HeroSection heroImage={heroImage} setIsModalOpen={setIsModalOpen} />
+        <TrustBar />
+        <BentoGridSection />
+        <ResultsSection />
+        <TestimonialsSection />
+        <FinalCTASection setIsModalOpen={setIsModalOpen} />
+      </main>
+
       <Footer logo={logo} />
-      <DemoModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} formData={formData} isSubmitting={isSubmitting} formStatus={formStatus} n8nResult={n8nResult} handleInputChange={handleInputChange} handleReservaSubmit={handleReservaSubmit} />
+      
+      <DemoModal 
+        isModalOpen={isModalOpen} 
+        setIsModalOpen={setIsModalOpen} 
+        formData={formData} 
+        isSubmitting={isSubmitting} 
+        formStatus={formStatus} 
+        n8nResult={n8nResult} 
+        handleInputChange={handleInputChange} 
+        handleReservaSubmit={handleReservaSubmit} 
+      />
       <WhatsAppButton whatsappLink={whatsappLink} />
     </div>
   )

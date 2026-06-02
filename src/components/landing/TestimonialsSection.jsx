@@ -1,32 +1,29 @@
 import { useRef, useState } from 'react'
-import { Star, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Star, ArrowLeft, ArrowRight } from 'lucide-react'
 import { useGSAP, gsap } from '../../lib/gsap'
 
 const testimonials = [
   {
-    name: 'María González',
-    role: 'Dueña de Spa Serenity',
-    metric: '+30% en reservas en 60 días',
-    quote: 'Desde que usamos ANGULO, las reservas online llenan nuestra agenda sin que movamos un dedo. Las inasistencias desaparecieron. Es como tener un gerente 24/7.',
-    rating: 5,
-    image: 'MG',
-  },
-  {
     name: 'Carlos Mendoza',
-    role: 'Director Clínica DentalCare',
-    metric: 'Inasistencias reducidas a 0%',
-    quote: 'Los recordatorios automáticos por WhatsApp cambiaron todo. Antes perdíamos 15 citas por semana. Ahora cero. El ROI fue inmediato.',
+    role: 'Owner, Studio 9 Barbershop',
+    quote: 'Antes tenía todo en cuadernos y hojas sueltas. Ahora mi negocio es otro. Más organizado, más clientes y más ganancias.',
     rating: 5,
-    image: 'CM',
+    image: 'https://i.pravatar.cc/150?u=carlos',
   },
   {
     name: 'Ana Lucía Rivas',
-    role: 'CEO Estética & Bienestar',
-    metric: 'Visibilidad total de inventario',
-    quote: 'Saber exactamente cuánto producto se gasta por servicio nos ahorró miles en compras innecesarias. ANGULO nos dio el control que no teníamos.',
+    role: 'CEO, Bella Spa & Beauty',
+    quote: 'Las inasistencias eran mi mayor dolor de cabeza. Desde que activamos los recordatorios por WhatsApp automáticos, se redujeron a cero.',
     rating: 5,
-    image: 'AR',
+    image: 'https://i.pravatar.cc/150?u=ana',
   },
+  {
+    name: 'Roberto Gómez',
+    role: 'Gerente, Luxe Salon',
+    quote: 'El control de inventario es mágico. Sé exactamente qué productos me faltan y cuáles son los más rentables. Recuperé el control de mis números.',
+    rating: 5,
+    image: 'https://i.pravatar.cc/150?u=roberto',
+  }
 ]
 
 const TestimonialsSection = () => {
@@ -35,72 +32,65 @@ const TestimonialsSection = () => {
 
   useGSAP(
     () => {
-      gsap.from('.testimonials-title', { y: 40, autoAlpha: 0, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 75%', toggleActions: 'play none none none' } })
+      gsap.from('.testi-header', { y: 30, autoAlpha: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' } })
+      gsap.from('.testi-card', { y: 40, autoAlpha: 0, duration: 0.8, delay: 0.2, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' } })
     },
-    { scope: sectionRef },
+    { scope: sectionRef }
   )
 
+  const handlePrev = () => setCurrent(prev => (prev - 1 + testimonials.length) % testimonials.length)
+  const handleNext = () => setCurrent(prev => (prev + 1) % testimonials.length)
+
   return (
-    <section ref={sectionRef} id="testimonios" className="py-32 bg-[#050a14] px-6">
-      <div className="mx-auto max-w-4xl">
-        <div className="testimonials-title text-center mb-16">
-          <div className="inline-flex items-center rounded-full border border-rose-500/30 bg-rose-500/10 px-4 py-1.5 text-xs font-bold text-rose-400 uppercase tracking-wider mb-6">
-            TESTIMONIOS
+    <section ref={sectionRef} id="testimonios" className="py-24 bg-[#050a14] px-6 border-b border-gray-800/30">
+      <div className="mx-auto max-w-5xl flex flex-col items-center">
+        
+        <div className="testi-header mb-12">
+          <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest text-center">
+            LO QUE DICEN NUESTROS CLIENTES
           </div>
-          <h2 className="text-3xl md:text-5xl font-black font-outfit mb-4">
-            <span className="text-white">Resultados reales </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-purple-400">de clientes reales</span>
-          </h2>
         </div>
 
-        <div className="relative">
-          <div className="rounded-[2rem] bg-gradient-to-br from-[#0a0f1a] to-[#0d122a] border border-gray-800 p-8 md:p-10 shadow-xl">
-            <div className="flex gap-1 mb-3">
+        <div className="w-full flex items-center justify-between gap-6 md:gap-10">
+          <button 
+            onClick={handlePrev}
+            className="w-12 h-12 shrink-0 rounded-full bg-[#0a0f1a] border border-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+          >
+            <ArrowLeft size={20} />
+          </button>
+
+          <div className="testi-card flex-1 bg-[#0a0f1a] border border-gray-800/60 rounded-[2.5rem] p-10 md:p-14 text-center shadow-xl">
+            <div className="flex justify-center gap-1.5 mb-8">
               {Array.from({ length: testimonials[current].rating }).map((_, i) => (
-                <Star key={i} size={16} className="fill-amber-400 text-amber-400" />
+                <Star key={i} size={20} className="fill-amber-400 text-amber-400" />
               ))}
             </div>
-            <div className="text-emerald-400 font-bold text-base mb-4">
-              {testimonials[current].metric}
-            </div>
-            <blockquote className="text-base md:text-lg text-gray-300 font-medium leading-relaxed mb-8">
+            
+            <p className="text-xl md:text-2xl font-medium text-gray-300 mb-10 leading-relaxed italic">
               "{testimonials[current].quote}"
-            </blockquote>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
-                {testimonials[current].image}
-              </div>
+            </p>
+            
+            <div className="flex flex-col items-center gap-3">
+              <img 
+                src={testimonials[current].image} 
+                alt={testimonials[current].name} 
+                className="w-14 h-14 rounded-full border-2 border-gray-700 object-cover"
+              />
               <div>
-                <div className="font-bold text-white">{testimonials[current].name}</div>
-                <div className="text-sm text-gray-500">{testimonials[current].role}</div>
+                <div className="font-bold text-white text-base">{testimonials[current].name}</div>
+                <div className="text-sm font-medium text-gray-500">{testimonials[current].role}</div>
               </div>
             </div>
           </div>
 
-          <div className="flex justify-center gap-4 mt-10">
-            <button
-              onClick={() => setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
-              className="w-10 h-10 rounded-full border border-gray-700 bg-transparent flex items-center justify-center text-gray-400 hover:text-rose-400 hover:border-rose-500/30 transition-all"
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <div className="flex gap-2 items-center">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrent(i)}
-                  className={`h-2 rounded-full transition-all ${i === current ? 'w-8 bg-rose-500' : 'w-2 bg-gray-700 hover:bg-gray-600'}`}
-                />
-              ))}
-            </div>
-            <button
-              onClick={() => setCurrent((prev) => (prev + 1) % testimonials.length)}
-              className="w-10 h-10 rounded-full border border-gray-700 bg-transparent flex items-center justify-center text-gray-400 hover:text-rose-400 hover:border-rose-500/30 transition-all"
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
+          <button 
+            onClick={handleNext}
+            className="w-12 h-12 shrink-0 rounded-full bg-[#0a0f1a] border border-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+          >
+            <ArrowRight size={20} />
+          </button>
         </div>
+
       </div>
     </section>
   )

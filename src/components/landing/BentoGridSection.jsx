@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Calendar, Users, Package, BarChart2, Zap, Share2 } from 'lucide-react'
+import { Calendar, Users, Package, ClipboardList, Wallet, LineChart } from 'lucide-react'
 import { useGSAP, gsap } from '../../lib/gsap'
 
 const features = [
@@ -19,19 +19,19 @@ const features = [
     desc: 'Controla tu inventario en tiempo real y recibe alertas de stock bajo.',
   },
   {
-    icon: <BarChart2 size={24} className="text-gray-300" />,
-    title: 'Reportes & Analytics',
-    desc: 'Toma decisiones basadas en datos reales. Ve lo que funciona y escala tu negocio.',
+    icon: <ClipboardList size={24} className="text-gray-300" />,
+    title: 'Seguimiento de Clientes',
+    desc: 'Conoce exactamente cuándo fue su última cita, su historial de visitas completo y servicios más utilizados.',
   },
   {
-    icon: <Zap size={24} className="text-gray-300" />,
-    title: 'Automatizaciones con IA',
-    desc: 'Responde mensajes, confirma citas y sigue a tus clientes mientras duermes.',
+    icon: <Wallet size={24} className="text-gray-300" />,
+    title: 'Control Financiero',
+    desc: 'Gestiona el flujo de caja diario, controla tus gastos y calcula comisiones automáticamente.',
   },
   {
-    icon: <Share2 size={24} className="text-gray-300" />,
-    title: 'Marketing Integrado',
-    desc: 'Crea campañas, promociones y programas de lealtad que sí funcionan.',
+    icon: <LineChart size={24} className="text-gray-300" />,
+    title: 'Métricas en Tiempo Real',
+    desc: 'Visualiza gráficas de ingresos, rentabilidad y estado financiero de tu negocio al instante.',
   },
 ]
 

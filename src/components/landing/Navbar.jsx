@@ -10,7 +10,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo, menuData }) =
     <nav ref={navRef} className={`fixed top-0 left-0 right-0 z-[60] w-full transition-all duration-500 ${isMenuOpen ? 'bg-[#030712] h-screen md:h-auto' : 'bg-[#030712]/80 backdrop-blur-xl border-b border-gray-800/50'}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <div className="flex items-center gap-3">
-          <img src={logo} alt="ANGULO" className="h-10 w-10 rounded-full object-cover ring-2 ring-rose-500/20 shadow-sm" />
+          <img src={logo} alt="ANGULO" className="h-10 w-auto object-contain" />
           <span className="text-2xl font-black tracking-tighter text-white font-outfit">ANGULO</span>
         </div>
 

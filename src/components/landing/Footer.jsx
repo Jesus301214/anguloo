@@ -5,9 +5,7 @@ const Footer = ({ logo }) => {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16">
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-3 mb-4">
-              <div className="bg-rose-500 p-2 rounded-xl">
-                <img src={logo} alt="ANGULO" className="h-6 w-6 brightness-0 invert" />
-              </div>
+              <img src={logo} alt="ANGULO" className="h-10 w-auto object-contain" />
               <span className="text-xl font-black text-white tracking-tighter font-outfit">ANGULO</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">

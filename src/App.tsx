@@ -17,7 +17,7 @@ import Terminos from './pages/Terminos'
 
 // Assets
 const heroImage = '/Gemini_Generated_Image_cb7f6xcb7f6xcb7f.png'
-const logo = '/logo.png'
+const logo = '/logo-angulo-este-si.jpg'
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)

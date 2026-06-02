@@ -16,7 +16,7 @@ import Privacidad from './pages/Privacidad'
 import Terminos from './pages/Terminos'
 
 // Assets
-const heroImage = '/Gemini_Generated_Image_cb7f6xcb7f6xcb7f.png'
+const heroImage = '/logo-angulo-este-si.jpg'
 const logo = '/logo-angulo-este-si.jpg'
 
 const App = () => {

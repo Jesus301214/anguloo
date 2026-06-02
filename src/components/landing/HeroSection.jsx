@@ -104,17 +104,12 @@ const HeroSection = ({ heroImage, setIsModalOpen }) => {
           <motion.div
             animate={{ y: [0, -15, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-            className="relative overflow-hidden rounded-3xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950 p-3 shadow-2xl shadow-rose-500/10 max-w-md"
+            className="relative max-w-md"
           >
-            <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-800 mb-3">
-              <div className="w-3 h-3 rounded-full bg-rose-500" />
-              <div className="w-3 h-3 rounded-full bg-amber-500" />
-              <div className="w-3 h-3 rounded-full bg-emerald-500" />
-            </div>
             <img
               src={heroImage}
-              alt="Dashboard ANGULO"
-              className="w-full h-auto object-cover rounded-2xl"
+              alt="ANGULO"
+              className="w-full h-auto object-contain"
             />
           </motion.div>
         </div>

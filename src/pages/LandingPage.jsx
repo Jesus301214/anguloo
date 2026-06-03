@@ -11,6 +11,7 @@ import TestimonialsSection from '../components/landing/TestimonialsSection'
 import FinalCTASection from '../components/landing/FinalCTA'
 import Footer from '../components/landing/Footer'
 import ServicesSection from '../components/landing/ServicesSection'
+import MotivationSection from '../components/landing/MotivationSection'
 
 // Modals/Float
 import DemoModal from '../components/landing/DemoModal'
@@ -77,6 +78,7 @@ const LandingPage = ({ setIsModalOpen, isModalOpen, setIsMenuOpen, isMenuOpen, l
       <main>
         <HeroSection heroImage={heroImage} setIsModalOpen={setIsModalOpen} />
         <ServicesSection />
+        <MotivationSection />
         <TrustBar />
         <BentoGridSection />
         <ResultsSection />

@@ -63,7 +63,7 @@ const PricingSection = ({ onOpenModal }) => {
 
         <div className="pricing-card grid md:grid-cols-3 gap-6">
           {plans.map((plan, i) => (
-            <div key={i} className={`relative rounded-3xl p-6 md:p-8 border transition-all ${plan.highlighted ? 'bg-gradient-to-b from-[#0a0f1a] to-[#0d122a] border-rose-500/40 shadow-xl shadow-rose-500/10 scale-[1.03]' : 'bg-[#0a0f1a] border-gray-800 hover:border-gray-700 hover:scale-[1.01]'}`} style={{ perspective: '800px' }}>
+            <div key={i} className={`relative rounded-3xl p-6 md:p-8 border transition-all duration-300 ${plan.highlighted ? 'bg-gradient-to-b from-[#0a0f1a] to-[#0d122a] border-rose-500/40 shadow-xl shadow-rose-500/10 hover:-translate-y-2 hover:shadow-[0_15px_40px_-15px_rgba(244,63,94,0.3)] scale-[1.03] hover:scale-[1.04]' : 'bg-[#0a0f1a] border-gray-800 hover:border-gray-700 hover:-translate-y-2 hover:shadow-[0_15px_40px_-15px_rgba(255,255,255,0.05)]'}`} style={{ perspective: '800px' }}>
               {plan.highlighted && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-rose-500 text-white text-[10px] font-black px-5 py-1.5 rounded-full uppercase tracking-wider shadow-lg shadow-rose-500/20">
                   Más Popular

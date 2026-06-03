@@ -75,7 +75,7 @@ const BentoGridSection = () => {
 
         <div className="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {features.map((f, i) => (
-            <div key={i} className="feature-card group rounded-3xl bg-[#0a0f1a] border border-gray-800/60 p-8 hover:bg-[#0d1222] transition-colors duration-300">
+            <div key={i} className="feature-card group rounded-3xl bg-[#0a0f1a] border border-gray-800/60 p-8 hover:bg-[#0d1222] hover:-translate-y-2 hover:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.6)] hover:border-gray-700/60 transition-all duration-300">
               <div className="flex gap-5">
                 <div className="w-12 h-12 shrink-0 rounded-2xl bg-gray-800/50 flex items-center justify-center group-hover:bg-gray-700/50 transition-colors">
                   {f.icon}

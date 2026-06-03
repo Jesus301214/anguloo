@@ -45,6 +45,13 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo }) => {
           >
             Funciones
           </a>
+          
+          <a
+            href="#motivacion"
+            className="px-4 py-2 text-sm font-semibold text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all"
+          >
+            Motivación
+          </a>
 
           {/* Recursos Dropdown */}
           <div className="relative">

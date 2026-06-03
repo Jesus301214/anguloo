@@ -65,7 +65,7 @@ const ProblemsSection = ({ setIsModalOpen }) => {
 
         <div className="problems-grid grid grid-cols-1 md:grid-cols-3 gap-6">
           {cards.map((card, i) => (
-            <div key={i} className="problems-card">
+            <div key={i} className="problems-card group hover:-translate-y-2 hover:shadow-[0_15px_40px_-15px_rgba(244,63,94,0.2)] transition-all duration-300 rounded-3xl">
               <SpotlightCard className="h-full shadow-md bg-white border-slate-100">
                 <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-rose-500 mb-8 group-hover:bg-rose-500 group-hover:text-white transition-all duration-500">
                   {card.icon}

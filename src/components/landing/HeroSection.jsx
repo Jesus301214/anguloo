@@ -126,18 +126,18 @@ const HeroSection = ({ setIsModalOpen }) => {
             <div className="relative w-full max-w-[500px] lg:max-w-[600px] h-[400px] sm:h-[500px] lg:scale-[1.1] origin-right lg:translate-x-12 mt-12 lg:mt-0 perspective-1000">
               <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-emerald-500/20 rounded-2xl transform translate-y-4 translate-x-4 opacity-50 blur-2xl"></div>
               
-              {/* Image 1 - Back */}
+              {/* Image 1 - Front (Por encima) */}
               <img
                 src="/Gemini_Generated_Image_8a3oxs8a3oxs8a3o.png"
                 alt="Agente Inteligente"
-                className="absolute top-0 right-0 w-[70%] h-auto rounded-2xl border border-gray-700 shadow-2xl z-10 transform rotate-3 hover:rotate-0 hover:z-30 hover:scale-105 transition-all duration-500 ease-out"
+                className="absolute top-0 right-4 w-[75%] h-auto rounded-2xl border border-gray-700 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8)] z-20 transform rotate-1 hover:rotate-0 hover:scale-[1.02] transition-all duration-500 ease-out"
               />
               
-              {/* Image 2 - Front */}
+              {/* Image 2 - Back (Abajo y tapada sutilmente) */}
               <img
                 src="/Gemini_Generated_Image_urmoymurmoymurmo.png"
                 alt="Automatización en acción"
-                className="absolute bottom-0 left-0 w-[70%] h-auto rounded-2xl border border-gray-600 shadow-2xl z-20 transform -rotate-3 hover:rotate-0 hover:z-30 hover:scale-105 transition-all duration-500 ease-out"
+                className="absolute top-28 left-4 w-[75%] h-auto rounded-2xl border border-gray-600 shadow-2xl z-10 transform -rotate-1 hover:rotate-0 hover:scale-[1.02] transition-all duration-500 ease-out"
               />
               
               {/* Floating element for depth */}

@@ -61,7 +61,7 @@ const ServicesSection = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 key={index}
-                className="group flex gap-6 p-6 rounded-2xl glass-card hover-3d transition-all cursor-pointer"
+                className="group flex gap-6 p-6 rounded-2xl glass-card hover-3d hover:-translate-y-2 hover:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.5)] transition-all duration-300 cursor-pointer"
               >
                 <div className={`w-14 h-14 rounded-xl flex items-center justify-center shrink-0 ${service.bgColor}`}>
                   <service.icon className={`w-7 h-7 ${service.color}`} />

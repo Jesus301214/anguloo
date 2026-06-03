@@ -34,6 +34,7 @@ const features = [
   },
 ]
 
+const BentoGridSection = () => {
   return (
     <section id="funciones" className="py-24 bg-[#050a14] px-6 relative border-b border-gray-800/30">
       <div className="mx-auto max-w-7xl">

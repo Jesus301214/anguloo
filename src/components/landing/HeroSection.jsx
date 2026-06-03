@@ -55,7 +55,7 @@ const HeroSection = ({ setIsModalOpen }) => {
             <h1 className="mb-6 text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl font-outfit leading-[1.05]">
               <div className="hero-title-line text-white">El sistema que</div>
               <div className="hero-title-line">
-                hace <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-500 border-b-4 border-gray-600/50 pb-1 inline-block">crecer tu</span>
+                hace <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 text-glow-emerald pb-1 inline-block">crecer tu</span>
               </div>
               <div className="hero-title-line text-white">negocio y lo hace</div>
               <div className="hero-title-line text-white">pasar al siguiente</div>
@@ -69,17 +69,17 @@ const HeroSection = ({ setIsModalOpen }) => {
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-12">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="hero-cta relative overflow-hidden flex items-center justify-center gap-2 rounded-2xl bg-white px-8 py-4 text-base font-bold text-gray-900 shadow-xl shadow-white/10 hover:shadow-white/20 transition-all transform hover:-translate-y-0.5 active:scale-[0.98] w-full sm:w-auto group"
+                className="hero-cta relative overflow-hidden flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-400 to-blue-500 px-8 py-4 text-base font-bold text-gray-900 shadow-[0_0_20px_rgba(52,211,153,0.4)] hover:shadow-[0_0_30px_rgba(52,211,153,0.6)] hover-3d w-full sm:w-auto group"
               >
                 <span className="relative z-10">Prueba Gratis →</span>
-                <div className="absolute inset-0 bg-gray-200 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
               
               <a
                 href="https://wa.me/584249313359"
                 target="_blank"
                 rel="noreferrer"
-                className="hero-cta flex items-center justify-center gap-3 rounded-2xl border border-gray-800 bg-[#0a0f1a]/50 backdrop-blur-md px-8 py-4 text-base font-bold text-white hover:bg-white/5 hover:border-gray-700 transition-all w-full sm:w-auto group"
+                className="hero-cta flex items-center justify-center gap-3 rounded-2xl glass hover-3d px-8 py-4 text-base font-bold text-white transition-all w-full sm:w-auto group"
               >
                 <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Play size={14} className="text-white ml-0.5" fill="currentColor" />
@@ -123,25 +123,35 @@ const HeroSection = ({ setIsModalOpen }) => {
 
           {/* Right Content - Mockup */}
           <div className="hero-mockup relative flex items-center justify-center lg:justify-end">
-            <div className="relative w-full max-w-[800px] lg:scale-[1.1] origin-right lg:translate-x-12">
-              <div className="absolute inset-0 bg-gradient-to-tr from-gray-800 to-gray-700 rounded-2xl transform translate-y-4 translate-x-4 opacity-50 blur-xl"></div>
+            <div className="relative w-full max-w-[500px] lg:max-w-[600px] h-[400px] sm:h-[500px] lg:scale-[1.1] origin-right lg:translate-x-12 mt-12 lg:mt-0 perspective-1000">
+              <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-emerald-500/20 rounded-2xl transform translate-y-4 translate-x-4 opacity-50 blur-2xl"></div>
+              
+              {/* Image 1 - Back */}
               <img
-                src="/dashboard-mockup.png"
-                alt="ANGULO Dashboard Preview"
-                className="relative w-full h-auto rounded-xl border border-gray-800 shadow-2xl object-cover z-10"
+                src="/Gemini_Generated_Image_8a3oxs8a3oxs8a3o.png"
+                alt="Agente Inteligente"
+                className="absolute top-0 right-0 w-[70%] h-auto rounded-2xl border border-gray-700 shadow-2xl z-10 transform rotate-3 hover:rotate-0 hover:z-30 hover:scale-105 transition-all duration-500 ease-out"
               />
+              
+              {/* Image 2 - Front */}
+              <img
+                src="/Gemini_Generated_Image_urmoymurmoymurmo.png"
+                alt="Automatización en acción"
+                className="absolute bottom-0 left-0 w-[70%] h-auto rounded-2xl border border-gray-600 shadow-2xl z-20 transform -rotate-3 hover:rotate-0 hover:z-30 hover:scale-105 transition-all duration-500 ease-out"
+              />
+              
               {/* Floating element for depth */}
               <motion.div 
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute -bottom-6 -left-6 z-20 bg-[#0a0f1a]/90 backdrop-blur-xl border border-gray-800 p-4 rounded-2xl shadow-xl flex items-center gap-4"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 bg-[#0a0f1a]/90 backdrop-blur-xl border border-gray-700 p-4 rounded-2xl shadow-2xl flex items-center gap-4 hover:scale-110 transition-transform cursor-default"
               >
                 <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                  <svg className="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  <Sparkles className="w-6 h-6 text-emerald-400" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Nueva Reserva</div>
-                  <div className="text-sm font-bold text-white">Ana Martínez - 10:00 AM</div>
+                  <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Crecimiento Asegurado</div>
+                  <div className="text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-400">+300% Resultados</div>
                 </div>
               </motion.div>
             </div>

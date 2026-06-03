@@ -118,3 +118,31 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #334155;
 }
+
+@layer utilities {
+  .glass {
+    @apply bg-white/5 backdrop-blur-lg border border-white/10;
+  }
+  
+  .glass-card {
+    @apply bg-[#0a0f1a]/60 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)];
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.5), 0 0 40px rgba(56, 189, 248, 0.3);
+  }
+
+  .text-glow-emerald {
+    text-shadow: 0 0 20px rgba(52, 211, 153, 0.5), 0 0 40px rgba(52, 211, 153, 0.3);
+  }
+
+  .hover-3d {
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s ease;
+    transform-style: preserve-3d;
+  }
+
+  .hover-3d:hover {
+    transform: translateY(-5px) scale(1.02) rotateX(5deg) rotateY(-5deg);
+    box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.2);
+  }
+}

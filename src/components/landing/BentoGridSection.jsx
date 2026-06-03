@@ -53,8 +53,9 @@ const BentoGridSection = () => {
         autoAlpha: 0, 
         stagger: 0.1, 
         duration: 0.7, 
+        delay: 0.2,
         ease: 'power3.out', 
-        scrollTrigger: { trigger: '.features-grid', start: 'top 85%' } 
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' } 
       })
     },
     { scope: sectionRef }

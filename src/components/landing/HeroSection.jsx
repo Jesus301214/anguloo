@@ -55,16 +55,22 @@ const HeroSection = ({ setIsModalOpen }) => {
         <img 
           src="/office-bg.png" 
           alt="Office Background" 
-          className="absolute inset-0 w-full h-full object-cover filter blur-[8px] brightness-[0.25] transition-all duration-700 group-hover:blur-[12px] group-hover:brightness-[0.15] scale-105"
+          className="absolute inset-0 w-full h-full object-cover filter blur-[4px] brightness-[0.4] transition-all duration-700 scale-105"
         />
+        {/* Base dark gradient to ensure text readability globally */}
+        <div className="absolute inset-0 bg-[#030712]/50"></div>
       </div>
+
+      {/* Background Gradients (Below the spotlight so they don't cover it) */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#030712] via-[#030712]/80 to-transparent pointer-events-none"></div>
+      <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#030712] via-transparent to-transparent pointer-events-none"></div>
 
       {/* Foreground Image (Clear, revealed by mask) */}
       <div 
-        className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10"
+        className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10"
         style={{
-          WebkitMaskImage: `radial-gradient(circle 350px at ${mousePos.x}px ${mousePos.y}px, black 20%, transparent 100%)`,
-          maskImage: `radial-gradient(circle 350px at ${mousePos.x}px ${mousePos.y}px, black 20%, transparent 100%)`
+          WebkitMaskImage: `radial-gradient(circle 450px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
+          maskImage: `radial-gradient(circle 450px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`
         }}
       >
         <img 
@@ -72,13 +78,9 @@ const HeroSection = ({ setIsModalOpen }) => {
           alt="Office Background Clear" 
           className="absolute inset-0 w-full h-full object-cover scale-105"
         />
-        {/* Subtle dark overlay over the clear image so text is always readable */}
-        <div className="absolute inset-0 bg-[#030712]/40"></div>
+        {/* Solo un degradado suave a la izquierda para el texto principal, pero transparente a la derecha */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#030712]/80 via-transparent to-transparent"></div>
       </div>
-      
-      {/* Background Gradients to blend edges and ensure text contrast */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#030712] via-[#030712]/60 to-transparent pointer-events-none"></div>
-      <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#030712] via-transparent to-transparent pointer-events-none"></div>
 
       {/* Ambient Glows */}
       <div className="hero-glow-1 absolute top-0 left-1/4 z-10 h-[600px] w-[600px] rounded-full bg-rose-500/10 blur-[120px] mix-blend-screen pointer-events-none" />

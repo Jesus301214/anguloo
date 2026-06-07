@@ -47,46 +47,44 @@ const HeroSection = ({ setIsModalOpen }) => {
     <section 
       ref={containerRef} 
       onMouseMove={handleMouseMove}
-      className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden px-6 bg-[#030712] min-h-screen flex items-center group cursor-crosshair"
+      className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden px-6 bg-[#030712] min-h-screen flex items-center cursor-crosshair"
     >
-      {/* FULL BACKGROUND SPOTLIGHT EFFECT */}
+      {/* 1. Base Blurred Image */}
       <div className="absolute inset-0 z-0">
-        {/* Background Image (Blurred & Darkened) */}
         <img 
           src="/office-bg.png" 
           alt="Office Background" 
-          className="absolute inset-0 w-full h-full object-cover filter blur-[4px] brightness-[0.4] transition-all duration-700 scale-105"
+          className="absolute inset-0 w-full h-full object-cover filter blur-[8px] brightness-[0.3] scale-105"
         />
-        {/* Base dark gradient to ensure text readability globally */}
-        <div className="absolute inset-0 bg-[#030712]/50"></div>
       </div>
 
-      {/* Background Gradients (Below the spotlight so they don't cover it) */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#030712] via-[#030712]/80 to-transparent pointer-events-none"></div>
-      <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#030712] via-transparent to-transparent pointer-events-none"></div>
-
-      {/* Foreground Image (Clear, revealed by mask) */}
+      {/* 2. Spotlight Clear Image */}
       <div 
-        className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10"
+        className="absolute inset-0 w-full h-full pointer-events-none z-10"
         style={{
-          WebkitMaskImage: `radial-gradient(circle 450px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
-          maskImage: `radial-gradient(circle 450px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`
+          WebkitMaskImage: `radial-gradient(circle 500px at ${mousePos.x}px ${mousePos.y}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%)`,
+          maskImage: `radial-gradient(circle 500px at ${mousePos.x}px ${mousePos.y}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%)`,
+          WebkitMaskRepeat: 'no-repeat',
+          maskRepeat: 'no-repeat'
         }}
       >
         <img 
           src="/office-bg.png" 
           alt="Office Background Clear" 
-          className="absolute inset-0 w-full h-full object-cover scale-105"
+          className="absolute inset-0 w-full h-full object-cover scale-105 brightness-110"
         />
-        {/* Solo un degradado suave a la izquierda para el texto principal, pero transparente a la derecha */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#030712]/80 via-transparent to-transparent"></div>
       </div>
+      
+      {/* 3. Global Gradients for Text Readability (Above images, but mostly on the left) */}
+      <div className="absolute inset-0 z-20 bg-gradient-to-r from-[#030712] via-[#030712]/70 to-transparent pointer-events-none w-full md:w-3/4"></div>
+      <div className="absolute inset-0 z-20 bg-gradient-to-t from-[#030712] via-transparent to-transparent pointer-events-none h-full"></div>
 
-      {/* Ambient Glows */}
-      <div className="hero-glow-1 absolute top-0 left-1/4 z-10 h-[600px] w-[600px] rounded-full bg-rose-500/10 blur-[120px] mix-blend-screen pointer-events-none" />
-      <div className="hero-glow-2 absolute bottom-0 right-1/4 z-10 h-[500px] w-[500px] rounded-full bg-emerald-500/10 blur-[100px] mix-blend-screen pointer-events-none" />
+      {/* 4. Ambient Glows */}
+      <div className="hero-glow-1 absolute top-0 left-1/4 z-20 h-[600px] w-[600px] rounded-full bg-rose-500/10 blur-[120px] mix-blend-screen pointer-events-none" />
+      <div className="hero-glow-2 absolute bottom-0 right-1/4 z-20 h-[500px] w-[500px] rounded-full bg-emerald-500/10 blur-[100px] mix-blend-screen pointer-events-none" />
 
-      <div className="mx-auto max-w-7xl w-full relative z-20 pointer-events-none">
+      {/* 5. Main Content */}
+      <div className="mx-auto max-w-7xl w-full relative z-30 pointer-events-none">
         <div className="max-w-3xl pointer-events-auto">
           
           <div className="flex flex-col items-start text-left">

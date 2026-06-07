@@ -33,9 +33,6 @@ const TrustBar = () => {
   return (
     <div ref={sectionRef} className="py-12 bg-[#030712] border-b border-gray-800/30">
       <div className="mx-auto max-w-7xl px-6">
-        <p className="text-center text-sm font-semibold text-gray-500 mb-8 tracking-wide">
-          Más de 2,000 negocios ya confían en Angulo
-        </p>
         <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 md:gap-x-20">
           {logos.map((logo, i) => (
             <div key={i} className="trust-logo flex flex-col items-center opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-pointer">

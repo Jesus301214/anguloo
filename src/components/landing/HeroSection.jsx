@@ -117,7 +117,7 @@ const HeroSection = ({ setIsModalOpen }) => {
                 onClick={() => setIsModalOpen(true)}
                 className="hero-cta relative overflow-hidden flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-400 to-blue-500 px-8 py-4 text-base font-bold text-gray-900 shadow-[0_0_20px_rgba(52,211,153,0.4)] hover:shadow-[0_0_30px_rgba(52,211,153,0.6)] hover-3d w-full sm:w-auto group"
               >
-                <span className="relative z-10">Prueba Gratis →</span>
+                <span className="relative z-10">Comenzar Ahora →</span>
                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
               
@@ -140,8 +140,8 @@ const HeroSection = ({ setIsModalOpen }) => {
                   <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
                 </div>
                 <div className="text-left">
-                  <div className="text-sm font-bold text-white">Sin tarjeta de crédito</div>
-                  <div className="text-xs font-medium text-gray-400">Empieza gratis</div>
+                  <div className="text-sm font-bold text-white">Planes Flexibles</div>
+                  <div className="text-xs font-medium text-gray-400">Se adaptan a ti</div>
                 </div>
               </div>
               

@@ -19,7 +19,7 @@ const PricingSection = ({ onOpenModal }) => {
       price: isAnnual ? 49 : 59,
       desc: 'Para profesionales independientes.',
       features: ['Agenda online 24/7', 'Recordatorios WhatsApp', 'Hasta 3 empleados', 'Soporte por chat', 'Dashboard básico'],
-      cta: 'Prueba Gratis',
+      cta: 'Comenzar Ahora',
       highlighted: false,
     },
     {
@@ -27,7 +27,7 @@ const PricingSection = ({ onOpenModal }) => {
       price: isAnnual ? 97 : 127,
       desc: 'Para salones y spas en crecimiento.',
       features: ['Todo lo de Starter', 'Marketing automatizado', 'Control financiero y POS', 'Inventario inteligente', 'Hasta 15 empleados', 'CRM con IA', 'Soporte prioritario', 'Gerente de cuenta'],
-      cta: 'Prueba Gratis',
+      cta: 'Comenzar Ahora',
       highlighted: true,
     },
     {

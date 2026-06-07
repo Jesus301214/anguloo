@@ -113,7 +113,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo }) => {
             onClick={() => setIsModalOpen(true)}
             className="relative overflow-hidden rounded-full bg-gradient-to-r from-rose-500 to-rose-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-rose-500/25 hover:shadow-rose-500/40 transition-all active:scale-95 hover:-translate-y-px group"
           >
-            <span className="relative z-10">Prueba Gratis →</span>
+            <span className="relative z-10">Comenzar Ahora →</span>
             <div className="absolute inset-0 bg-gradient-to-r from-rose-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity" />
           </button>
         </div>
@@ -179,7 +179,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo }) => {
                 }}
                 className="w-full bg-gradient-to-r from-rose-500 to-rose-600 py-4 rounded-2xl font-black text-white shadow-xl shadow-rose-500/20"
               >
-                Prueba Gratis →
+                Comenzar Ahora →
               </button>
             </div>
           </motion.div>

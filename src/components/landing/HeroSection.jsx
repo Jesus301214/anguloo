@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Sparkles, Play } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useGSAP } from '../../lib/gsap'
@@ -7,16 +7,21 @@ import { gsap } from '../../lib/gsap'
 const HeroSection = ({ setIsModalOpen }) => {
   const containerRef = useRef(null)
   const mockupRef = useRef(null)
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 })
 
-  const handleMouseMove = (e) => {
-    if (!mockupRef.current) return
-    const rect = mockupRef.current.getBoundingClientRect()
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    })
-  }
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!containerRef.current) return
+      const rect = containerRef.current.getBoundingClientRect()
+      setMousePos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      })
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
 
   useGSAP(
     () => {
@@ -46,7 +51,6 @@ const HeroSection = ({ setIsModalOpen }) => {
   return (
     <section 
       ref={containerRef} 
-      onMouseMove={handleMouseMove}
       className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden px-6 bg-[#030712] min-h-screen flex items-center cursor-crosshair"
     >
       {/* 1. Base Blurred Image */}

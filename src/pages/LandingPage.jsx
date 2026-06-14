@@ -12,6 +12,7 @@ import FinalCTASection from '../components/landing/FinalCTA'
 import Footer from '../components/landing/Footer'
 import ServicesSection from '../components/landing/ServicesSection'
 import MotivationSection from '../components/landing/MotivationSection'
+import TargetAudienceSection from '../components/landing/TargetAudienceSection'
 
 // Modals/Float
 import DemoModal from '../components/landing/DemoModal'
@@ -77,6 +78,7 @@ const LandingPage = ({ setIsModalOpen, isModalOpen, setIsMenuOpen, isMenuOpen, l
       
       <main>
         <HeroSection heroImage={heroImage} setIsModalOpen={setIsModalOpen} />
+        <TargetAudienceSection />
         <ServicesSection />
         <MotivationSection />
         <TrustBar />

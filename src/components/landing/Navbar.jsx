@@ -20,7 +20,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo }) => {
         isMenuOpen
           ? 'bg-[#030712] h-screen md:h-auto'
           : scrolled
-            ? 'bg-[#030712]/95 backdrop-blur-2xl border-b border-gray-800/60 shadow-2xl shadow-black/20'
+            ? 'bg-[#030712]/80 backdrop-blur-xl border-b border-white/5 shadow-2xl shadow-black/40'
             : 'bg-transparent'
       }`}
     >
@@ -73,7 +73,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo }) => {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.96 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute top-full left-0 mt-2 w-56 bg-[#0a0f1a]/95 backdrop-blur-xl border border-gray-800 rounded-2xl shadow-2xl shadow-black/40 overflow-hidden py-2"
+                  className="absolute top-full left-0 mt-2 w-56 bg-blue-950/30 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.5)] overflow-hidden py-2"
                 >
                   <a
                     href="#faq"
@@ -111,10 +111,10 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo }) => {
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="relative overflow-hidden rounded-full bg-gradient-to-r from-rose-500 to-rose-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-rose-500/25 hover:shadow-rose-500/40 transition-all active:scale-95 hover:-translate-y-px group"
+            className="relative overflow-hidden rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all active:scale-95 hover:-translate-y-px group"
           >
             <span className="relative z-10">Comenzar Ahora →</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-rose-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
           </button>
         </div>
 
@@ -142,7 +142,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo }) => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#030712] border-t border-gray-800/50 px-6 py-8 space-y-1 overflow-y-auto max-h-[80vh]"
+            className="md:hidden bg-[#030712]/95 backdrop-blur-2xl border-t border-white/5 px-6 py-8 space-y-1 overflow-y-auto max-h-[80vh]"
           >
             <a
               href="#funciones"
@@ -177,7 +177,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo }) => {
                   setIsModalOpen(true)
                   setIsMenuOpen(false)
                 }}
-                className="w-full bg-gradient-to-r from-rose-500 to-rose-600 py-4 rounded-2xl font-black text-white shadow-xl shadow-rose-500/20"
+                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 py-4 rounded-2xl font-black text-white shadow-xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all"
               >
                 Comenzar Ahora →
               </button>

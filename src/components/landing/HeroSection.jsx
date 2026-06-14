@@ -31,16 +31,6 @@ const HeroSection = ({ setIsModalOpen }) => {
         .from('.hero-title-line', { y: 40, autoAlpha: 0, duration: 0.7, stagger: 0.15, ease: 'power4.out' }, '-=0.3')
         .from('.hero-subtitle', { y: 25, autoAlpha: 0, duration: 0.7 }, '-=0.4')
         .from('.hero-cta', { y: 25, autoAlpha: 0, duration: 0.6, stagger: 0.1 }, '-=0.4')
-        .from('.hero-stats', { y: 20, autoAlpha: 0, duration: 0.6 }, '-=0.3')
-      
-      gsap.from('.hero-mockup', { 
-        y: 80, 
-        autoAlpha: 0, 
-        scale: 0.95, 
-        duration: 1.2, 
-        delay: 0.5, 
-        ease: 'power3.out' 
-      })
       
       gsap.to('.hero-glow-1', { scale: 1.05, opacity: 0.6, duration: 4, repeat: -1, yoyo: true, ease: 'sine.inOut' })
       gsap.to('.hero-glow-2', { scale: 1.1, opacity: 0.4, duration: 5, delay: 1, repeat: -1, yoyo: true, ease: 'sine.inOut' })
@@ -84,28 +74,28 @@ const HeroSection = ({ setIsModalOpen }) => {
       <div className="absolute inset-0 z-20 bg-gradient-to-t from-[#030712] via-transparent to-transparent pointer-events-none h-full"></div>
 
       {/* 4. Ambient Glows */}
-      <div className="hero-glow-1 absolute top-0 left-1/4 z-20 h-[600px] w-[600px] rounded-full bg-rose-500/10 blur-[120px] mix-blend-screen pointer-events-none" />
-      <div className="hero-glow-2 absolute bottom-0 right-1/4 z-20 h-[500px] w-[500px] rounded-full bg-emerald-500/10 blur-[100px] mix-blend-screen pointer-events-none" />
+      <div className="hero-glow-1 absolute top-0 left-1/4 z-20 h-[600px] w-[600px] rounded-full bg-cyan-500/10 blur-[120px] mix-blend-screen pointer-events-none" />
+      <div className="hero-glow-2 absolute bottom-0 right-1/4 z-20 h-[500px] w-[500px] rounded-full bg-blue-500/10 blur-[100px] mix-blend-screen pointer-events-none" />
 
       {/* 5. Main Content */}
       <div className="mx-auto max-w-7xl w-full relative z-30 pointer-events-none">
-        <div className="max-w-3xl pointer-events-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full pointer-events-auto">
           
-          <div className="flex flex-col items-start text-left">
+          <div className="flex flex-col items-start text-left max-w-3xl">
             
             <div className="hero-badge mb-8 inline-flex items-center gap-2.5 rounded-full border border-gray-700 bg-[#0a0f1a]/80 backdrop-blur-md px-4 py-1.5 text-sm font-semibold text-gray-300 shadow-xl">
               <Sparkles size={16} className="text-gray-400" />
-              <span>CRM con Inteligencia Artificial</span>
+              <span>Software Todo-en-Uno para Estética y Salud</span>
             </div>
 
             <h1 className="mb-6 text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl font-outfit leading-[1.05] drop-shadow-2xl">
-              <div className="hero-title-line text-white">El sistema que</div>
+              <div className="hero-title-line text-white">El sistema para</div>
               <div className="hero-title-line">
-                hace <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 text-glow-emerald pb-1 inline-block">crecer tu</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 text-glow-cyan pb-1 inline-block">Salones, Clínicas</span>
               </div>
-              <div className="hero-title-line text-white">negocio y lo hace</div>
-              <div className="hero-title-line text-white">pasar al siguiente</div>
-              <div className="hero-title-line text-white">nivel.</div>
+              <div className="hero-title-line text-white">y Spas que</div>
+              <div className="hero-title-line text-white">automatiza tu</div>
+              <div className="hero-title-line text-white">negocio.</div>
             </h1>
 
             <p className="hero-subtitle mb-10 max-w-xl text-lg leading-relaxed text-gray-300 font-medium drop-shadow-md">
@@ -115,7 +105,7 @@ const HeroSection = ({ setIsModalOpen }) => {
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-12">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="hero-cta relative overflow-hidden flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-400 to-blue-500 px-8 py-4 text-base font-bold text-gray-900 shadow-[0_0_20px_rgba(52,211,153,0.4)] hover:shadow-[0_0_30px_rgba(52,211,153,0.6)] hover-3d w-full sm:w-auto group"
+                className="hero-cta relative overflow-hidden flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-500 px-8 py-4 text-base font-bold text-gray-900 shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] hover-3d w-full sm:w-auto group"
               >
                 <span className="relative z-10">Comenzar Ahora →</span>
                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -134,39 +124,87 @@ const HeroSection = ({ setIsModalOpen }) => {
               </a>
             </div>
 
-            <div className="hero-stats flex flex-wrap justify-start gap-x-12 gap-y-6 pt-8 border-t border-gray-700/60 w-full">
-              <div className="flex items-center gap-3">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ staggerChildren: 0.2, delayChildren: 1 }}
+              className="hero-stats flex flex-wrap justify-start gap-x-12 gap-y-6 pt-8 border-t border-gray-700/60 w-full"
+            >
+              <motion.div 
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                className="flex items-center gap-3"
+              >
                 <div className="w-10 h-10 rounded-xl bg-gray-900/80 border border-gray-700 flex items-center justify-center backdrop-blur-md">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                  <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
                 </div>
                 <div className="text-left">
                   <div className="text-sm font-bold text-white">Planes Flexibles</div>
                   <div className="text-xs font-medium text-gray-400">Se adaptan a ti</div>
                 </div>
-              </div>
+              </motion.div>
               
-              <div className="flex items-center gap-3">
+              <motion.div 
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 20, delay: 1.1 }}
+                className="flex items-center gap-3"
+              >
                 <div className="w-10 h-10 rounded-xl bg-gray-900/80 border border-gray-700 flex items-center justify-center backdrop-blur-md">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                  <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                 </div>
                 <div className="text-left">
                   <div className="text-sm font-bold text-white">Configuración en 5 min</div>
                   <div className="text-xs font-medium text-gray-400">Fácil e intuitiva</div>
                 </div>
-              </div>
+              </motion.div>
               
-              <div className="flex items-center gap-3">
+              <motion.div 
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 20, delay: 1.2 }}
+                className="flex items-center gap-3"
+              >
                 <div className="w-10 h-10 rounded-xl bg-gray-900/80 border border-gray-700 flex items-center justify-center backdrop-blur-md">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                  <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                 </div>
                 <div className="text-left">
                   <div className="text-sm font-bold text-white">Soporte 24/7</div>
                   <div className="text-xs font-medium text-gray-400">Te ayudamos siempre</div>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
             
           </div>
+
+          {/* Right Column: Logo with dramatic entrance */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.5, rotateY: 90, z: -200 }}
+            animate={{ opacity: 1, scale: 1, rotateY: 0, z: 0 }}
+            transition={{ 
+              type: "spring", 
+              stiffness: 40, 
+              damping: 18, 
+              delay: 0.6,
+              mass: 2
+            }}
+            className="hidden lg:flex justify-center items-center relative lg:-mt-40"
+          >
+            <div className="relative group perspective-[1000px]">
+              {/* Pulse glow behind the logo */}
+              <div className="absolute inset-0 bg-cyan-500/30 blur-[100px] rounded-full scale-150 animate-pulse" />
+              
+              <motion.img 
+                animate={{ y: [0, -15, 0] }}
+                transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+                src="/logo-angulo-sin-fondo.png" 
+                alt="Angulo Logo 3D" 
+                className="relative z-10 w-full max-w-[450px] object-contain drop-shadow-[0_20px_40px_rgba(6,182,212,0.6)] group-hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+          </motion.div>
+
         </div>
       </div>
       

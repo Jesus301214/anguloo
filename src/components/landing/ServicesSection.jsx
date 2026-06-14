@@ -1,38 +1,45 @@
 import React from 'react'
-import { CheckCircle2, Zap, BarChart3, Users, Shield, Target } from 'lucide-react'
+import { CheckCircle2, Calendar, FileText, BellRing, Package, Shield, Target } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const services = [
   {
-    title: 'Automatización de Ventas',
-    description: 'Nuestros agentes de IA califican leads y cierran ventas 24/7 sin intervención humana.',
-    icon: Zap,
-    color: 'text-amber-400',
-    bgColor: 'bg-amber-400/10'
+    title: 'Agenda Online',
+    description: 'Digitaliza tu agenda y organiza tu día a día. Facilita las reservas de tus clientes 24/7.',
+    icon: Calendar,
+    color: 'text-blue-400',
+    bgColor: 'bg-blue-400/10'
   },
   {
-    title: 'CRM Inteligente',
-    description: 'Centraliza todos tus clientes y prospectos con herramientas avanzadas de seguimiento.',
-    icon: Users,
+    title: 'Ficha Clínica y Estética',
+    description: 'Toda la información de tus pacientes o clientes en la nube de forma segura y accesible.',
+    icon: FileText,
     color: 'text-emerald-400',
     bgColor: 'bg-emerald-400/10'
   },
   {
-    title: 'Análisis de Datos',
-    description: 'Toma decisiones basadas en datos reales con nuestros dashboards interactivos.',
-    icon: BarChart3,
-    color: 'text-blue-400',
-    bgColor: 'bg-blue-400/10'
+    title: 'Recordatorios Automáticos',
+    description: 'Reduce inasistencias recordando las citas por WhatsApp de forma automática.',
+    icon: BellRing,
+    color: 'text-amber-400',
+    bgColor: 'bg-amber-400/10'
+  },
+  {
+    title: 'Inventario y Caja',
+    description: 'Controla tu inventario con uso automático de productos y visualiza tu flujo de caja en tiempo real.',
+    icon: Package,
+    color: 'text-purple-400',
+    bgColor: 'bg-purple-400/10'
   }
 ]
 
 const advantages = [
-  'Ahorra hasta un 80% del tiempo operativo.',
-  'Atención al cliente instantánea y sin esperas.',
-  'Aumento garantizado en la tasa de conversión.',
-  'Integración perfecta con WhatsApp, IG y FB.',
+  'Ahorra hasta un 80% de trabajo administrativo.',
+  'Aumenta reservas con facilidad.',
+  'Reduce inasistencias en un 60%.',
+  'Historiales centralizados y organizados.',
   'Soporte técnico dedicado las 24 horas.',
-  'Escalabilidad inmediata sin contratar más personal.'
+  'Cálculo de comisiones automático.'
 ]
 
 const ServicesSection = () => {

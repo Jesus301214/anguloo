@@ -15,6 +15,7 @@ const HeroMockup = ({ niche = 'general' }) => {
   const iconBase = isBarber ? <Scissors className="w-5 h-5 text-amber-900" /> : isClinic ? <Activity className="w-5 h-5 text-blue-900" /> : <Scissors className="w-5 h-5 text-emerald-900" />
 
   return (
+    <div className="relative w-full max-w-[500px] aspect-[4/5] mx-auto flex items-center justify-center pointer-events-none scale-90 md:scale-100">
       {/* Background Tablet Mockup (Dashboard Replica) */}
       <motion.div 
         initial={{ opacity: 0, scale: 0.9, y: 20, x: '-50%' }}

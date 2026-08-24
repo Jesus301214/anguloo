@@ -129,6 +129,7 @@ const Terminos = () => {
           </p>
         </div>
       </div>
+      </div>
     </>
   )
 }

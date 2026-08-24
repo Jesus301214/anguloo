@@ -129,6 +129,7 @@ const Privacidad = () => {
           </p>
         </div>
       </div>
+      </div>
     </>
   )
 }

@@ -18,10 +18,10 @@ const HeroMockup = ({ niche = 'general' }) => {
     <div className="relative w-full max-w-[500px] aspect-[4/5] mx-auto flex items-center justify-center pointer-events-none scale-90 md:scale-100">
       {/* Background Tablet Mockup (Dashboard Replica) */}
       <motion.div 
-        initial={{ opacity: 0, scale: 0.9, y: 20, x: '-50%' }}
-        animate={{ opacity: 1, scale: 1, y: 0, x: '-50%' }}
+        initial={{ opacity: 0, scale: 0.8, y: 20, x: '-65%' }}
+        animate={{ opacity: 1, scale: 0.9, y: 0, x: '-65%' }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="absolute top-[3%] left-[45%] w-[800px] h-[480px] bg-[#f8fafc] rounded-2xl border-[6px] border-gray-800 shadow-2xl overflow-hidden z-0 hidden md:flex ring-1 ring-white/10 opacity-40 scale-75 lg:scale-90 lg:opacity-60 origin-top-left"
+        className="absolute top-[5%] left-1/2 w-[800px] h-[480px] bg-[#f8fafc] rounded-2xl border-[6px] border-gray-800 shadow-2xl overflow-hidden z-0 hidden lg:flex flex-col ring-1 ring-white/10 opacity-70 origin-center"
       >
         {/* Sidebar */}
         <div className="w-[180px] bg-white border-r border-gray-200 p-4 flex flex-col">

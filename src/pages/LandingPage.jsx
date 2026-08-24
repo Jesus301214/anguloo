@@ -118,7 +118,6 @@ const LandingPage = ({ setIsModalOpen, isModalOpen, setIsMenuOpen, isMenuOpen, l
         <TargetAudienceSection />
         <ServicesSection />
         <MotivationSection />
-        <TrustBar />
         <BentoGridSection />
         <ResultsSection />
         <TestimonialsSection />

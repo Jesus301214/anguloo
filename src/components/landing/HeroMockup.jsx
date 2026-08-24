@@ -15,14 +15,14 @@ const HeroMockup = ({ niche = 'general' }) => {
   const iconBase = isBarber ? <Scissors className="w-5 h-5 text-amber-900" /> : isClinic ? <Activity className="w-5 h-5 text-blue-900" /> : <Scissors className="w-5 h-5 text-emerald-900" />
 
   return (
-    <div className="relative w-full max-w-[600px] aspect-[4/5] mx-auto flex items-center justify-center pointer-events-none scale-90 md:scale-100">
+    <div className="relative w-full max-w-[800px] aspect-[4/5] mx-auto flex items-center justify-center pointer-events-none scale-90 md:scale-100">
       
       {/* Background Tablet Mockup (Dashboard Replica) */}
       <motion.div 
-        initial={{ opacity: 0, scale: 0.85, y: 0, x: '-30%' }}
-        animate={{ opacity: 1, scale: 0.95, y: -20, x: '-30%' }}
+        initial={{ opacity: 0, scale: 0.8, y: 0, x: 50 }}
+        animate={{ opacity: 1, scale: 0.85, y: -20, x: 140 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="absolute top-[8%] left-[55%] w-[760px] h-[460px] bg-[#f8fafc] rounded-2xl border-[6px] border-gray-800 shadow-2xl overflow-hidden z-0 hidden lg:flex flex-col ring-1 ring-white/10 opacity-80 origin-center"
+        className="absolute w-[760px] h-[460px] bg-[#f8fafc] rounded-2xl border-[6px] border-gray-800 shadow-2xl overflow-hidden z-0 hidden lg:flex flex-col ring-1 ring-white/10 opacity-90 origin-center"
       >
         {/* Sidebar */}
         <div className="w-[180px] bg-white border-r border-gray-200 p-4 flex flex-col">
@@ -152,8 +152,8 @@ const HeroMockup = ({ niche = 'general' }) => {
 
       {/* Central Phone Mockup */}
       <motion.div 
-        initial={{ y: 20, x: -60, opacity: 0 }}
-        animate={{ y: 0, x: -60, opacity: 1 }}
+        initial={{ y: 20, x: -160, opacity: 0 }}
+        animate={{ y: 0, x: -160, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
         className="relative w-[280px] h-[580px] bg-gray-950 rounded-[40px] border-[8px] border-gray-800 shadow-[20px_20px_60px_rgba(0,0,0,0.8)] overflow-hidden z-10 flex flex-col ring-1 ring-white/10"
       >
@@ -214,7 +214,7 @@ const HeroMockup = ({ niche = 'general' }) => {
       <motion.div
         animate={{ y: [-8, 8, -8] }}
         transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-        className="absolute left-[-100px] md:left-[-140px] top-[18%] w-[220px] bg-gray-900/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-4 shadow-[0_20px_40px_rgba(0,0,0,0.6)] z-20"
+        className="absolute left-[-200px] md:left-[-240px] top-[18%] w-[220px] bg-gray-900/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-4 shadow-[0_20px_40px_rgba(0,0,0,0.6)] z-20"
       >
         <div className="flex items-center justify-between mb-3 border-b border-gray-800/50 pb-2">
           <div className="flex items-center gap-2">
@@ -248,7 +248,7 @@ const HeroMockup = ({ niche = 'general' }) => {
       <motion.div
         animate={{ y: [8, -8, 8] }}
         transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 1 }}
-        className="absolute right-[30px] md:right-[0px] bottom-[15%] w-[240px] bg-gray-900/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-5 shadow-[0_30px_50px_rgba(0,0,0,0.6)] z-20"
+        className="absolute right-[130px] md:right-[100px] bottom-[15%] w-[240px] bg-gray-900/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-5 shadow-[0_30px_50px_rgba(0,0,0,0.6)] z-20"
       >
         <div className="flex items-center justify-between mb-2">
           <h4 className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Ventas Hoy</h4>

@@ -3,6 +3,7 @@ import { Sparkles, Play } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useGSAP } from '../../lib/gsap'
 import { gsap } from '../../lib/gsap'
+import HeroMockup from './HeroMockup'
 
 const HeroSection = ({ setIsModalOpen, niche = 'general' }) => {
   const containerRef = useRef(null)
@@ -219,13 +220,7 @@ const HeroSection = ({ setIsModalOpen, niche = 'general' }) => {
               {/* Pulse glow behind the logo */}
               <div className="absolute inset-0 bg-cyan-500/30 blur-[100px] rounded-full scale-150 animate-pulse" />
               
-              <motion.img 
-                animate={{ y: [0, -15, 0] }}
-                transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-                src="/logo-angulo-sin-fondo.png" 
-                alt="Logo de ANGULO - Software de gestión para barberías y estéticas" 
-                className="relative z-10 w-full max-w-[450px] object-contain drop-shadow-[0_20px_40px_rgba(6,182,212,0.6)] group-hover:scale-105 transition-transform duration-700"
-              />
+              <HeroMockup niche={niche} />
             </div>
           </motion.div>
 

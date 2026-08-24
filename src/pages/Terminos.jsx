@@ -1,10 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 
 const Terminos = () => {
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100">
+    <>
+      <Helmet>
+        <title>Términos y Condiciones | ANGULO Software</title>
+        <meta name="description" content="Lee los términos y condiciones de uso de ANGULO, tu plataforma SaaS de gestión empresarial para barberías y estéticas." />
+      </Helmet>
+      <div className="min-h-screen bg-gray-950 text-gray-100">
       <div className="max-w-3xl mx-auto px-6 py-20">
         <Link
           to="/"
@@ -123,7 +129,7 @@ const Terminos = () => {
           </p>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

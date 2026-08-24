@@ -1,10 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 
 const Privacidad = () => {
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100">
+    <>
+      <Helmet>
+        <title>Política de Privacidad | ANGULO Software</title>
+        <meta name="description" content="Conoce la política de privacidad y tratamiento de datos de ANGULO, el software de gestión para barberías, clínicas y salones de belleza." />
+      </Helmet>
+      <div className="min-h-screen bg-gray-950 text-gray-100">
       <div className="max-w-3xl mx-auto px-6 py-20">
         <Link
           to="/"
@@ -123,7 +129,7 @@ const Privacidad = () => {
           </p>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

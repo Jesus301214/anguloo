@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { Helmet } from 'react-helmet-async'
 
 // Secciones
 import Navbar from '../components/landing/Navbar'
@@ -18,7 +19,7 @@ import TargetAudienceSection from '../components/landing/TargetAudienceSection'
 import DemoModal from '../components/landing/DemoModal'
 import WhatsAppButton from '../components/landing/WhatsAppButton'
 
-const LandingPage = ({ setIsModalOpen, isModalOpen, setIsMenuOpen, isMenuOpen, logo, heroImage }) => {
+const LandingPage = ({ setIsModalOpen, isModalOpen, setIsMenuOpen, isMenuOpen, logo, heroImage, niche = 'general' }) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formStatus, setFormStatus] = useState(null)
   const [n8nResult, setN8nResult] = useState(null)
@@ -72,12 +73,48 @@ const LandingPage = ({ setIsModalOpen, isModalOpen, setIsMenuOpen, isMenuOpen, l
     }
   }
 
+  const getSEO = () => {
+    switch (niche) {
+      case 'barberias':
+        return {
+          title: 'Software de Gestión para Barberías | ANGULO',
+          description: 'ANGULO es el software de gestión ideal para barberías. Controla comisiones, reservas online e inventario fácilmente.',
+          keywords: 'software para barberias, sistema reservas barberia, control de caja barberia, software gestion barberos'
+        }
+      case 'clinicas':
+        return {
+          title: 'Software Médico y de Gestión para Clínicas Estéticas | ANGULO',
+          description: 'ANGULO es el software ideal para clínicas estéticas y consultorios médicos. Fichas de pacientes, agenda médica e inventario.',
+          keywords: 'software clinicas esteticas, software consultorios medicos, sistema agenda medica, fichas pacientes'
+        }
+      default:
+        return {
+          title: 'Software de Gestión para Barberías, Clínicas y Salones | ANGULO',
+          description: 'ANGULO es el software de gestión ideal para barberías, salones de belleza, spas, clínicas estéticas y consultorios médicos. Control de caja, reservas online e inventario.',
+          keywords: 'software para barberias, software salones de belleza, software spa, software clinicas esteticas, software consultorios medicos, sistema de reservas online, control de caja, control de inventario'
+        }
+    }
+  }
+
+  const seo = getSEO()
+
   return (
-    <div className="min-h-screen bg-[#030712] font-sans text-white selection:bg-gray-700 selection:text-white overflow-x-hidden">
-      <Navbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} setIsModalOpen={setIsModalOpen} logo={logo} />
+    <>
+      <Helmet>
+        <title>{seo.title}</title>
+        <meta name="description" content={seo.description} />
+        <meta name="keywords" content={seo.keywords} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://angulosoftwares.com/" />
+        <meta property="og:title" content={seo.title} />
+        <meta property="og:description" content={seo.description} />
+        <meta property="og:image" content="https://angulosoftwares.com/logo-angulo-este-si.jpeg" />
+      </Helmet>
+      <div className="min-h-screen bg-[#030712] font-sans text-white selection:bg-gray-700 selection:text-white overflow-x-hidden">
+        <Navbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} setIsModalOpen={setIsModalOpen} logo={logo} />
       
       <main>
-        <HeroSection heroImage={heroImage} setIsModalOpen={setIsModalOpen} />
+        <HeroSection heroImage={heroImage} setIsModalOpen={setIsModalOpen} niche={niche} />
         <TargetAudienceSection />
         <ServicesSection />
         <MotivationSection />
@@ -101,7 +138,8 @@ const LandingPage = ({ setIsModalOpen, isModalOpen, setIsMenuOpen, isMenuOpen, l
         handleReservaSubmit={handleReservaSubmit} 
       />
       <WhatsAppButton whatsappLink={whatsappLink} />
-    </div>
+      </div>
+    </>
   )
 }
 

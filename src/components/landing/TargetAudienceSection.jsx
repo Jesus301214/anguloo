@@ -93,7 +93,7 @@ const TargetAudienceSection = () => {
                   <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-50`}></div>
                   <img 
                     src={item.image} 
-                    alt={item.title} 
+                    alt={`Software de gestión para ${item.title.toLowerCase()}`}
                     className="w-full h-auto object-cover rounded-2xl relative z-10 group-hover:scale-[1.02] transition-transform duration-700"
                   />
                   <div className="absolute inset-0 ring-1 ring-white/10 rounded-3xl z-20 pointer-events-none"></div>

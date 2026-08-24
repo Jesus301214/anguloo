@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { useGSAP } from '../../lib/gsap'
 import { gsap } from '../../lib/gsap'
 
-const HeroSection = ({ setIsModalOpen }) => {
+const HeroSection = ({ setIsModalOpen, niche = 'general' }) => {
   const containerRef = useRef(null)
   const mockupRef = useRef(null)
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 })
@@ -47,7 +47,7 @@ const HeroSection = ({ setIsModalOpen }) => {
       <div className="absolute inset-0 z-0">
         <img 
           src="/office-bg.png" 
-          alt="Office Background" 
+          alt="Fondo de oficina de administración para software de salones y clínicas" 
           className="absolute inset-0 w-full h-full object-cover filter blur-[8px] brightness-[0.3] scale-105"
         />
       </div>
@@ -64,7 +64,7 @@ const HeroSection = ({ setIsModalOpen }) => {
       >
         <img 
           src="/office-bg.png" 
-          alt="Office Background Clear" 
+          alt="Software de gestión de clínica estética y barbería" 
           className="absolute inset-0 w-full h-full object-cover scale-105 brightness-110"
         />
       </div>
@@ -89,13 +89,37 @@ const HeroSection = ({ setIsModalOpen }) => {
             </div>
 
             <h1 className="mb-6 text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl font-outfit leading-[1.05] drop-shadow-2xl">
-              <div className="hero-title-line text-white">El sistema para</div>
-              <div className="hero-title-line">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 text-glow-cyan pb-1 inline-block">Salones, Clínicas</span>
-              </div>
-              <div className="hero-title-line text-white">y Spas que</div>
-              <div className="hero-title-line text-white">automatiza tu</div>
-              <div className="hero-title-line text-white">negocio.</div>
+              {niche === 'barberias' && (
+                <>
+                  <div className="hero-title-line text-white">Software de gestión para</div>
+                  <div className="hero-title-line">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400 text-glow-cyan pb-1 inline-block">Barberías</span>
+                  </div>
+                  <div className="hero-title-line text-white">que automatiza tu</div>
+                  <div className="hero-title-line text-white">negocio.</div>
+                </>
+              )}
+              {niche === 'clinicas' && (
+                <>
+                  <div className="hero-title-line text-white">Software de gestión para</div>
+                  <div className="hero-title-line">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 text-glow-cyan pb-1 inline-block">Clínicas Estéticas</span>
+                  </div>
+                  <div className="hero-title-line text-white">que automatiza tu</div>
+                  <div className="hero-title-line text-white">negocio.</div>
+                </>
+              )}
+              {niche === 'general' && (
+                <>
+                  <div className="hero-title-line text-white">Software de gestión para</div>
+                  <div className="hero-title-line">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 text-glow-cyan pb-1 inline-block">Salones, Clínicas</span>
+                  </div>
+                  <div className="hero-title-line text-white">y Barberías que</div>
+                  <div className="hero-title-line text-white">automatiza tu</div>
+                  <div className="hero-title-line text-white">negocio.</div>
+                </>
+              )}
             </h1>
 
             <p className="hero-subtitle mb-10 max-w-xl text-lg leading-relaxed text-gray-300 font-medium drop-shadow-md">
@@ -199,7 +223,7 @@ const HeroSection = ({ setIsModalOpen }) => {
                 animate={{ y: [0, -15, 0] }}
                 transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
                 src="/logo-angulo-sin-fondo.png" 
-                alt="Angulo Logo 3D" 
+                alt="Logo de ANGULO - Software de gestión para barberías y estéticas" 
                 className="relative z-10 w-full max-w-[450px] object-contain drop-shadow-[0_20px_40px_rgba(6,182,212,0.6)] group-hover:scale-105 transition-transform duration-700"
               />
             </div>

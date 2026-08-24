@@ -40,6 +40,34 @@ const App = () => {
             />
           }
         />
+        <Route
+          path="/software-barberias"
+          element={
+            <LandingPage
+              setIsModalOpen={setIsModalOpen}
+              isModalOpen={isModalOpen}
+              setIsMenuOpen={setIsMenuOpen}
+              isMenuOpen={isMenuOpen}
+              logo={logo}
+              heroImage={heroImage}
+              niche="barberias"
+            />
+          }
+        />
+        <Route
+          path="/software-clinicas"
+          element={
+            <LandingPage
+              setIsModalOpen={setIsModalOpen}
+              isModalOpen={isModalOpen}
+              setIsMenuOpen={setIsMenuOpen}
+              isMenuOpen={isMenuOpen}
+              logo={logo}
+              heroImage={heroImage}
+              niche="clinicas"
+            />
+          }
+        />
 
         <Route path="/privacidad" element={<Privacidad />} />
         <Route path="/terminos" element={<Terminos />} />

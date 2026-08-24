@@ -17,6 +17,47 @@ const HeroMockup = ({ niche = 'general' }) => {
   return (
     <div className="relative w-full max-w-[500px] aspect-[4/5] mx-auto flex items-center justify-center pointer-events-none scale-90 md:scale-100">
       
+      {/* Background Tablet Mockup */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="absolute top-[8%] left-1/2 -translate-x-1/2 w-[460px] h-[340px] bg-gray-950 rounded-[32px] border-[8px] border-gray-800 shadow-2xl overflow-hidden z-0 flex flex-col ring-1 ring-white/10 hidden md:flex"
+      >
+        {/* Tablet Header */}
+        <div className="h-12 bg-gray-900 border-b border-gray-800 flex items-center px-5 gap-4">
+          <div className="flex gap-1.5">
+            <div className="w-3 h-3 rounded-full bg-rose-500/80"></div>
+            <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
+            <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+          </div>
+          <div className="flex-1 bg-gray-950 rounded-lg h-7 border border-gray-800 flex items-center px-4 justify-center shadow-inner">
+            <span className="text-[10px] text-gray-500 font-medium tracking-widest uppercase">angulosoftwares.com/{niche}</span>
+          </div>
+        </div>
+        {/* Tablet Content */}
+        <div className="flex-1 bg-[#0a0f1c] p-6 grid grid-cols-4 gap-5">
+           {/* Sidebar skeleton */}
+           <div className="col-span-1 space-y-4 pt-2">
+             <div className="h-10 w-full bg-emerald-500/20 rounded-xl border border-emerald-500/20"></div>
+             <div className="h-10 w-full bg-gray-800/40 rounded-xl"></div>
+             <div className="h-10 w-full bg-gray-800/40 rounded-xl"></div>
+             <div className="h-10 w-full bg-gray-800/40 rounded-xl"></div>
+           </div>
+           {/* Main area skeleton */}
+           <div className="col-span-3 space-y-5 pt-2">
+             {/* Top stats */}
+             <div className="grid grid-cols-3 gap-4">
+               <div className="h-20 bg-gray-900 border border-gray-800/80 rounded-2xl shadow-sm"></div>
+               <div className="h-20 bg-gray-900 border border-gray-800/80 rounded-2xl shadow-sm"></div>
+               <div className="h-20 bg-gray-900 border border-gray-800/80 rounded-2xl shadow-sm"></div>
+             </div>
+             {/* Chart area */}
+             <div className="h-32 w-full bg-gradient-to-tr from-gray-900 to-gray-800/30 rounded-2xl border border-gray-800/80"></div>
+           </div>
+        </div>
+      </motion.div>
+
       {/* Central Phone Mockup */}
       <motion.div 
         initial={{ y: 20, opacity: 0 }}

@@ -19,8 +19,8 @@ const HeroMockup = ({ niche = 'general' }) => {
       
       {/* Background Tablet Mockup (Dashboard Replica) */}
       <motion.div 
-        initial={{ opacity: 0, scale: 0.8, y: 0, x: 50 }}
-        animate={{ opacity: 1, scale: 0.85, y: -20, x: 140 }}
+        initial={{ opacity: 0, scale: 0.8, y: 0, x: -100 }}
+        animate={{ opacity: 1, scale: 0.85, y: -20, x: -140 }}
         transition={{ duration: 1, ease: "easeOut" }}
         className="absolute w-[760px] h-[460px] bg-[#f8fafc] rounded-2xl border-[6px] border-gray-800 shadow-2xl overflow-hidden z-0 hidden lg:flex flex-col ring-1 ring-white/10 opacity-90 origin-center"
       >
@@ -152,8 +152,8 @@ const HeroMockup = ({ niche = 'general' }) => {
 
       {/* Central Phone Mockup */}
       <motion.div 
-        initial={{ y: 20, x: -160, opacity: 0 }}
-        animate={{ y: 0, x: -160, opacity: 1 }}
+        initial={{ y: 20, x: 120, opacity: 0 }}
+        animate={{ y: 0, x: 120, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
         className="relative w-[280px] h-[580px] bg-gray-950 rounded-[40px] border-[8px] border-gray-800 shadow-[20px_20px_60px_rgba(0,0,0,0.8)] overflow-hidden z-10 flex flex-col ring-1 ring-white/10"
       >
@@ -214,7 +214,7 @@ const HeroMockup = ({ niche = 'general' }) => {
       <motion.div
         animate={{ y: [-8, 8, -8] }}
         transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-        className="absolute left-[-200px] md:left-[-240px] top-[18%] w-[220px] bg-gray-900/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-4 shadow-[0_20px_40px_rgba(0,0,0,0.6)] z-20"
+        className="absolute left-[80px] md:left-[40px] top-[18%] w-[220px] bg-gray-900/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-4 shadow-[0_20px_40px_rgba(0,0,0,0.6)] z-20"
       >
         <div className="flex items-center justify-between mb-3 border-b border-gray-800/50 pb-2">
           <div className="flex items-center gap-2">
@@ -248,7 +248,7 @@ const HeroMockup = ({ niche = 'general' }) => {
       <motion.div
         animate={{ y: [8, -8, 8] }}
         transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 1 }}
-        className="absolute right-[130px] md:right-[100px] bottom-[15%] w-[240px] bg-gray-900/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-5 shadow-[0_30px_50px_rgba(0,0,0,0.6)] z-20"
+        className="absolute right-[-150px] md:right-[-180px] bottom-[15%] w-[240px] bg-gray-900/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-5 shadow-[0_30px_50px_rgba(0,0,0,0.6)] z-20"
       >
         <div className="flex items-center justify-between mb-2">
           <h4 className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Ventas Hoy</h4>

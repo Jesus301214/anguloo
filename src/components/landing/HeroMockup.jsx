@@ -15,46 +15,136 @@ const HeroMockup = ({ niche = 'general' }) => {
   const iconBase = isBarber ? <Scissors className="w-5 h-5 text-amber-900" /> : isClinic ? <Activity className="w-5 h-5 text-blue-900" /> : <Scissors className="w-5 h-5 text-emerald-900" />
 
   return (
-    <div className="relative w-full max-w-[500px] aspect-[4/5] mx-auto flex items-center justify-center pointer-events-none scale-90 md:scale-100">
-      
-      {/* Background Tablet Mockup */}
+      {/* Background Tablet Mockup (Dashboard Replica) */}
       <motion.div 
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
+        initial={{ opacity: 0, scale: 0.9, y: 20, x: '-50%' }}
+        animate={{ opacity: 1, scale: 1, y: 0, x: '-50%' }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="absolute top-[8%] left-1/2 -translate-x-1/2 w-[460px] h-[340px] bg-gray-950 rounded-[32px] border-[8px] border-gray-800 shadow-2xl overflow-hidden z-0 flex flex-col ring-1 ring-white/10 hidden md:flex"
+        className="absolute top-[3%] left-[45%] w-[800px] h-[480px] bg-[#f8fafc] rounded-2xl border-[6px] border-gray-800 shadow-2xl overflow-hidden z-0 hidden md:flex ring-1 ring-white/10 opacity-40 scale-75 lg:scale-90 lg:opacity-60 origin-top-left"
       >
-        {/* Tablet Header */}
-        <div className="h-12 bg-gray-900 border-b border-gray-800 flex items-center px-5 gap-4">
-          <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-rose-500/80"></div>
-            <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
-            <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+        {/* Sidebar */}
+        <div className="w-[180px] bg-white border-r border-gray-200 p-4 flex flex-col">
+          {/* Logo / Profile */}
+          <div className="flex items-center gap-2 mb-6">
+            <div className="w-8 h-8 bg-gray-900 rounded-md flex items-center justify-center text-white font-bold text-xs">A</div>
+            <div>
+              <div className="text-xs font-bold text-gray-800 leading-none">Carlos</div>
+              <div className="text-[8px] text-gray-500">Sede Central - Barbería</div>
+            </div>
           </div>
-          <div className="flex-1 bg-gray-950 rounded-lg h-7 border border-gray-800 flex items-center px-4 justify-center shadow-inner">
-            <span className="text-[10px] text-gray-500 font-medium tracking-widest uppercase">angulosoftwares.com/{niche}</span>
+          {/* Nueva Reserva Btn */}
+          <div className="w-full py-1.5 rounded bg-white border border-gray-200 text-center text-[10px] font-semibold text-gray-700 shadow-sm mb-4 flex items-center justify-center gap-1">
+            <span>+</span> Nueva Reserva
+          </div>
+          {/* Menu Items */}
+          <div className="space-y-1.5 flex-1">
+            {['Mi Agenda', 'Dashboard', 'Reservas', 'CRM', 'Clientes', 'Especialistas', 'Servicios', 'Inventario', 'Finanzas'].map((item, idx) => (
+              <div key={item} className={`px-2 py-1.5 rounded text-[10px] font-medium flex items-center gap-2 ${item === 'Dashboard' ? 'bg-blue-50 text-blue-600' : 'text-gray-600'}`}>
+                <div className={`w-3 h-3 rounded-sm ${item === 'Dashboard' ? 'bg-blue-200' : 'bg-gray-200'}`}></div>
+                {item}
+              </div>
+            ))}
           </div>
         </div>
-        {/* Tablet Content */}
-        <div className="flex-1 bg-[#0a0f1c] p-6 grid grid-cols-4 gap-5">
-           {/* Sidebar skeleton */}
-           <div className="col-span-1 space-y-4 pt-2">
-             <div className="h-10 w-full bg-emerald-500/20 rounded-xl border border-emerald-500/20"></div>
-             <div className="h-10 w-full bg-gray-800/40 rounded-xl"></div>
-             <div className="h-10 w-full bg-gray-800/40 rounded-xl"></div>
-             <div className="h-10 w-full bg-gray-800/40 rounded-xl"></div>
-           </div>
-           {/* Main area skeleton */}
-           <div className="col-span-3 space-y-5 pt-2">
-             {/* Top stats */}
-             <div className="grid grid-cols-3 gap-4">
-               <div className="h-20 bg-gray-900 border border-gray-800/80 rounded-2xl shadow-sm"></div>
-               <div className="h-20 bg-gray-900 border border-gray-800/80 rounded-2xl shadow-sm"></div>
-               <div className="h-20 bg-gray-900 border border-gray-800/80 rounded-2xl shadow-sm"></div>
-             </div>
-             {/* Chart area */}
-             <div className="h-32 w-full bg-gradient-to-tr from-gray-900 to-gray-800/30 rounded-2xl border border-gray-800/80"></div>
-           </div>
+
+        {/* Main Content */}
+        <div className="flex-1 p-5 flex flex-col gap-4 overflow-hidden">
+          {/* Header */}
+          <div className="flex justify-between items-center">
+            <div>
+              <h2 className="text-lg font-bold text-gray-800 leading-tight">Dashboard</h2>
+              <p className="text-[10px] text-gray-500">Inteligencia de negocio y visión operativa</p>
+            </div>
+            <div className="flex gap-2">
+              <div className="px-3 py-1 bg-white border border-gray-200 rounded-full text-[10px] font-semibold text-gray-700 flex items-center gap-1 shadow-sm">Link de Reservas</div>
+              <div className="w-6 h-6 bg-white border border-gray-200 rounded-full flex items-center justify-center relative shadow-sm">
+                <div className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Top 4 Cards */}
+          <div className="grid grid-cols-4 gap-3">
+            <div className="bg-[#e0f2fe] rounded-xl p-3 border border-blue-100 relative overflow-hidden">
+              <p className="text-[10px] text-blue-800 font-medium mb-1">Ingresos del Mes</p>
+              <p className="text-sm font-bold text-gray-900">€ 385.00</p>
+              <p className="text-[8px] text-blue-600 mt-1">Reservas completadas</p>
+            </div>
+            <div className="bg-[#dcfce7] rounded-xl p-3 border border-green-100">
+              <p className="text-[10px] text-green-800 font-medium mb-1">Citas Atendidas</p>
+              <p className="text-sm font-bold text-gray-900">18</p>
+              <p className="text-[8px] text-green-600 mt-1">Este mes</p>
+            </div>
+            <div className="bg-[#fee2e2] rounded-xl p-3 border border-red-100">
+              <p className="text-[10px] text-red-800 font-medium mb-1">Stock Crítico</p>
+              <p className="text-sm font-bold text-gray-900">1</p>
+              <p className="text-[8px] text-red-600 mt-1">Insumos por reponer</p>
+            </div>
+            <div className="bg-[#fef3c7] rounded-xl p-3 border border-amber-100">
+              <p className="text-[10px] text-amber-800 font-medium mb-1">Flujo Caja (Hoy)</p>
+              <p className="text-sm font-bold text-gray-900">€ 0.00</p>
+              <p className="text-[8px] text-amber-600 mt-1">Balance del día</p>
+            </div>
+          </div>
+
+          {/* Charts Area */}
+          <div className="flex gap-4 flex-1">
+            {/* Left Col (Charts) */}
+            <div className="flex-1 flex flex-col gap-4">
+              {/* Bar Chart */}
+              <div className="bg-white rounded-xl border border-gray-200 p-3 flex-1 flex flex-col shadow-sm">
+                <p className="text-[10px] font-bold text-gray-800 mb-2">Evolución de Ingresos</p>
+                <div className="flex-1 flex items-end justify-between px-2 gap-1 mt-2">
+                  {[40, 30, 45, 60, 20, 35, 35, 15, 15, 10, 25, 45, 0, 20, 0, 35].map((h, i) => (
+                    <div key={i} className="w-full bg-[#3b82f6] rounded-t-sm" style={{ height: `${h}%` }}></div>
+                  ))}
+                </div>
+                <div className="flex justify-between mt-1 px-2 border-t border-gray-100 pt-1">
+                  <span className="text-[6px] text-gray-400">07-27</span>
+                  <span className="text-[6px] text-gray-400">08-10</span>
+                  <span className="text-[6px] text-gray-400">08-24</span>
+                </div>
+              </div>
+              
+              {/* Bottom 2 Cards (Donut & Top) */}
+              <div className="grid grid-cols-2 gap-4 h-[110px]">
+                <div className="bg-white rounded-xl border border-gray-200 p-3 shadow-sm flex flex-col">
+                  <p className="text-[10px] font-bold text-gray-800 mb-2">Distribución de Servicios</p>
+                  <div className="flex-1 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full border-[6px] border-[#10b981] border-t-[#8b5cf6] border-r-[#3b82f6]"></div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-xl border border-gray-200 p-3 shadow-sm overflow-hidden">
+                  <p className="text-[10px] font-bold text-gray-800 mb-2">Top Especialistas</p>
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-[8px]"><span className="text-gray-700">1. Carlos "El Mago"</span><span className="font-bold">€ 205.00</span></div>
+                    <div className="flex justify-between text-[8px]"><span className="text-gray-700">2. Miguel Ángel</span><span className="font-bold">€ 200.00</span></div>
+                    <div className="flex justify-between text-[8px]"><span className="text-gray-700">3. José Color</span><span className="font-bold">€ 175.00</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Col (Calendar) */}
+            <div className="w-[180px] bg-white rounded-xl border border-gray-200 p-3 shadow-sm flex flex-col">
+              <h3 className="text-[12px] font-bold text-gray-800 mb-3">Agosto 2026</h3>
+              <div className="grid grid-cols-7 gap-1 text-[8px] text-center mb-1 font-semibold text-gray-500">
+                <div>D</div><div>L</div><div>M</div><div>M</div><div>J</div><div>V</div><div>S</div>
+              </div>
+              <div className="grid grid-cols-7 gap-1 text-[8px] text-center">
+                {/* Dummy calendar days */}
+                <div className="text-gray-300">26</div><div className="text-gray-300">27</div><div className="text-gray-300">28</div><div className="text-gray-300">29</div><div className="text-gray-300">30</div><div className="text-gray-300">31</div><div>1</div>
+                <div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div>
+                <div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div>
+                <div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div>
+                <div>23</div><div className="bg-blue-600 text-white rounded-full w-4 h-4 mx-auto flex items-center justify-center font-bold">24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div>
+              </div>
+              <div className="mt-4 pt-3 border-t border-gray-100">
+                <p className="text-[10px] font-bold text-gray-800">Día 24 - 0 reservas</p>
+                <p className="text-[8px] text-gray-500">Sin reservas para este día.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </motion.div>
 

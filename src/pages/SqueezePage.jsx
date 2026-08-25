@@ -6,8 +6,12 @@ const SqueezePage = () => {
   const [formData, setFormData] = useState({
     nombre: '',
     negocio: '',
+    tipoNegocio: '',
+    telefono: '',
     email: ''
   })
+  
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const handleChange = (e) => {
     setFormData({
@@ -18,13 +22,9 @@ const SqueezePage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Construir el mensaje de WhatsApp
-    const phone = "584249313359" // Número del cliente
-    const text = `Hola, mi nombre es *${formData.nombre}*. Quiero más información sobre el software Angulo para mi negocio: *${formData.negocio}*. Mi correo es: ${formData.email}`
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
-    
-    // Abrir WhatsApp en una nueva pestaña
-    window.open(url, '_blank')
+    // Aquí conectaremos la API (Ej: Webhook de Zapier/Make, o Formspree para Email)
+    console.log("Datos del Lead:", formData)
+    setIsSubmitted(true)
   }
 
   return (
@@ -93,62 +93,115 @@ const SqueezePage = () => {
             <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-3xl blur opacity-30 animate-pulse"></div>
             
             <div className="relative bg-gray-900 border border-gray-700/50 rounded-3xl p-8 shadow-2xl backdrop-blur-xl">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-white mb-2 font-outfit">Comienza Hoy</h3>
-                <p className="text-sm text-gray-400">Déjanos tus datos y te contactaremos por WhatsApp para darte acceso al sistema.</p>
-              </div>
+              
+              {!isSubmitted ? (
+                <>
+                  <div className="text-center mb-8">
+                    <h3 className="text-2xl font-bold text-white mb-2 font-outfit">Solicita tu Acceso</h3>
+                    <p className="text-sm text-gray-400">Déjanos tus datos y nos comunicaremos contigo de inmediato.</p>
+                  </div>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1.5 ml-1">Tu Nombre</label>
-                  <input 
-                    type="text" 
-                    name="nombre"
-                    required
-                    value={formData.nombre}
-                    onChange={handleChange}
-                    className="w-full bg-gray-950 border border-gray-800 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
-                    placeholder="Ej. Carlos Martínez"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1.5 ml-1">Nombre de tu Negocio</label>
-                  <input 
-                    type="text" 
-                    name="negocio"
-                    required
-                    value={formData.negocio}
-                    onChange={handleChange}
-                    className="w-full bg-gray-950 border border-gray-800 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
-                    placeholder="Ej. Carlos Barber Shop"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1.5 ml-1">Correo Electrónico</label>
-                  <input 
-                    type="email" 
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full bg-gray-950 border border-gray-800 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
-                    placeholder="tucorreo@ejemplo.com"
-                  />
-                </div>
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-400 mb-1 ml-1">Tu Nombre</label>
+                      <input 
+                        type="text" 
+                        name="nombre"
+                        required
+                        value={formData.nombre}
+                        onChange={handleChange}
+                        className="w-full bg-gray-950 border border-gray-800 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
+                        placeholder="Ej. Carlos Martínez"
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-400 mb-1 ml-1">Teléfono (WhatsApp)</label>
+                        <input 
+                          type="tel" 
+                          name="telefono"
+                          required
+                          value={formData.telefono}
+                          onChange={handleChange}
+                          className="w-full bg-gray-950 border border-gray-800 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
+                          placeholder="+58 412..."
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-400 mb-1 ml-1">Tipo de Negocio</label>
+                        <select 
+                          name="tipoNegocio"
+                          required
+                          value={formData.tipoNegocio}
+                          onChange={handleChange}
+                          className="w-full bg-gray-950 border border-gray-800 text-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
+                        >
+                          <option value="">Selecciona...</option>
+                          <option value="Barbería">Barbería</option>
+                          <option value="Salón de Belleza">Salón de Belleza</option>
+                          <option value="Clínica/Spa">Clínica Estética o Spa</option>
+                          <option value="Otro">Otro</option>
+                        </select>
+                      </div>
+                    </div>
 
-                <button 
-                  type="submit"
-                  className="w-full mt-2 relative overflow-hidden group bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold text-lg rounded-xl px-4 py-4 flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all hover:scale-[1.02]"
-                >
-                  <MessageSquare className="w-5 h-5" />
-                  <span className="relative z-10">Hablar por WhatsApp</span>
-                </button>
-              </form>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-400 mb-1 ml-1">Nombre del Negocio</label>
+                      <input 
+                        type="text" 
+                        name="negocio"
+                        required
+                        value={formData.negocio}
+                        onChange={handleChange}
+                        className="w-full bg-gray-950 border border-gray-800 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
+                        placeholder="Ej. Carlos Barber Shop"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-xs font-medium text-gray-400 mb-1 ml-1">Correo Electrónico</label>
+                      <input 
+                        type="email" 
+                        name="email"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full bg-gray-950 border border-gray-800 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
+                        placeholder="tucorreo@ejemplo.com"
+                      />
+                    </div>
 
-              <div className="mt-6 flex items-center justify-center gap-2 text-xs text-gray-500">
-                <ShieldCheck className="w-4 h-4 text-gray-400" />
-                <span>Tus datos están 100% seguros con nosotros.</span>
-              </div>
+                    <button 
+                      type="submit"
+                      className="w-full mt-4 relative overflow-hidden group bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold text-base rounded-xl px-4 py-3.5 flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all hover:scale-[1.02]"
+                    >
+                      <span className="relative z-10">Enviar mis datos</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </form>
+
+                  <div className="mt-5 flex items-center justify-center gap-2 text-[11px] text-gray-500">
+                    <ShieldCheck className="w-3.5 h-3.5 text-gray-400" />
+                    <span>Tus datos están 100% seguros con nosotros.</span>
+                  </div>
+                </>
+              ) : (
+                <div className="text-center py-10">
+                  <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-2 font-outfit">¡Datos Recibidos!</h3>
+                  <p className="text-gray-400 mb-6">Hemos registrado tu solicitud con éxito. Un asesor de Angulo te contactará muy pronto.</p>
+                  <button 
+                    onClick={() => setIsSubmitted(false)}
+                    className="text-cyan-400 text-sm hover:text-cyan-300 underline"
+                  >
+                    Enviar otra solicitud
+                  </button>
+                </div>
+              )}
+
             </div>
           </motion.div>
 

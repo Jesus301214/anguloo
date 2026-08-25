@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import LandingPage from './pages/LandingPage'
+import SqueezePage from './pages/SqueezePage'
 import AdminLayout from './components/admin/AdminLayout'
 import Dashboard from './components/admin/Dashboard'
 import CRM from './components/admin/CRM'
@@ -71,6 +72,9 @@ const App = () => {
 
         <Route path="/privacidad" element={<Privacidad />} />
         <Route path="/terminos" element={<Terminos />} />
+
+        {/* Landing Squeeze para Tráfico Pago (Oculta) */}
+        <Route path="/oferta" element={<SqueezePage />} />
 
         {/* Login Administrativo */}
         <Route path="/login-admin" element={<AdminLogin />} />

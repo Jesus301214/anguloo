@@ -88,8 +88,8 @@ const TargetAudienceSection = () => {
               transition={{ duration: 0.6 }}
               className={`flex flex-col ${index % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-8 lg:gap-16 items-center`}
             >
-              <div className="w-full lg:w-1/2">
-                <div className="glass-card p-2 rounded-3xl overflow-hidden relative group shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500">
+              <div className="w-full lg:w-1/2 flex justify-center items-center">
+                <div className="w-[85%] glass-card p-2 rounded-3xl overflow-hidden relative group shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500">
                   <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-50`}></div>
                   <img 
                     src={item.image} 

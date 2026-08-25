@@ -30,7 +30,7 @@ const HeroMockup = ({ niche = 'general' }) => {
       {/* Central Phone Mockup */}
       <motion.div 
         initial={{ y: 20, x: 120, opacity: 0 }}
-        animate={{ y: 0, x: 120, opacity: 1 }}
+        animate={{ y: 20, x: 100, opacity: 1, scale: 0.85 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
         className="relative w-[280px] h-[580px] bg-gray-950 rounded-[40px] border-[8px] border-gray-800 shadow-[20px_20px_60px_rgba(0,0,0,0.8)] overflow-hidden z-10 flex flex-col ring-1 ring-white/10"
       >
@@ -39,52 +39,7 @@ const HeroMockup = ({ niche = 'general' }) => {
           <div className="w-28 h-6 bg-gray-800 rounded-b-3xl"></div>
         </div>
 
-        {/* Header */}
-        <div className="pt-10 px-6 pb-5 border-b border-gray-800 bg-gray-900/60 backdrop-blur-sm relative z-10">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-400 to-cyan-500 flex items-center justify-center shadow-lg">
-              {iconBase}
-            </div>
-            <div>
-              <h3 className="text-white font-bold text-sm tracking-wide">{businessName}</h3>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <p className="text-gray-400 text-[10px] font-medium uppercase tracking-wider">Abierto ahora</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Services List */}
-        <div className="flex-1 p-5 space-y-3 bg-[#0a0f1c]">
-          <h4 className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-4">Servicios Frecuentes</h4>
-          
-          {[
-            { name: service1, price: "$15", color: "bg-emerald-500/10 text-emerald-400", time: "30 min" },
-            { name: service2, price: "$25", color: "bg-blue-500/10 text-blue-400", time: "45 min" },
-            { name: service3, price: "$40", color: "bg-purple-500/10 text-purple-400", time: "60 min" }
-          ].map((item, i) => (
-            <div key={i} className="flex items-center justify-between p-3.5 rounded-2xl bg-gray-900 border border-gray-800/80 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${item.color}`}>
-                  <span className="font-bold text-sm">{item.name.charAt(0)}</span>
-                </div>
-                <div>
-                  <span className="text-gray-200 text-sm font-bold block leading-none mb-1.5">{item.name}</span>
-                  <span className="text-gray-500 text-[10px] flex items-center gap-1"><Clock className="w-3 h-3" /> {item.time}</span>
-                </div>
-              </div>
-              <span className="text-white font-bold text-sm">{item.price}</span>
-            </div>
-          ))}
-
-          {/* Action Button */}
-          <div className="absolute bottom-6 left-5 right-5">
-            <div className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold text-sm text-center shadow-[0_10px_20px_rgba(16,185,129,0.3)]">
-              Nueva Reserva
-            </div>
-          </div>
-        </div>
+        <img src="/mobile-mockup.png" alt="App Móvil Angulo" className="absolute inset-0 w-full h-full object-cover object-top" />
       </motion.div>
 
       {/* Floating Card Left: Ticket/Reserva */}

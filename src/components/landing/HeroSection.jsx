@@ -42,7 +42,7 @@ const HeroSection = ({ setIsModalOpen, niche = 'general' }) => {
   return (
     <section 
       ref={containerRef} 
-      className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden px-6 bg-[#030712] min-h-screen flex items-center cursor-crosshair"
+      className="relative pt-24 pb-16 lg:pt-28 lg:pb-24 overflow-hidden px-6 bg-[#030712] min-h-[90vh] flex items-center justify-center cursor-crosshair"
     >
       {/* 1. Base Blurred Image */}
       <div className="absolute inset-0 z-0">

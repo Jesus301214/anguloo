@@ -11,8 +11,6 @@ const SqueezePage = () => {
     email: ''
   })
   
-  const [isSubmitted, setIsSubmitted] = useState(false)
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -107,8 +105,6 @@ Quiero más información sobre el software Angulo.
             
             <div className="relative bg-gray-900 border border-gray-700/50 rounded-3xl p-8 shadow-2xl backdrop-blur-xl">
               
-              {!isSubmitted ? (
-                <>
                   <div className="text-center mb-8">
                     <h3 className="text-2xl font-bold text-white mb-2 font-outfit">Solicita tu Acceso</h3>
                     <p className="text-sm text-gray-400">Déjanos tus datos y nos comunicaremos contigo de inmediato.</p>
@@ -189,8 +185,8 @@ Quiero más información sobre el software Angulo.
                       type="submit"
                       className="w-full mt-4 relative overflow-hidden group bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold text-base rounded-xl px-4 py-3.5 flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all hover:scale-[1.02]"
                     >
-                      <span className="relative z-10">Enviar mis datos</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <span className="relative z-10">Enviar mis datos a WhatsApp</span>
+                      <MessageSquare className="w-4 h-4" />
                     </button>
                   </form>
 
@@ -198,22 +194,6 @@ Quiero más información sobre el software Angulo.
                     <ShieldCheck className="w-3.5 h-3.5 text-gray-400" />
                     <span>Tus datos están 100% seguros con nosotros.</span>
                   </div>
-                </>
-              ) : (
-                <div className="text-center py-10">
-                  <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <CheckCircle2 className="w-8 h-8 text-emerald-400" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-2 font-outfit">¡Datos Recibidos!</h3>
-                  <p className="text-gray-400 mb-6">Hemos registrado tu solicitud con éxito. Un asesor de Angulo te contactará muy pronto.</p>
-                  <button 
-                    onClick={() => setIsSubmitted(false)}
-                    className="text-cyan-400 text-sm hover:text-cyan-300 underline"
-                  >
-                    Enviar otra solicitud
-                  </button>
-                </div>
-              )}
 
             </div>
           </motion.div>

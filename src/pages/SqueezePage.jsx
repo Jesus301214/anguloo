@@ -22,9 +22,22 @@ const SqueezePage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Aquí conectaremos la API (Ej: Webhook de Zapier/Make, o Formspree para Email)
-    console.log("Datos del Lead:", formData)
-    setIsSubmitted(true)
+    
+    // Construir el mensaje de WhatsApp con todos los datos
+    const phone = "584249313359" // Número del cliente
+    const text = `Hola, mi nombre es *${formData.nombre}*.
+Quiero más información sobre el software Angulo.
+
+*Mis datos:*
+- Negocio: ${formData.negocio}
+- Tipo: ${formData.tipoNegocio}
+- Teléfono: ${formData.telefono}
+- Correo: ${formData.email}`
+    
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
+    
+    // Abrir WhatsApp en una nueva pestaña (redirigir al usuario)
+    window.open(url, '_blank')
   }
 
   return (

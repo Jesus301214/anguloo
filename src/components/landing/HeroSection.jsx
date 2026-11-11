@@ -128,13 +128,13 @@ const HeroSection = ({ setIsModalOpen, niche = 'general' }) => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-12">
-              <button
-                onClick={() => setIsModalOpen(true)}
+              <a
+                href="https://app.angulosoftwares.com"
                 className="hero-cta relative overflow-hidden flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-500 px-8 py-4 text-base font-bold text-gray-900 shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] hover-3d w-full sm:w-auto group"
               >
                 <span className="relative z-10">Comenzar Ahora →</span>
                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </button>
+              </a>
               
               <a
                 href="https://wa.me/584249313359"

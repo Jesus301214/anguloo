@@ -117,13 +117,13 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo }) => {
 
           <div className="h-5 w-px bg-gray-800 mx-2" />
 
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="relative overflow-hidden rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all active:scale-95 hover:-translate-y-px group"
+          <a
+            href="https://app.angulosoftwares.com"
+            className="relative overflow-hidden rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all active:scale-95 hover:-translate-y-px group inline-flex items-center"
           >
             <span className="relative z-10">Comenzar Ahora →</span>
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </button>
+          </a>
         </div>
 
         {/* Mobile Toggle */}
@@ -188,15 +188,12 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo }) => {
               >
                 Iniciar sesión
               </a>
-              <button
-                onClick={() => {
-                  setIsModalOpen(true)
-                  setIsMenuOpen(false)
-                }}
-                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 py-4 rounded-2xl font-black text-white shadow-xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all"
+              <a
+                href="https://app.angulosoftwares.com"
+                className="block text-center w-full bg-gradient-to-r from-cyan-500 to-blue-600 py-4 rounded-2xl font-black text-white shadow-xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all"
               >
                 Comenzar Ahora →
-              </button>
+              </a>
             </div>
           </motion.div>
         )}

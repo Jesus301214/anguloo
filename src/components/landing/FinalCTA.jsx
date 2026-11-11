@@ -51,14 +51,14 @@ const FinalCTASection = ({ setIsModalOpen }) => {
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-5">
-            <button
-              onClick={() => setIsModalOpen(true)}
+            <a
+              href="https://app.angulosoftwares.com"
               className="relative overflow-hidden flex items-center justify-center gap-2 rounded-2xl bg-white px-10 py-5 text-base font-bold text-gray-900 shadow-xl shadow-white/10 hover:shadow-white/20 transition-all transform hover:-translate-y-0.5 active:scale-[0.98] w-full sm:w-auto group"
             >
               <span className="relative z-10">Comenzar Ahora</span>
               <ArrowRight size={18} className="relative z-10 ml-1 transition-transform group-hover:translate-x-1" />
               <div className="absolute inset-0 bg-gray-200 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </button>
+            </a>
             
             <a
               href="https://wa.me/584249313359"

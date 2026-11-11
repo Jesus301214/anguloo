@@ -40,6 +40,14 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo }) => {
         {/* Desktop Nav */}
         <div className="hidden items-center gap-1 md:flex">
           <a
+            href="#pagina-web"
+            className="px-4 py-2 text-sm font-semibold text-cyan-400 hover:text-cyan-300 rounded-lg hover:bg-cyan-500/10 transition-all flex items-center gap-1.5"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            Página Web
+          </a>
+
+          <a
             href="#funciones"
             className="px-4 py-2 text-sm font-semibold text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all"
           >
@@ -144,6 +152,14 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, setIsModalOpen, logo }) => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-[#030712]/95 backdrop-blur-2xl border-t border-white/5 px-6 py-8 space-y-1 overflow-y-auto max-h-[80vh]"
           >
+            <a
+              href="#pagina-web"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center gap-2 text-lg font-bold text-cyan-400 py-3 px-4 rounded-xl hover:bg-cyan-500/10 transition-colors"
+            >
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+              Página Web Completa
+            </a>
             <a
               href="#funciones"
               onClick={() => setIsMenuOpen(false)}

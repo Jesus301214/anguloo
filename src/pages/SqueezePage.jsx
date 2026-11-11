@@ -24,7 +24,7 @@ const SqueezePage = () => {
     // Construir el mensaje de WhatsApp con todos los datos
     const phone = "584249313359" // Número del cliente
     const text = `Hola, mi nombre es *${formData.nombre}*.
-Quiero más información sobre el software Angulo.
+Quiero más información sobre el software Angulo y mi página web completa.
 
 *Mis datos:*
 - Negocio: ${formData.negocio}
@@ -64,24 +64,25 @@ Quiero más información sobre el software Angulo.
             transition={{ duration: 0.6 }}
             className="flex flex-col text-center md:text-left"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 mb-6 self-center md:self-start">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span className="text-sm font-medium text-emerald-300">Software Todo-en-Uno</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/40 bg-cyan-500/10 mb-6 self-center md:self-start">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+              <span className="text-sm font-bold text-cyan-300">Software Todo-en-Uno + Página Web Completa</span>
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black font-outfit text-white leading-[1.1] tracking-tight mb-6">
-              Automatiza tu Negocio y <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Deja de Perder Dinero</span>
+              Automatiza tu Negocio y <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Ten Tu Propia Web</span>
             </h1>
             
             <p className="text-lg md:text-xl text-gray-400 mb-8 max-w-lg mx-auto md:mx-0">
-              El sistema inteligente para salones, clínicas y barberías que agenda, cobra y envía recordatorios por ti.
+              El único sistema inteligente para salones, clínicas y barberías que te entrega <strong className="text-white">tu propia página web completa</strong> y agenda, cobra y envía recordatorios por ti.
             </p>
 
             <ul className="space-y-4 mb-8 text-left inline-block mx-auto md:mx-0">
               {[
-                'Reduce inasistencias en un 80% con recordatorios.',
-                'Control exacto de tu caja y comisiones.',
-                'Agenda online disponible 24/7 para tus clientes.'
+                'Tu propia página web completa y profesional incluida.',
+                'Agenda online y reservas 24/7 conectadas a tu web.',
+                'Reduce inasistencias en un 80% con recordatorios WhatsApp.',
+                'Control exacto de tu caja, comisiones e inventario.'
               ].map((benefit, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <div className="mt-1 w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
@@ -216,6 +217,10 @@ Quiero más información sobre el software Angulo.
               <ul className="space-y-3 text-gray-400 text-sm">
                 <li className="flex items-center justify-center gap-2">
                   <AlertCircle className="w-4 h-4 shrink-0 text-red-500/50" />
+                  No tienes página web propia o pagas fortunas a agencias sin resultados
+                </li>
+                <li className="flex items-center justify-center gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-red-500/50" />
                   Pierdes dinero por clientes que olvidan su cita
                 </li>
                 <li className="flex items-center justify-center gap-2">
@@ -224,7 +229,7 @@ Quiero más información sobre el software Angulo.
                 </li>
                 <li className="flex items-center justify-center gap-2">
                   <AlertCircle className="w-4 h-4 shrink-0 text-red-500/50" />
-                  Dependes de una libreta de papel desordenada
+                  Dependes de una libreta de papel o mensajes desordenados
                 </li>
               </ul>
             </div>
@@ -238,7 +243,11 @@ Quiero más información sobre el software Angulo.
               <ul className="space-y-3 text-gray-400 text-sm">
                 <li className="flex items-center justify-center gap-2">
                   <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-500/50" />
-                  Recordatorios automáticos que aseguran asistencias
+                  Tu propia página web completa, moderna y conectada a tus reservas
+                </li>
+                <li className="flex items-center justify-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-500/50" />
+                  Recordatorios automáticos por WhatsApp que aseguran asistencias
                 </li>
                 <li className="flex items-center justify-center gap-2">
                   <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-500/50" />
@@ -246,7 +255,7 @@ Quiero más información sobre el software Angulo.
                 </li>
                 <li className="flex items-center justify-center gap-2">
                   <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-500/50" />
-                  Agenda digital sincronizada en la nube 24/7
+                  Agenda digital y catálogo online sincronizados 24/7
                 </li>
               </ul>
             </div>

@@ -85,7 +85,7 @@ const DemoModal = ({ isModalOpen, setIsModalOpen, formData, isSubmitting, formSt
             ) : (
               <>
                 <h2 className="text-3xl font-black text-slate-900 mb-2 font-outfit">Comienza el Cambio</h2>
-                <p className="text-slate-600 mb-8 text-sm">Déjanos tus datos y un consultor senior se pondrá en contacto contigo.</p>
+                <p className="text-slate-600 mb-8 text-sm">Déjanos tus datos y un consultor senior te mostrará tu nuevo software y tu página web completa.</p>
 
                 <form onSubmit={handleReservaSubmit} className="space-y-4 text-left">
                   <div className="space-y-1.5">
@@ -105,8 +105,8 @@ const DemoModal = ({ isModalOpen, setIsModalOpen, formData, isSubmitting, formSt
                     <input required type="tel" name="whatsapp" value={formData.whatsapp} onChange={handleInputChange} placeholder="+58..." className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-slate-900 focus:border-rose-500/50 transition-all outline-none" />
                   </div>
 
-                  <button disabled={isSubmitting} type="submit" className="w-full bg-rose-600 py-5 rounded-2xl font-black text-white shadow-xl shadow-rose-600/20 hover:bg-rose-500 transition-all transform hover:-translate-y-1 active:scale-95 mt-4">
-                    {isSubmitting ? 'Enviando...' : 'Agendar Ahora'}
+                  <button disabled={isSubmitting} type="submit" className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 py-5 rounded-2xl font-black text-white shadow-xl shadow-cyan-500/20 transition-all transform hover:-translate-y-1 active:scale-95 mt-4">
+                    {isSubmitting ? 'Enviando...' : 'Solicitar Demo y Mi Página Web'}
                   </button>
                 </form>
               </>

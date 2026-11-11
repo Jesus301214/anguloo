@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { Sparkles, Play } from 'lucide-react'
+import { Sparkles, Play, Globe } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useGSAP } from '../../lib/gsap'
 import { gsap } from '../../lib/gsap'
@@ -84,9 +84,9 @@ const HeroSection = ({ setIsModalOpen, niche = 'general' }) => {
           
           <div className="flex flex-col items-start text-left max-w-3xl">
             
-            <div className="hero-badge mb-8 inline-flex items-center gap-2.5 rounded-full border border-gray-700 bg-[#0a0f1a]/80 backdrop-blur-md px-4 py-1.5 text-sm font-semibold text-gray-300 shadow-xl">
-              <Sparkles size={16} className="text-gray-400" />
-              <span>Software Todo-en-Uno para Estética y Salud</span>
+            <div className="hero-badge mb-8 inline-flex items-center gap-2.5 rounded-full border border-cyan-500/30 bg-[#0a0f1a]/90 backdrop-blur-md px-4 py-1.5 text-sm font-semibold text-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+              <span>Software de Gestión + Tu Propia Página Web Completa</span>
             </div>
 
             <h1 className="mb-6 text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl font-outfit leading-[1.05] drop-shadow-2xl">
@@ -124,7 +124,7 @@ const HeroSection = ({ setIsModalOpen, niche = 'general' }) => {
             </h1>
 
             <p className="hero-subtitle mb-10 max-w-xl text-lg leading-relaxed text-gray-300 font-medium drop-shadow-md">
-              Automatiza reservas, elimina inasistencias y controla tu inventario con IA. Menos caos, más ganancias.
+              Obtén <strong className="text-white font-semibold">tu propia página web completa</strong> con reservas online 24/7, elimina inasistencias por WhatsApp y controla tu negocio con IA.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-12">
@@ -153,7 +153,7 @@ const HeroSection = ({ setIsModalOpen, niche = 'general' }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ staggerChildren: 0.2, delayChildren: 1 }}
-              className="hero-stats flex flex-wrap justify-start gap-x-12 gap-y-6 pt-8 border-t border-gray-700/60 w-full"
+              className="hero-stats flex flex-wrap justify-start gap-x-10 gap-y-6 pt-8 border-t border-gray-700/60 w-full"
             >
               <motion.div 
                 initial={{ opacity: 0, y: 20, scale: 0.9 }}
@@ -161,12 +161,12 @@ const HeroSection = ({ setIsModalOpen, niche = 'general' }) => {
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
                 className="flex items-center gap-3"
               >
-                <div className="w-10 h-10 rounded-xl bg-gray-900/80 border border-gray-700 flex items-center justify-center backdrop-blur-md">
-                  <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center backdrop-blur-md">
+                  <Globe className="w-5 h-5 text-cyan-400" />
                 </div>
                 <div className="text-left">
-                  <div className="text-sm font-bold text-white">Planes Flexibles</div>
-                  <div className="text-xs font-medium text-gray-400">Se adaptan a ti</div>
+                  <div className="text-sm font-bold text-white">Página Web Incluida</div>
+                  <div className="text-xs font-medium text-cyan-300">100% personalizada</div>
                 </div>
               </motion.div>
               
@@ -177,11 +177,11 @@ const HeroSection = ({ setIsModalOpen, niche = 'general' }) => {
                 className="flex items-center gap-3"
               >
                 <div className="w-10 h-10 rounded-xl bg-gray-900/80 border border-gray-700 flex items-center justify-center backdrop-blur-md">
-                  <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                  <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
                 <div className="text-left">
-                  <div className="text-sm font-bold text-white">Configuración en 5 min</div>
-                  <div className="text-xs font-medium text-gray-400">Fácil e intuitiva</div>
+                  <div className="text-sm font-bold text-white">Reservas Online 24/7</div>
+                  <div className="text-xs font-medium text-gray-400">Directo a WhatsApp</div>
                 </div>
               </motion.div>
               

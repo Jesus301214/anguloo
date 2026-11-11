@@ -1,36 +1,36 @@
-import { Calendar, Users, Package, ClipboardList, Wallet, LineChart } from 'lucide-react'
+import { Calendar, Users, Package, Wallet, LineChart, Globe } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const features = [
   {
+    icon: <Globe size={24} className="text-cyan-400 group-hover:text-white transition-colors" />,
+    title: 'Página Web para tu Marca',
+    desc: 'Tu propio sitio web moderno, rápido y optimizado para Google. Catálogo interactivo, galería y reservas directas.',
+  },
+  {
     icon: <Calendar size={24} className="text-cyan-400 group-hover:text-white transition-colors" />,
     title: 'Calendario Inteligente',
-    desc: 'Gestiona reservas, reduce inasistencias y envía recordatorios automáticos por WhatsApp.',
+    desc: 'Gestiona reservas, reduce inasistencias y envía recordatorios automáticos por WhatsApp sincronizados con tu web.',
   },
   {
     icon: <Users size={24} className="text-cyan-400 group-hover:text-white transition-colors" />,
-    title: 'CRM Avanzado',
-    desc: 'Conoce a tus clientes, su historial, preferencias y aumenta su fidelización.',
+    title: 'CRM y Clientes',
+    desc: 'Conoce a tus clientes, su historial de visitas completo, preferencias y fidelización automatizada.',
   },
   {
     icon: <Package size={24} className="text-cyan-400 group-hover:text-white transition-colors" />,
     title: 'Inventario Inteligente',
-    desc: 'Controla tu inventario en tiempo real y recibe alertas de stock bajo.',
-  },
-  {
-    icon: <ClipboardList size={24} className="text-cyan-400 group-hover:text-white transition-colors" />,
-    title: 'Seguimiento de Clientes',
-    desc: 'Conoce exactamente cuándo fue su última cita, su historial de visitas completo y servicios más utilizados.',
+    desc: 'Controla tu inventario en tiempo real con descarga automática por servicio y alertas de stock bajo.',
   },
   {
     icon: <Wallet size={24} className="text-cyan-400 group-hover:text-white transition-colors" />,
-    title: 'Control Financiero',
-    desc: 'Gestiona el flujo de caja diario, controla tus gastos y calcula comisiones automáticamente.',
+    title: 'Control Financiero y Caja',
+    desc: 'Gestiona el flujo de caja diario, controla tus gastos y calcula comisiones de tus profesionales al instante.',
   },
   {
     icon: <LineChart size={24} className="text-cyan-400 group-hover:text-white transition-colors" />,
     title: 'Métricas en Tiempo Real',
-    desc: 'Visualiza gráficas de ingresos, rentabilidad y estado financiero de tu negocio al instante.',
+    desc: 'Visualiza gráficas de ingresos, rentabilidad y estado de crecimiento de tu negocio desde cualquier lugar.',
   },
 ]
 
@@ -78,7 +78,7 @@ const BentoGridSection = () => {
             TODO LO QUE NECESITAS <span className="inline-block w-8 h-px bg-cyan-500/50 align-middle ml-2"></span>
           </div>
           <h2 className="text-3xl md:text-5xl font-black font-outfit leading-tight text-white">
-            Una plataforma completa para gestionar tu negocio
+            Tu página web y sistema de gestión en una sola plataforma
           </h2>
         </motion.div>
 

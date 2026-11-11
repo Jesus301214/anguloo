@@ -5,7 +5,7 @@ import { Scissors, Stethoscope, HeartPulse, Sparkles } from 'lucide-react'
 const audiences = [
   {
     title: 'Salones de Belleza',
-    description: 'Gestiona a tus estilistas, automatiza citas y evita cancelaciones de último minuto.',
+    description: 'Tu propia web elegante para mostrar trabajos de color y corte, reservas directas a tus estilistas y cero inasistencias.',
     icon: Sparkles,
     image: '/beauty_salon_photo.png',
     gradient: 'from-pink-500/20 to-rose-500/5',
@@ -14,7 +14,7 @@ const audiences = [
   },
   {
     title: 'Barberías',
-    description: 'Controla el flujo de clientes, comisiones de barberos y vende productos directamente.',
+    description: 'Una web con estilo masculino y moderno, reserva de turnos en 3 clics, comisiones de barberos y control total de caja.',
     icon: Scissors,
     image: '/barbershop_photo.png',
     gradient: 'from-amber-500/20 to-orange-500/5',
@@ -23,7 +23,7 @@ const audiences = [
   },
   {
     title: 'Centros Estéticos y Spas',
-    description: 'Fichas de clientes con historiales detallados, venta de giftcards y control de inventario.',
+    description: 'Web de alto nivel con catálogo de tratamientos, fichas detalladas de clientes y venta de paquetes o servicios online.',
     icon: HeartPulse,
     image: '/spa_photo.png',
     gradient: 'from-emerald-500/20 to-teal-500/5',
@@ -32,7 +32,7 @@ const audiences = [
   },
   {
     title: 'Clínicas y Consultorios',
-    description: 'Fichas clínicas seguras, agenda médica y reportes financieros automáticos.',
+    description: 'Portal web médico profesional con perfil de especialistas, agenda de consultas y fichas clínicas seguras.',
     icon: Stethoscope,
     image: '/clinic_photo.png',
     gradient: 'from-blue-500/20 to-indigo-500/5',

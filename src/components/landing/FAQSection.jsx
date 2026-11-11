@@ -3,11 +3,12 @@ import { ChevronDown } from 'lucide-react'
 import { useGSAP, gsap } from '../../lib/gsap'
 
 const faqs = [
+  { q: '¿La página web completa viene incluida con el software?', a: '¡Sí! Diseñamos la página web oficial y profesional de tu negocio, adaptada a tus colores, logo y fotos. Viene con catálogo de servicios, ubicación en Google Maps y motor de reservas 24/7 conectado directamente a tu calendario de Angulo y WhatsApp.' },
   { q: '¿Qué incluye la prueba gratis?', a: 'Acceso completo a todas las funcionalidades de ANGULO por 7 días. Sin tarjeta de crédito. Configuramos tu cuenta en menos de 10 minutos.' },
-  { q: '¿Necesito conocimientos técnicos?', a: 'No. ANGULO está diseñado para que cualquier dueño de salón o spa pueda usarlo desde el primer día. Incluye capacitación y soporte 24/7.' },
-  { q: '¿Cómo funcionan los recordatorios de WhatsApp?', a: 'Se envían automáticamente 24h y 1h antes de cada cita. El cliente confirma con un solo mensaje. Reduce inasistencias a cero.' },
-  { q: '¿Puedo migrar mis datos de otro sistema?', a: 'Sí. Nuestro equipo importa tu base de clientes, agenda e historial sin costo adicional. La migración toma entre 24 y 48 horas.' },
-  { q: '¿Qué pasa si necesito cancelar?', a: 'Sin permanencia forzosa. Cancelas cuando quieras. Además, tienes 7 días de prueba gratis para decidir sin compromiso.' },
+  { q: '¿Necesito conocimientos técnicos?', a: 'No. ANGULO está diseñado para que cualquier dueño de salón, clínica o barbería pueda usarlo desde el primer día. Nosotros nos encargamos de la parte técnica y te brindamos soporte 24/7.' },
+  { q: '¿Cómo funcionan los recordatorios de WhatsApp?', a: 'Se envían automáticamente antes de cada cita para que el cliente confirme con un solo toque, reduciendo inasistencias en más del 80%.' },
+  { q: '¿Puedo migrar mis datos de otro sistema?', a: 'Sí. Nuestro equipo te asiste importando tu base de clientes y catálogo sin costo adicional.' },
+  { q: '¿Qué pasa si necesito cancelar?', a: 'Sin contratos forzosos ni permanencias. Mantienes el control total de tu negocio.' },
 ]
 
 const FAQSection = () => {

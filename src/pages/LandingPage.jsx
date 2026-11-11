@@ -14,6 +14,8 @@ import Footer from '../components/landing/Footer'
 import ServicesSection from '../components/landing/ServicesSection'
 import MotivationSection from '../components/landing/MotivationSection'
 import TargetAudienceSection from '../components/landing/TargetAudienceSection'
+import WebsiteShowcaseSection from '../components/landing/WebsiteShowcaseSection'
+import FAQSection from '../components/landing/FAQSection'
 
 // Modals/Float
 import DemoModal from '../components/landing/DemoModal'
@@ -77,21 +79,21 @@ const LandingPage = ({ setIsModalOpen, isModalOpen, setIsMenuOpen, isMenuOpen, l
     switch (niche) {
       case 'barberias':
         return {
-          title: 'Software de Gestión para Barberías | ANGULO',
-          description: 'ANGULO es el software de gestión ideal para barberías. Controla comisiones, reservas online e inventario fácilmente.',
-          keywords: 'software para barberias, sistema reservas barberia, control de caja barberia, software gestion barberos'
+          title: 'Software de Gestión y Página Web para Barberías | ANGULO',
+          description: 'ANGULO te entrega tu página web profesional completa y el software de gestión ideal para barberías. Controla comisiones, reservas online 24/7 e inventario fácilmente.',
+          keywords: 'pagina web para barberias, software para barberias, sistema reservas barberia, control de caja barberia, software gestion barberos'
         }
       case 'clinicas':
         return {
-          title: 'Software Médico y de Gestión para Clínicas Estéticas | ANGULO',
-          description: 'ANGULO es el software ideal para clínicas estéticas y consultorios médicos. Fichas de pacientes, agenda médica e inventario.',
-          keywords: 'software clinicas esteticas, software consultorios medicos, sistema agenda medica, fichas pacientes'
+          title: 'Software Médico, Gestión y Página Web para Clínicas Estéticas | ANGULO',
+          description: 'ANGULO te entrega tu página web médica completa y el software ideal para clínicas estéticas y consultorios. Fichas de pacientes, agenda médica e inventario.',
+          keywords: 'pagina web clinicas esteticas, software clinicas esteticas, software consultorios medicos, sistema agenda medica, fichas pacientes'
         }
       default:
         return {
-          title: 'Software de Gestión para Barberías, Clínicas y Salones | ANGULO',
-          description: 'ANGULO es el software de gestión ideal para barberías, salones de belleza, spas, clínicas estéticas y consultorios médicos. Control de caja, reservas online e inventario.',
-          keywords: 'software para barberias, software salones de belleza, software spa, software clinicas esteticas, software consultorios medicos, sistema de reservas online, control de caja, control de inventario'
+          title: 'Software de Gestión + Tu Página Web Completa | ANGULO',
+          description: 'ANGULO te entrega tu página web completa profesional y el software de gestión todo-en-uno para barberías, salones de belleza, spas y clínicas. Control de caja, reservas online e inventario.',
+          keywords: 'pagina web para salones de belleza, pagina web para barberias, pagina web para clinicas, software para barberias, software salones de belleza, software spa, software clinicas esteticas, software consultorios medicos, sistema de reservas online, control de caja, control de inventario'
         }
     }
   }
@@ -115,12 +117,14 @@ const LandingPage = ({ setIsModalOpen, isModalOpen, setIsMenuOpen, isMenuOpen, l
       
       <main>
         <HeroSection heroImage={heroImage} setIsModalOpen={setIsModalOpen} niche={niche} />
+        <WebsiteShowcaseSection setIsModalOpen={setIsModalOpen} />
         <TargetAudienceSection />
         <ServicesSection />
         <MotivationSection />
         <BentoGridSection />
         <ResultsSection />
         <TestimonialsSection />
+        <FAQSection />
         <FinalCTASection setIsModalOpen={setIsModalOpen} />
       </main>
 

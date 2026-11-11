@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Clock, TrendingUp, Scissors, Activity } from 'lucide-react'
+import { Clock, TrendingUp, Scissors, Activity, Globe } from 'lucide-react'
 
 const HeroMockup = ({ niche = 'general' }) => {
   
@@ -40,6 +40,24 @@ const HeroMockup = ({ niche = 'general' }) => {
         </div>
 
         <img src="/mobile-mockup.png" alt="App Móvil Angulo" className="absolute inset-0 w-full h-full object-cover object-top" />
+      </motion.div>
+
+      {/* Floating Pill Top Right: Website Status */}
+      <motion.div
+        animate={{ y: [-6, 6, -6] }}
+        transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
+        className="absolute right-[-100px] md:right-[-120px] top-[10%] bg-gray-900/90 backdrop-blur-xl border border-cyan-500/40 rounded-2xl p-3.5 shadow-[0_15px_35px_rgba(6,182,212,0.3)] z-30 flex items-center gap-3"
+      >
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shrink-0 shadow-md">
+          <Globe className="w-5 h-5" />
+        </div>
+        <div className="text-left pr-2">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span className="text-[11px] font-black text-white uppercase tracking-wider">Tu Web Oficial</span>
+          </div>
+          <span className="text-[10px] text-cyan-300 font-mono font-medium">www.tunegocio.com</span>
+        </div>
       </motion.div>
 
       {/* Floating Card Left: Ticket/Reserva */}

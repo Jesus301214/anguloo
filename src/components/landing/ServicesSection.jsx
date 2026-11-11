@@ -1,11 +1,18 @@
 import React from 'react'
-import { CheckCircle2, Calendar, FileText, BellRing, Package, Shield, Target } from 'lucide-react'
+import { CheckCircle2, Calendar, FileText, BellRing, Package, Shield, Target, Globe } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const services = [
   {
-    title: 'Agenda Online',
-    description: 'Digitaliza tu agenda y organiza tu día a día. Facilita las reservas de tus clientes 24/7.',
+    title: 'Página Web Completa',
+    description: 'Diseñamos la web oficial de tu negocio con tu marca, catálogo de servicios, ubicación y motor de reservas integrado.',
+    icon: Globe,
+    color: 'text-cyan-400',
+    bgColor: 'bg-cyan-400/10'
+  },
+  {
+    title: 'Agenda Online 24/7',
+    description: 'Digitaliza tu agenda y organiza tu día a día. Facilita las reservas de tus clientes en cualquier momento.',
     icon: Calendar,
     color: 'text-blue-400',
     bgColor: 'bg-blue-400/10'
@@ -34,9 +41,10 @@ const services = [
 ]
 
 const advantages = [
+  'Tu propia página web profesional lista para recibir clientes.',
   'Ahorra hasta un 80% de trabajo administrativo.',
-  'Aumenta reservas con facilidad.',
-  'Reduce inasistencias en un 60%.',
+  'Aumenta reservas con facilidad y presencia en Google.',
+  'Reduce inasistencias en un 60% vía WhatsApp.',
   'Historiales centralizados y organizados.',
   'Soporte técnico dedicado las 24 horas.',
   'Cálculo de comisiones automático.'

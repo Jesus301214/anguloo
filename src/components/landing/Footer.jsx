@@ -10,13 +10,14 @@ const Footer = ({ logo }) => {
               <span className="text-2xl font-black text-white tracking-tighter font-outfit">ANGULO</span>
             </div>
             <p className="text-base text-gray-400 leading-relaxed max-w-sm">
-              El sistema inteligente que automatiza tus reservas, elimina inasistencias y controla tu inventario con IA.
+              La solución todo-en-uno que te entrega tu propia página web completa, automatiza tus reservas y controla tu negocio con IA.
             </p>
           </div>
 
           <div>
             <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-6">Plataforma</h4>
             <ul className="space-y-4 text-sm font-medium">
+              <li><a href="#pagina-web" className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors">Página Web Completa</a></li>
               <li><a href="#funciones" className="text-gray-400 hover:text-white transition-colors">Funciones</a></li>
               <li><a href="#testimonios" className="text-gray-400 hover:text-white transition-colors">Testimonios</a></li>
               <li><a href="https://wa.me/584249313359" className="text-gray-400 hover:text-white transition-colors">Agendar Demo</a></li>

@@ -42,12 +42,12 @@ const FinalCTASection = ({ setIsModalOpen }) => {
           </div>
 
           <h2 className="text-4xl md:text-6xl font-black font-outfit mb-6 leading-[1.1]">
-            <span className="text-white">Empieza a crecer </span><br className="hidden md:block"/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-500">hoy mismo.</span>
+            <span className="text-white">Estrena tu nueva página web y </span><br className="hidden md:block"/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-400">automatiza tu negocio hoy.</span>
           </h2>
           
-          <p className="text-gray-400 text-lg md:text-xl mb-12 max-w-2xl mx-auto font-medium">
-            Únete a los miles de negocios que ya automatizaron sus reservas y tomaron el control de su crecimiento con ANGULO.
+          <p className="text-gray-300 text-lg md:text-xl mb-12 max-w-2xl mx-auto font-medium">
+            Todo lo que necesitas en una sola solución: tu vitrina online profesional para captar clientes y el software inteligente para gestionarlos sin estrés.
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-5">

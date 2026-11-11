@@ -77,7 +77,7 @@ Quiero más información sobre el software Angulo y mi página web completa.
               El único sistema inteligente para salones, clínicas y barberías que te entrega <strong className="text-white">tu propia página web completa</strong> y agenda, cobra y envía recordatorios por ti.
             </p>
 
-            <ul className="space-y-4 mb-8 text-left inline-block mx-auto md:mx-0">
+            <ul className="space-y-4 mb-6 text-left inline-block mx-auto md:mx-0">
               {[
                 'Tu propia página web completa y profesional incluida.',
                 'Agenda online y reservas 24/7 conectadas a tu web.',
@@ -92,6 +92,18 @@ Quiero más información sobre el software Angulo y mi página web completa.
                 </li>
               ))}
             </ul>
+
+            <div className="mb-8">
+              <a 
+                href="https://app.angulosoftwares.com/salon/lumiere-salon" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-400 hover:text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20 px-3.5 py-1.5 rounded-full border border-cyan-500/30 transition-all"
+              >
+                <span>🌐 Ver ejemplo real en vivo (Lumière Salon)</span>
+                <span className="text-[10px]">↗</span>
+              </a>
+            </div>
           </motion.div>
 
           {/* Right Column: Lead Capture Form */}

@@ -12,6 +12,7 @@ const HeroMockup = ({ niche = 'general' }) => {
   const service1 = isBarber ? "Corte Clásico" : isClinic ? "Limpieza Facial" : "Corte y Lavado"
   const service2 = isBarber ? "Arreglo de Barba" : isClinic ? "Sesión Láser" : "Manicura"
   const service3 = isBarber ? "Corte Premium" : isClinic ? "Botox Capilar" : "Tinte Completo"
+  const domainExample = isBarber ? "angulosoftwares.com/salon/barber" : isClinic ? "angulosoftwares.com/salon/clinica" : "angulosoftwares.com/salon/lumiere"
   const iconBase = isBarber ? <Scissors className="w-5 h-5 text-amber-900" /> : isClinic ? <Activity className="w-5 h-5 text-blue-900" /> : <Scissors className="w-5 h-5 text-emerald-900" />
 
   return (
@@ -56,7 +57,7 @@ const HeroMockup = ({ niche = 'general' }) => {
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span className="text-[11px] font-black text-white uppercase tracking-wider">Tu Web Oficial</span>
           </div>
-          <span className="text-[10px] text-cyan-300 font-mono font-medium">www.tunegocio.com</span>
+          <span className="text-[10px] text-cyan-300 font-mono font-medium">{domainExample}</span>
         </div>
       </motion.div>
 

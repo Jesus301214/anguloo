@@ -19,13 +19,41 @@ import {
 } from 'lucide-react'
 
 const nichesWebsites = {
+  salon: {
+    id: 'salon',
+    label: 'Salón de Belleza',
+    icon: Sparkles,
+    tagline: 'Cuidado profesional, estilo y bienestar',
+    businessName: 'Lumière Salon',
+    domain: 'app.angulosoftwares.com/salon/lumiere-salon',
+    realLiveUrl: 'https://app.angulosoftwares.com/salon/lumiere-salon',
+    heroBadge: '✨ Salón de Belleza & Estética Capilar',
+    heroTitle: 'Bienvenido a Lumière Salon',
+    heroSubtitle: 'Cuidado profesional, estilo y bienestar en un ambiente exclusivo. Agenda tu cita online en segundos las 24 horas del día.',
+    rating: '5.0 (480+ reseñas en Google)',
+    accentColor: 'from-purple-500 to-pink-500',
+    borderColor: 'border-purple-500/30',
+    badgeBg: 'bg-purple-500/10 text-purple-300 border-purple-500/30',
+    services: [
+      { name: 'Corte y Estilismo Signature', price: '$35', time: '45 min', popular: true },
+      { name: 'Balayage & Colorimetría Premium', price: '$85', time: '120 min', popular: true },
+      { name: 'Tratamiento Botox Capilar', price: '$45', time: '60 min', popular: false }
+    ],
+    features: [
+      'Catálogo de servicios y precios en vivo',
+      'Galería de fotos y módulo Antes/Después',
+      'Botones directos de WhatsApp e Instagram',
+      'Reserva 24/7 sincronizada con tu agenda'
+    ]
+  },
   barberia: {
     id: 'barberia',
     label: 'Barbería',
     icon: Scissors,
     tagline: 'Estilo clásico y cortes modernos',
     businessName: 'Imperio Barbershop',
-    domain: 'www.imperiobarber.com',
+    domain: 'app.angulosoftwares.com/salon/imperio-barber',
+    realLiveUrl: 'https://app.angulosoftwares.com/salon/lumiere-salon',
     heroBadge: '💈 La Barbería #1 de la Ciudad',
     heroTitle: 'Tu mejor corte, sin esperas ni demoras',
     heroSubtitle: 'Reserva tu turno en segundos desde cualquier dispositivo y disfruta de una experiencia de primer nivel.',
@@ -45,39 +73,14 @@ const nichesWebsites = {
       'Recordatorio automático por WhatsApp'
     ]
   },
-  salon: {
-    id: 'salon',
-    label: 'Salón de Belleza',
-    icon: Sparkles,
-    tagline: 'Tendencia, color y cuidado profesional',
-    businessName: 'Luxe Beauty Studio',
-    domain: 'www.luxebeautystudio.com',
-    heroBadge: '✨ Especialistas en Color & Balayage',
-    heroTitle: 'Realza tu belleza con estilistas expertas',
-    heroSubtitle: 'Agenda tu cita online las 24 horas del día. Diagnósticos personalizados y productos de alta gama.',
-    rating: '5.0 (480+ reseñas en Google)',
-    accentColor: 'from-pink-400 to-rose-500',
-    borderColor: 'border-rose-500/30',
-    badgeBg: 'bg-rose-500/10 text-rose-300 border-rose-500/30',
-    services: [
-      { name: 'Balayage & Colorimetría Premium', price: '$85', time: '120 min', popular: true },
-      { name: 'Tratamiento Botox Capilar', price: '$45', time: '60 min', popular: true },
-      { name: 'Manicura Rusa & Nail Art', price: '$28', time: '50 min', popular: false }
-    ],
-    features: [
-      'Catálogo visual de trabajos y tonos',
-      'Reserva por estilista y especialidad',
-      'Botón directo para consultas por WhatsApp',
-      'Confirmación instantánea sin llamadas'
-    ]
-  },
   clinica: {
     id: 'clinica',
     label: 'Clínica & Spa',
     icon: Stethoscope,
     tagline: 'Medicina estética, salud y bienestar',
     businessName: 'Vitalis Medical Spa',
-    domain: 'www.vitalisestetica.com',
+    domain: 'app.angulosoftwares.com/salon/vitalis-estetica',
+    realLiveUrl: 'https://app.angulosoftwares.com/salon/lumiere-salon',
     heroBadge: '🩺 Médicos Especialistas Certificados',
     heroTitle: 'Cuidado estético médico seguro y avanzado',
     heroSubtitle: 'Fichas clínicas digitales, protocolos aprobados y reserva directa para valoración médica estética.',
@@ -240,6 +243,16 @@ const WebsiteShowcaseSection = ({ setIsModalOpen }) => {
             </div>
 
             <div className="flex items-center gap-2 text-gray-400 text-xs hidden sm:flex">
+              <a
+                href={current.realLiveUrl || 'https://app.angulosoftwares.com/salon/lumiere-salon'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500 text-cyan-300 hover:text-gray-950 border border-cyan-500/30 text-[11px] font-bold transition-all shadow-sm group/live"
+              >
+                <span>Ver Ejemplo en Vivo</span>
+                <ExternalLink className="w-3 h-3 group-hover/live:translate-x-0.5 transition-transform" />
+              </a>
+              <span className="text-gray-600">|</span>
               <span className="text-cyan-400 font-bold font-sans">Powered by ANGULO</span>
             </div>
           </div>
@@ -426,10 +439,19 @@ const WebsiteShowcaseSection = ({ setIsModalOpen }) => {
             </p>
           </div>
 
-          <div className="shrink-0 flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+          <div className="shrink-0 flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+            <a
+              href="https://app.angulosoftwares.com/salon/lumiere-salon"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-gray-900/90 border border-cyan-500/30 text-cyan-300 font-bold text-sm hover:bg-cyan-500/10 hover:border-cyan-400 transition-all w-full sm:w-auto"
+            >
+              <span>Ver Ejemplo Real en Vivo</span>
+              <ExternalLink className="w-4 h-4" />
+            </a>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-500 text-gray-950 font-black text-base shadow-[0_0_25px_rgba(6,182,212,0.4)] hover:shadow-[0_0_35px_rgba(6,182,212,0.6)] transition-all hover:scale-105 active:scale-95"
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-500 text-gray-950 font-black text-base shadow-[0_0_25px_rgba(6,182,212,0.4)] hover:shadow-[0_0_35px_rgba(6,182,212,0.6)] transition-all hover:scale-105 active:scale-95 w-full sm:w-auto"
             >
               <span>Quiero Mi Web + Software</span>
               <ArrowRight className="w-4 h-4" />
